@@ -2,25 +2,26 @@ import { useState } from "react";
 import { useFetch } from "../hooks/useFetch";
 import {
   FOOTBALL_COMPETITIONS, EPL_STANDINGS_STATIC, LA_LIGA_STATIC,
-  SERIE_A_STATIC, BUNDESLIGA_STATIC, UCL_LAST16,
+  SERIE_A_STATIC, BUNDESLIGA_STATIC, LIGUE_1_STATIC, UCL_LAST16,
 } from "../data/football";
 import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates";
 import styles from "./FootballView.module.css";
 
-const API_KEY = "123ac3c7dc69470d81a805c765399492";
-const BASE    = "https://api.football-data.org/v4";
+
+
 
 const STATIC_STANDINGS = {
   PL: EPL_STANDINGS_STATIC, PD: LA_LIGA_STATIC,
-  SA: SERIE_A_STATIC, BL1: BUNDESLIGA_STATIC,
+  SA: SERIE_A_STATIC, BL1: BUNDESLIGA_STATIC, FL1: LIGUE_1_STATIC,
 };
 
 async function fetchStandings(compId) {
+  // Calls our Vercel serverless proxy — avoids CORS issues
   const res = await fetch(`/api/standings?comp=${compId}`);
   if (res.status === 429) throw new Error("Rate limited — try again in a moment");
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
-  return data.standings[0].table.slice(0, 10).map((e) => ({
+  return data.standings[0].table.map((e) => ({
     pos:   e.position,
     team:  e.team.shortName || e.team.name,
     p:     e.playedGames,

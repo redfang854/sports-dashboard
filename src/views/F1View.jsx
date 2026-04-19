@@ -100,7 +100,7 @@ export default function F1View() {
           {drivers.loading && <LoadingState message="Fetching driver standings..." />}
           {drivers.error   && <ErrorState message={drivers.error} onRetry={drivers.refetch} />}
 
-          {drivers.data?.slice(0, 10).map((raw) => {
+          {drivers.data?.map((raw) => {
             const driver = enrichDriver(raw);
             const imgSrc = F1_DRIVER_IMAGES[driver.id];
             return (
@@ -132,7 +132,7 @@ export default function F1View() {
             {constructors.loading && <LoadingState message="Fetching constructors..." />}
             {constructors.error   && <ErrorState message={constructors.error} onRetry={constructors.refetch} />}
 
-            {constructors.data?.slice(0, 6).map((team) => {
+            {constructors.data?.map((team) => {
               const color   = TEAM_COLORS[team.name] || "#888";
               const logoSrc = F1_TEAM_LOGOS[team.name];
               return (
