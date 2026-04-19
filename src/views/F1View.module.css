@@ -245,3 +245,62 @@
   color: #aaa;
   font-weight: 500;
 }
+
+.cdPlaceholder {
+  background: #161616;
+  border: 1px solid #ffffff14;
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #444;
+}
+
+.raceWinner {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+}
+
+.raceTeam {
+  font-size: 11px;
+  color: #555;
+  margin-top: 1px;
+}
+
+.teamLogoWrap {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid #ffffff0d;
+  padding: 4px;
+}
+
+.teamLogoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.teamDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.raceWinner {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+}
+
+.raceTeam {
+  font-size: 11px;
+  color: #555;
+  margin-top: 1px;
+}
