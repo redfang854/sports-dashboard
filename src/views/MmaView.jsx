@@ -28,11 +28,13 @@ export default function MmaView() {
         venueName="Apr 26, 2026"
         target="2026-04-26T00:00:00Z"
       />
+
+      {/* KPI strip */}
       <div className={styles.kpiRow}>
         {[
-          { label: "Last Event",        val: "Burns vs Malott", sub: "Apr 19, 2026" },
-          { label: "Main Event Result", val: "KO — R3",         sub: "Malott def. Burns · 2:08" },
-          { label: "Title Fight",       val: "Ulberg",          sub: "New LHW Champion" },
+          { label: "Last Event",        val: "Burns vs Malott",  sub: "Apr 19, 2026" },
+          { label: "Main Event Result", val: "KO — R3",          sub: "Malott def. Burns · 2:08" },
+          { label: "Title Fight",       val: "Ulberg",           sub: "New LHW Champion" },
           { label: "Finish Rate",       val: `${Math.round((finishes / RECENT_FIGHTS.length) * 100)}%`, sub: `${finishes} finishes · ${decisions} decisions` },
         ].map((k) => (
           <div key={k.label} className={styles.kpi}>
@@ -42,12 +44,16 @@ export default function MmaView() {
           </div>
         ))}
       </div>
+
       <div className={styles.grid}>
+
+        {/* ── Recent Results ── */}
         <div className={styles.panel}>
           <h3 className={styles.panelTitle}>
             Recent Results
             <span className={styles.hint}>click a row for fighter profile</span>
           </h3>
+
           {Object.entries(groupedStatic).map(([event, fights]) => (
             <div key={event} className={styles.eventGroup}>
               <p className={styles.eventLabel}>{event}</p>
@@ -72,7 +78,9 @@ export default function MmaView() {
             </div>
           ))}
         </div>
+
         <div>
+          {/* ── Upcoming Card ── */}
           <div className={styles.panel} style={{ marginBottom: 16 }}>
             <h3 className={styles.panelTitle}>Next Card — Apr 26</h3>
             <p className={styles.eventLabel}>UFC Fight Night · Sterling vs Zalal</p>
@@ -86,6 +94,8 @@ export default function MmaView() {
               </div>
             ))}
           </div>
+
+          {/* ── Finish Breakdown ── */}
           <div className={styles.panel}>
             <h3 className={styles.panelTitle}>Finish Breakdown</h3>
             <p className={styles.eventLabel}>Last {RECENT_FIGHTS.length} fights</p>
@@ -107,6 +117,7 @@ export default function MmaView() {
           </div>
         </div>
       </div>
+
       {selectedFighter && (
         <FighterModal fighter={selectedFighter} onClose={() => setSelectedFighter(null)} />
       )}

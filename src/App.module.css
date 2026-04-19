@@ -1,98 +1,68 @@
-.app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+.app { min-height: 100vh; display: flex; flex-direction: column; }
 
 .header {
   border-bottom: 1px solid #ffffff0d;
-  position: sticky;
-  top: 0;
+  position: sticky; top: 0;
   background: #0d0d0ddd;
   backdrop-filter: blur(12px);
   z-index: 100;
 }
 
 .headerInner {
-  max-width: 960px;
-  margin: 0 auto;
+  max-width: 1100px; margin: 0 auto;
   padding: 0 20px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  display: flex; flex-direction: column; gap: 0;
 }
 
 .brand {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 12px 0 8px;
+  border-bottom: 1px solid #ffffff08;
 }
 
 .logo {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 28px;
-  font-weight: 400;
-  letter-spacing: 1px;
-  color: #fff;
+  font-size: 32px; font-weight: 400;
+  letter-spacing: 3px; color: #fff;
 }
 
-.tagline {
-  font-size: 12px;
-  color: #444;
-}
+.tagline { font-size: 12px; color: #444; }
 
 .tabs {
-  display: flex;
-  background: #161616;
-  border: 1px solid #ffffff14;
-  border-radius: 10px;
-  overflow: hidden;
-  gap: 0;
+  display: flex; gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 6px 0;
 }
+
+.tabs::-webkit-scrollbar { display: none; }
 
 .tab {
-  padding: 7px 18px;
-  background: transparent;
-  border: none;
-  border-right: 1px solid #ffffff14;
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 15px;
-  letter-spacing: 0.8px;
-  color: #555;
+  padding: 6px 14px;
+  background: transparent; border: none;
+  font-size: 13px; font-weight: 500;
+  color: #555; cursor: pointer;
   transition: all 0.15s;
+  white-space: nowrap;
+  border-radius: 8px;
 }
 
-.tab:last-child {
-  border-right: none;
-}
-
-.tab:hover {
-  color: #aaa;
-  background: #ffffff08;
-}
+.tab:hover { color: #aaa; background: #ffffff08; }
 
 .tabActive {
-  background: #fff !important;
-  color: #000 !important;
+  background: #ffffff12 !important;
+  color: #fff !important;
 }
 
 .main {
-  max-width: 960px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 24px 20px;
+  max-width: 1100px; margin: 0 auto;
+  width: 100%; padding: 24px 20px;
   flex: 1;
 }
 
 .footer {
   border-top: 1px solid #ffffff08;
-  padding: 16px 20px;
-  text-align: center;
+  padding: 16px 20px; text-align: center;
 }
 
-.footer p {
-  font-size: 11px;
-  color: #333;
-}
+.footer p { font-size: 11px; color: #2a2a2a; }

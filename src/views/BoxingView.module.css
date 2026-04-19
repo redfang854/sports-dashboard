@@ -1,0 +1,54 @@
+.kpiRow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.kpi { background: #161616; border: 1px solid #ffffff0d; border-radius: 12px; padding: 14px 16px; }
+.kpiLabel { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; margin-bottom: 4px; }
+.kpiVal { font-family: "Bebas Neue", sans-serif; font-size: 22px; color: #fff; line-height: 1.1; }
+.kpiSub { font-size: 11px; color: #555; margin-top: 3px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+.panel { background: #111; border: 1px solid #ffffff0d; border-radius: 14px; padding: 18px 20px; }
+.panelTitle { font-family: "Bebas Neue", sans-serif; font-size: 18px; font-weight: 400; letter-spacing: 0.5px; color: #fff; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+.hint { font-family: "Inter", sans-serif; font-size: 10px; color: #444; font-weight: 400; letter-spacing: 0; }
+.championRow { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 6px; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: background 0.12s; border-bottom: 1px solid #ffffff08; text-align: left; }
+.championRow:last-child { border-bottom: none; }
+.championRow:hover { background: #ffffff07; }
+.champAvatar { width: 40px; height: 40px; border-radius: 50%; background: #E24B4A22; border: 1px solid #E24B4A44; display: flex; align-items: center; justify-content: center; font-family: "Bebas Neue", sans-serif; font-size: 15px; color: #E24B4A; flex-shrink: 0; }
+.champInfo { flex: 1; min-width: 0; }
+.champName { font-size: 13px; font-weight: 500; color: #e8e8e8; }
+.champDivision { font-size: 11px; color: #555; margin-top: 1px; margin-bottom: 4px; }
+.beltRow { display: flex; gap: 4px; flex-wrap: wrap; }
+.beltBadge { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 4px; border: 1px solid; letter-spacing: 0.5px; }
+.champRecord { text-align: right; flex-shrink: 0; }
+.recordBig { font-family: "Bebas Neue", sans-serif; font-size: 20px; color: #fff; display: block; }
+.recordSub { font-size: 10px; color: #555; }
+.fightRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #ffffff08; }
+.fightRow:last-child { border-bottom: none; }
+.boutNames { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+.winner { font-size: 13px; font-weight: 500; color: #e8e8e8; }
+.vs { font-size: 11px; color: #555; }
+.loser { font-size: 13px; color: #555; }
+.boutDetail { font-size: 11px; color: #444; }
+.method { font-family: "Bebas Neue", sans-serif; font-size: 16px; color: #fff; }
+.titleLabel { font-size: 9px; color: #E24B4A; letter-spacing: 1px; margin-top: 2px; }
+.upcomingRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #ffffff08; }
+.upcomingRow:last-child { border-bottom: none; }
+.upBout { font-size: 13px; font-weight: 500; color: #e8e8e8; }
+.upDetail { font-size: 11px; color: #555; margin-top: 1px; }
+.upDate { font-size: 11px; color: #444; }
+.statusBadge { font-size: 9px; color: #888; letter-spacing: 0.5px; }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; backdrop-filter: blur(4px); }
+.modal { background: #161616; border: 1px solid #ffffff18; border-radius: 16px; width: 100%; max-width: 420px; padding: 24px; position: relative; animation: slideUp 0.2s ease; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.closeBtn { position: absolute; top: 16px; right: 16px; background: #ffffff10; border: 1px solid #ffffff18; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #888; cursor: pointer; }
+.modalHeader { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+.modalAvatar { width: 56px; height: 56px; border-radius: 50%; background: #E24B4A22; border: 1px solid #E24B4A44; display: flex; align-items: center; justify-content: center; font-family: "Bebas Neue", sans-serif; font-size: 20px; color: #E24B4A; flex-shrink: 0; }
+.modalName { font-family: "Bebas Neue", sans-serif; font-size: 24px; color: #fff; line-height: 1.1; }
+.modalSub { font-size: 12px; color: #666; margin: 2px 0 8px; }
+.recordRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.recBox { border: 1px solid; border-radius: 10px; padding: 12px 8px; text-align: center; }
+.recNum { font-family: "Bebas Neue", sans-serif; font-size: 28px; line-height: 1; display: block; }
+.recLabel { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 0.8px; }
+.statsGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.stat { background: #1e1e1e; border-radius: 8px; padding: 10px 12px; }
+.statVal { font-family: "Bebas Neue", sans-serif; font-size: 18px; color: #fff; line-height: 1; display: block; }
+.statLabel { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.8px; }
+.bio { font-size: 13px; color: #888; line-height: 1.7; border-top: 1px solid #ffffff0d; padding-top: 14px; }
