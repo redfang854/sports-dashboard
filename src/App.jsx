@@ -5,11 +5,13 @@ import FootballView from "./views/FootballView";
 import BoxingView   from "./views/BoxingView";
 import RugbyView    from "./views/RugbyView";
 import WrcView      from "./views/WrcView";
+import TeamsView    from "./views/TeamsView";
 import LoadingScreen from "./components/LoadingScreen";
 import styles from "./App.module.css";
 
 const TABS = [
   { id: "football", label: "⚽ Football" },
+  { id: "teams",    label: "👥 Teams" },
   { id: "f1",       label: "🏎️ Formula 1" },
   { id: "mma",      label: "🥋 MMA" },
   { id: "boxing",   label: "🥊 Boxing" },
@@ -65,6 +67,7 @@ export default function App() {
           {activeTab === "boxing"   && <BoxingView />}
           {activeTab === "rugby"    && <RugbyView />}
           {activeTab === "wrc"      && <WrcView />}
+        {activeTab === "teams"    && <TeamsView />}
         </main>
 
         <footer className={styles.footer}>
