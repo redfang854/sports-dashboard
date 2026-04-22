@@ -1,13 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
+// Vite exposes VITE_ prefixed env vars via import.meta.env
 const SUPABASE_URL  = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_ANON) {
-  console.warn("Supabase env vars missing — auth and chat will not work.");
-}
+// Create a safe fallback client that won't crash the app
+// if env vars aren't set — auth/chat just won't work
+export const supabase = (SUPABASE_URL && SUPABASE_ANON)
+  ? createClient(SUPABASE_URL, SUPABASE_ANON)
+  : null;
 
-export const supabase = createClient(
-  SUPABASE_URL  || "https://placeholder.supabase.co",
-  SUPABASE_ANON || "placeholder"
-);
+export const supabaseReady = !!(SUPABASE_URL && SUPABASE_ANON);

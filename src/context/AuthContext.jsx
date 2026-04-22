@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, supabaseReady } from "../lib/supabase";
 
 const AuthContext = createContext(null);
 
@@ -9,6 +9,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabaseReady) { setLoading(false); return; }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) fetchProfile(session.user.id);
@@ -18,22 +20,15 @@ export function AuthProvider({ children }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
-          setProfile(null);
-        }
+        if (session?.user) await fetchProfile(session.user.id);
+        else setProfile(null);
       }
     );
     return () => subscription.unsubscribe();
   }, []);
 
   async function fetchProfile(userId) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
+    const { data } = await supabase.from("profiles").select("*").eq("id", userId).single();
     setProfile(data);
   }
 
@@ -42,11 +37,8 @@ export function AuthProvider({ children }) {
     if (error) throw error;
     if (data.user) {
       await supabase.from("profiles").upsert({
-        id:         data.user.id,
-        username:   username || email.split("@")[0],
-        email,
-        avatar_url: null,
-        created_at: new Date().toISOString(),
+        id: data.user.id, username: username || email.split("@")[0],
+        email, avatar_url: null, created_at: new Date().toISOString(),
       });
     }
     return data;
@@ -71,19 +63,15 @@ export function AuthProvider({ children }) {
   }
 
   async function updateUsername(username) {
-    const { error } = await supabase
-      .from("profiles")
-      .update({ username })
-      .eq("id", user.id);
+    const { error } = await supabase.from("profiles").update({ username }).eq("id", user.id);
     if (error) throw error;
     setProfile((p) => ({ ...p, username }));
   }
 
   return (
     <AuthContext.Provider value={{
-      user, profile, loading,
-      signUpWithEmail, signInWithEmail, signInWithGoogle,
-      signOut, updateUsername,
+      user, profile, loading, supabaseReady,
+      signUpWithEmail, signInWithEmail, signInWithGoogle, signOut, updateUsername,
     }}>
       {children}
     </AuthContext.Provider>
