@@ -1,0 +1,306 @@
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  background: #161616;
+  border: 1px solid #ffffff0d;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.kpiLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.kpiVal {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.kpiSub {
+  font-size: 11px;
+  color: #555;
+  margin-top: 3px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: #111;
+  border: 1px solid #ffffff0d;
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.panelTitle {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.hint {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  color: #444;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.eventLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.driverRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 6px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s;
+  text-align: left;
+  border-bottom: 1px solid #ffffff06;
+}
+
+.driverRow:last-of-type {
+  border-bottom: none;
+}
+
+.driverRow:hover {
+  background: #ffffff07;
+}
+
+.constructorRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-bottom: 1px solid #ffffff06;
+}
+
+.constructorRow:last-child {
+  border-bottom: none;
+}
+
+.pos {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.driverInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.driverName {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.driverTeam {
+  font-size: 11px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.barTrack {
+  height: 4px;
+  background: #1e1e1e;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.8s ease;
+}
+
+.ptsBox {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.pts {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 24px;
+  color: #fff;
+  display: block;
+  line-height: 1;
+}
+
+.ptsLabel {
+  font-size: 9px;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.raceRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ffffff08;
+}
+
+.raceRow:last-of-type {
+  border-bottom: none;
+}
+
+.raceNum {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 20px;
+  color: #333;
+  width: 24px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.raceName {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+}
+
+.raceCircuit {
+  font-size: 11px;
+  color: #555;
+  margin-top: 1px;
+}
+
+.raceDate {
+  font-size: 11px;
+  color: #444;
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.contextBox {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: #161616;
+  border-radius: 10px;
+  border: 1px solid #ffffff0a;
+}
+
+.contextTitle {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.contextText {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.contextText strong {
+  color: #aaa;
+  font-weight: 500;
+}
+
+.cdPlaceholder {
+  background: #161616;
+  border: 1px solid #ffffff14;
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #444;
+}
+
+.raceWinner {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+}
+
+.raceTeam {
+  font-size: 11px;
+  color: #555;
+  margin-top: 1px;
+}
+
+.teamLogoWrap {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid #ffffff0d;
+  padding: 4px;
+}
+
+.teamLogoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.teamDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.raceWinner {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+}
+
+.raceTeam {
+  font-size: 11px;
+  color: #555;
+  margin-top: 1px;
+}

@@ -1,0 +1,111 @@
+.screen {
+  position: fixed;
+  inset: 0;
+  background: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.exit {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ── Logo letters ── */
+.logoWrap {
+  display: flex;
+  align-items: baseline;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.logoIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letterA {
+  font-family: "Arial Black", Arial, sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+  color: #E24B4A;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.letterPEX {
+  font-family: "Arial Black", Arial, sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: 4px;
+}
+
+/* ── Red underline bar ── */
+.bar {
+  height: 5px;
+  background: #E24B4A;
+  border-radius: 3px;
+  width: 0;
+  margin-top: 6px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.barIn {
+  width: 112px;
+}
+
+/* ── Tagline ── */
+.tagline {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #555;
+  margin-top: 14px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.taglineIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Loading dots ── */
+.dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 40px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dotsIn {
+  opacity: 1;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #E24B4A;
+  animation: bounce 0.8s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.3; }
+  50%       { transform: translateY(-6px); opacity: 1; }
+}

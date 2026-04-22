@@ -1,0 +1,48 @@
+.kpiRow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.kpi { background: #161616; border: 1px solid #ffffff0d; border-radius: 12px; padding: 14px 16px; }
+.kpiLabel { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; margin-bottom: 4px; }
+.kpiVal { font-family: "Bebas Neue", sans-serif; font-size: 22px; color: #fff; line-height: 1.1; }
+.kpiSub { font-size: 11px; color: #555; margin-top: 3px; }
+.compTabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.compTab { padding: 6px 14px; background: transparent; border: 1px solid #ffffff14; border-radius: 100px; font-size: 12px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.15s; }
+.compTab:hover { color: #aaa; border-color: #ffffff30; }
+.compTabActive { color: #fff !important; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+.panel { background: #111; border: 1px solid #ffffff0d; border-radius: 14px; padding: 18px 20px; }
+.panelTitle { font-family: "Bebas Neue", sans-serif; font-size: 18px; font-weight: 400; color: #fff; margin-bottom: 14px; }
+.panelMeta { margin-bottom: 10px; }
+.staticBadge { font-size: 10px; color: #444; background: #ffffff08; border: 1px solid #ffffff10; padding: 2px 8px; border-radius: 100px; }
+.eventLabel { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #444; margin-bottom: 12px; }
+.teamRow { display: flex; align-items: center; gap: 8px; padding: 7px 4px; border-bottom: 1px solid #ffffff06; }
+.teamRow:last-of-type { border-bottom: none; }
+.pos { font-family: "Bebas Neue", sans-serif; font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.crest { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+.crestFallback { width: 20px; height: 20px; background: #ffffff10; border-radius: 4px; flex-shrink: 0; }
+.teamInfo { flex: 1; min-width: 0; }
+.teamName { font-size: 12px; font-weight: 500; color: #e8e8e8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+.barTrack { height: 3px; background: #1e1e1e; border-radius: 100px; overflow: hidden; }
+.barFill { height: 100%; border-radius: 100px; background: #378ADD; }
+.statsCols { display: flex; gap: 0; flex-shrink: 0; }
+.statNum { font-size: 11px; color: #666; width: 26px; text-align: center; }
+.statGD { font-size: 11px; color: #666; width: 34px; text-align: center; }
+.statPts { font-family: "Bebas Neue", sans-serif; font-size: 16px; color: #fff; width: 28px; text-align: right; }
+.colHeaders { display: flex; align-items: center; padding: 6px 4px 0; margin-top: 4px; border-top: 1px solid #ffffff08; }
+.colHeader { font-size: 9px; color: #333; text-transform: uppercase; letter-spacing: 0.5px; width: 26px; text-align: center; }
+.colHeader:nth-last-child(2) { width: 34px; }
+.colHeader:last-child { width: 28px; text-align: right; }
+.matchRow { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid #ffffff08; }
+.matchRow:last-child { border-bottom: none; }
+.matchHome { font-size: 13px; font-weight: 500; color: #e8e8e8; flex: 1; text-align: right; }
+.matchAway { font-size: 13px; color: #888; flex: 1; }
+.matchScore { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.scoreNum { font-family: "Bebas Neue", sans-serif; font-size: 20px; color: #fff; min-width: 16px; text-align: center; }
+.scoreDash { font-size: 14px; color: #444; }
+.matchStage { font-size: 10px; color: #444; flex-shrink: 0; }
+.leagueCard { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 10px; background: transparent; border: 1px solid #ffffff08; border-radius: 10px; cursor: pointer; transition: all 0.12s; margin-bottom: 8px; text-align: left; }
+.leagueCard:last-child { margin-bottom: 0; }
+.leagueCard:hover { background: #ffffff07; border-color: #ffffff18; }
+.leagueCardActive { background: #ffffff0a !important; border-color: #ffffff25 !important; }
+.leagueFlag { font-size: 20px; flex-shrink: 0; }
+.leagueName { font-size: 13px; font-weight: 500; color: #e8e8e8; flex: 1; }
+.leagueArrow { font-size: 18px; color: #444; }

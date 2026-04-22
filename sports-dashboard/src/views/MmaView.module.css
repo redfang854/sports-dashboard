@@ -1,0 +1,238 @@
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  background: #161616;
+  border: 1px solid #ffffff0d;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.kpiLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.kpiVal {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.kpiSub {
+  font-size: 11px;
+  color: #555;
+  margin-top: 3px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: #111;
+  border: 1px solid #ffffff0d;
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.panelTitle {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.hint {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  color: #444;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.eventGroup {
+  margin-bottom: 16px;
+}
+
+.eventGroup:last-child {
+  margin-bottom: 0;
+}
+
+.eventLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #444;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ffffff08;
+}
+
+.fightRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 6px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s;
+  text-align: left;
+}
+
+.fightRow:hover {
+  background: #ffffff07;
+}
+
+.loser {
+  font-size: 13px;
+  color: #555;
+  text-align: left;
+}
+
+.winner {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.winDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #639922;
+  flex-shrink: 0;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.pill {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.roundInfo {
+  font-size: 10px;
+  color: #444;
+}
+
+.titleBadge {
+  font-size: 9px;
+  color: #E24B4A;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.upcomingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 1px solid #ffffff08;
+}
+
+.upcomingRow:last-child {
+  border-bottom: none;
+}
+
+.upcomingBout {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e8e8e8;
+}
+
+.upcomingDetail {
+  font-size: 11px;
+  color: #555;
+  margin-top: 2px;
+}
+
+.upcomingDate {
+  font-size: 11px;
+  color: #444;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.finishBars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.barLabel {
+  font-size: 12px;
+  color: #666;
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.barTrack {
+  flex: 1;
+  height: 6px;
+  background: #1e1e1e;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.6s ease;
+}
+
+.barCount {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 18px;
+  color: #fff;
+  width: 20px;
+  text-align: right;
+  flex-shrink: 0;
+}
