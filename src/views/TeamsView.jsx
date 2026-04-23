@@ -69,7 +69,7 @@ function H2HModal({ team, onClose }) {
 }
 
 function SquadModal({ teamId, onClose }) {
-  const { data, loading, error } = useFetch(() => fetchSquad(teamId), [teamId]);
+  const { data, loading, error } = useFetch(() => fetchSquad(teamId, teamData?.name, teamData?.leagueCode), [teamId]);
   const [pos, setPos] = useState("All");
   const filtered = data?.squad?.filter((p) => pos==="All" || p.position===pos) || [];
   return (
