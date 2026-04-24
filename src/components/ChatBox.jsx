@@ -29,6 +29,7 @@ export default function ChatBox() {
   }, [open]);
 
   useEffect(() => {
+    console.log("PRESENCE EFFECT:", { user, profile, supabaseReady });
     if (!user || !profile || !supabaseReady) return;
     const presence = supabase.channel("online-users", { config: { presence: { key: user.id } } });
     presence.on("presence", { event: "sync" }, () => {
