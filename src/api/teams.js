@@ -65,7 +65,6 @@ async function getASTeamId(teamName, leagueCode) {
 
 export async function fetchSquad(teamId, teamName, leagueCode) {
   try {
-    // Search API-Football by team name to get their ID
     const asId = await getASTeamId(teamName, leagueCode);
     if (asId) {
       const data = await getAS("players/squads", { team: asId });
@@ -101,5 +100,28 @@ export async function fetchH2H(teamId) {
     homeTeam: m.homeTeam.name, homeScore: m.score.fullTime.home,
     awayTeam: m.awayTeam.name, awayScore: m.score.fullTime.away,
     winner: m.score.winner, competition: m.competition.name,
+  }));
+}
+
+export async function fetchH2HBetween(teamId1, teamId2) {
+  const data = await getFD(`matches`, {
+    competitions: Object.values(COMPETITIONS).map((c) => c.id).join(","),
+    status: "FINISHED",
+  });
+  const matches = (data.matches || []).filter((m) => {
+    const ids = [m.homeTeam.id, m.awayTeam.id];
+    return ids.includes(teamId1) && ids.includes(teamId2);
+  });
+  return matches.map((m) => ({
+    id: m.id,
+    date: m.utcDate?.slice(0, 10),
+    homeTeam: m.homeTeam.name,
+    homeCrest: m.homeTeam.crest,
+    homeScore: m.score.fullTime.home,
+    awayTeam: m.awayTeam.name,
+    awayCrest: m.awayTeam.crest,
+    awayScore: m.score.fullTime.away,
+    winner: m.score.winner,
+    competition: m.competition.name,
   }));
 }
