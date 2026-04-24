@@ -30,7 +30,7 @@ export default function ChatBox() {
 
   useEffect(() => {
     console.log("PRESENCE EFFECT:", { user, profile, supabaseReady });
-    if (!user || !profile || !supabaseReady) return;
+    if (!user || !supabaseReady) return;
     const presence = supabase.channel("online-users", { config: { presence: { key: user.id } } });
     presence.on("presence", { event: "sync" }, () => {
       const state = presence.presenceState();
@@ -42,7 +42,7 @@ export default function ChatBox() {
       setOnline(Object.values(presence.presenceState()).flat());
     }).subscribe(async (status) => {
       if (status === "SUBSCRIBED") {
-        await presence.track({ user_id: user.id, username: profile.username });
+        await presence.track({ user_id: user.id, username: profile?.username || user.email?.split("@")[0] || "User" });
         setTimeout(() => {
           const state = presence.presenceState();
           console.log("PRESENCE STATE:", state);
