@@ -19,7 +19,8 @@ export default function AuthModal({ onClose }) {
     try {
       if (mode === "signup") {
         await signUpWithEmail(email, password, username);
-        setSuccess("Check your email to confirm your account, then sign in.");
+        setMode("signin");
+        setSuccess("Account created! You can now sign in.");
       } else {
         await signInWithEmail(email, password);
         onClose();
