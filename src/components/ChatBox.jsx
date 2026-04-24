@@ -31,18 +31,24 @@ export default function ChatBox() {
   useEffect(() => {
     if (!user || !profile || !supabaseReady) return;
     const presence = supabase.channel("online-users", { config: { presence: { key: user.id } } });
-   presence.on("presence", { event: "sync" }, () => {
-  setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
-}).on("presence", { event: "join" }, () => {
-  setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
-}).on("presence", { event: "leave" }, () => {
-  setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
-}).subscribe(async (status) => {
-  if (status === "SUBSCRIBED") {
-    await presence.track({ user_id: user.id, username: profile.username });
-    setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
-  }
-});
+    presence.on("presence", { event: "sync" }, () => {
+      const state = presence.presenceState();
+      console.log("SYNC:", state);
+      setOnline(Object.values(state).flat());
+    }).on("presence", { event: "join" }, () => {
+      setOnline(Object.values(presence.presenceState()).flat());
+    }).on("presence", { event: "leave" }, () => {
+      setOnline(Object.values(presence.presenceState()).flat());
+    }).subscribe(async (status) => {
+      if (status === "SUBSCRIBED") {
+        await presence.track({ user_id: user.id, username: profile.username });
+        setTimeout(() => {
+          const state = presence.presenceState();
+          console.log("PRESENCE STATE:", state);
+          setOnline(Object.values(state).flat());
+        }, 500);
+      }
+    });
     return () => supabase.removeChannel(presence);
   }, [user, profile]);
 
