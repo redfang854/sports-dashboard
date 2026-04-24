@@ -49,15 +49,12 @@ function SquadModal({ team, onClose }) {
             <div className={styles.squadGrid}>
               {filtered.map((player) => (
                 <div key={player.id} className={styles.playerCard}>
-                  {player.photo ? (
-                    <img src={player.photo} alt={player.name}
-                      className={styles.playerPhoto}
-                      onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                  ) : (
-                    <div className={styles.playerInitials}>
-                      {player.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
-                    </div>
-                  )}
+                  <img
+                    src={player.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=922b21&color=fff&size=80&bold=true&rounded=true`}
+                    alt={player.name}
+                    className={styles.playerPhoto}
+                    onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=922b21&color=fff&size=80&bold=true&rounded=true`; }}
+                  />
                   <p className={styles.playerName}>{player.name}</p>
                   <p className={styles.playerPos}>{player.position || "—"}</p>
                   <p className={styles.playerMeta}>
