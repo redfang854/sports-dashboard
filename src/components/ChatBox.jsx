@@ -31,11 +31,18 @@ export default function ChatBox() {
   useEffect(() => {
     if (!user || !profile || !supabaseReady) return;
     const presence = supabase.channel("online-users", { config: { presence: { key: user.id } } });
-    presence.on("presence", { event: "sync" }, () => {
-      setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
-    }).subscribe(async (status) => {
-      if (status === "SUBSCRIBED") await presence.track({ user_id: user.id, username: profile.username });
-    });
+   presence.on("presence", { event: "sync" }, () => {
+  setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
+}).on("presence", { event: "join" }, () => {
+  setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
+}).on("presence", { event: "leave" }, () => {
+  setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
+}).subscribe(async (status) => {
+  if (status === "SUBSCRIBED") {
+    await presence.track({ user_id: user.id, username: profile.username });
+    setOnline(Object.values(presence.presenceState()).map((a) => a[0]));
+  }
+});
     return () => supabase.removeChannel(presence);
   }, [user, profile]);
 
