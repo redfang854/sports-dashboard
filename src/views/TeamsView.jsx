@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { fetchTeams, fetchSquad, fetchH2H, fetchH2HBetween, COMPETITIONS } from "../api/teams";
+import { fetchTeams, fetchSquad, fetchH2H, COMPETITIONS } from "../api/teams";
 import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates";
 import styles from "./TeamsView.module.css";
 
@@ -138,158 +138,6 @@ function FormModal({ team, onClose }) {
   );
 }
 
-function H2HSection({ teams }) {
-  const [teamA, setTeamA] = useState("");
-  const [teamB, setTeamB] = useState("");
-  const [triggered, setTriggered] = useState(false);
-
-  const selectedA = teams.find((t) => String(t.id) === teamA);
-  const selectedB = teams.find((t) => String(t.id) === teamB);
-
-  const { data, loading, error } = useFetch(
-    () => triggered && selectedA && selectedB
-      ? fetchH2HBetween(selectedA.id, selectedB.id)
-      : Promise.resolve(null),
-    [triggered, teamA, teamB]
-  );
-
-  const matches = data || [];
-  const winsA = matches.filter((m) =>
-    (m.winner === "HOME_TEAM" && m.homeTeam === selectedA?.name) ||
-    (m.winner === "AWAY_TEAM" && m.awayTeam === selectedA?.name)
-  ).length;
-  const winsB = matches.filter((m) =>
-    (m.winner === "HOME_TEAM" && m.homeTeam === selectedB?.name) ||
-    (m.winner === "AWAY_TEAM" && m.awayTeam === selectedB?.name)
-  ).length;
-  const draws = matches.filter((m) => m.winner === "DRAW").length;
-  const total = (winsA + winsB + draws) || 1;
-
-  function handleCompare() {
-    if (teamA && teamB && teamA !== teamB) setTriggered(true);
-  }
-
-  function handleReset() {
-    setTeamA("");
-    setTeamB("");
-    setTriggered(false);
-  }
-
-  return (
-    <div className={styles.h2hSection}>
-      <h3 className={styles.h2hTitle}>⚔️ Head to Head</h3>
-      <p className={styles.h2hSub}>Select two teams to see their full match history</p>
-
-      <div className={styles.h2hSelectors}>
-        <select
-          className={styles.h2hSelect}
-          value={teamA}
-          onChange={(e) => { setTeamA(e.target.value); setTriggered(false); }}
-        >
-          <option value="">Select Team A</option>
-          {teams.map((t) => (
-            <option key={t.id} value={String(t.id)} disabled={String(t.id) === teamB}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-
-        <span className={styles.h2hVs}>VS</span>
-
-        <select
-          className={styles.h2hSelect}
-          value={teamB}
-          onChange={(e) => { setTeamB(e.target.value); setTriggered(false); }}
-        >
-          <option value="">Select Team B</option>
-          {teams.map((t) => (
-            <option key={t.id} value={String(t.id)} disabled={String(t.id) === teamA}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-
-        <button
-          className={styles.h2hBtn}
-          onClick={handleCompare}
-          disabled={!teamA || !teamB || teamA === teamB}
-        >
-          Compare
-        </button>
-      </div>
-
-      {loading && <LoadingState message="Loading head-to-head history..." />}
-      {error   && <ErrorState message={error} />}
-
-      {triggered && !loading && data !== null && (
-        <>
-          {matches.length === 0 ? (
-            <p className={styles.h2hEmpty}>No matches found between these two teams in our records.</p>
-          ) : (
-            <>
-              <div className={styles.h2hBanner}>
-                <div className={styles.h2hTeam}>
-                  <img src={selectedA?.crest} alt={selectedA?.name} className={styles.h2hCrest}
-                    onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                  <span className={styles.h2hTeamName}>{selectedA?.name}</span>
-                </div>
-                <div className={styles.h2hScoreBig}>
-                  <span style={{ color: "#639922" }}>{winsA}</span>
-                  <span style={{ color: "#444", margin: "0 4px" }}>—</span>
-                  <span style={{ color: "#666" }}>{draws}</span>
-                  <span style={{ color: "#444", margin: "0 4px" }}>—</span>
-                  <span style={{ color: "#E24B4A" }}>{winsB}</span>
-                </div>
-                <div className={styles.h2hTeam} style={{ alignItems: "flex-end" }}>
-                  <img src={selectedB?.crest} alt={selectedB?.name} className={styles.h2hCrest}
-                    onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                  <span className={styles.h2hTeamName}>{selectedB?.name}</span>
-                </div>
-              </div>
-
-              <div className={styles.h2hRecordLabels}>
-                <span style={{ color: "#639922" }}>{winsA} wins</span>
-                <span style={{ color: "#666" }}>{draws} draws</span>
-                <span style={{ color: "#E24B4A" }}>{winsB} wins</span>
-              </div>
-
-              <div className={styles.predBar} style={{ marginBottom: 20 }}>
-                <div style={{ width: `${Math.round(winsA/total*100)}%`, background: "#639922", height: "100%", borderRadius: "100px 0 0 100px" }} />
-                <div style={{ width: `${Math.round(draws/total*100)}%`, background: "#555", height: "100%" }} />
-                <div style={{ width: `${Math.round(winsB/total*100)}%`, background: "#E24B4A", height: "100%", borderRadius: "0 100px 100px 0" }} />
-              </div>
-
-              <p className={styles.sectionLabel}>{matches.length} matches played</p>
-              {matches.map((m, i) => {
-                const aIsHome = m.homeTeam === selectedA?.name;
-                const aScore  = aIsHome ? m.homeScore : m.awayScore;
-                const bScore  = aIsHome ? m.awayScore : m.homeScore;
-                const winner  = m.winner === "DRAW" ? "D"
-                  : ((m.winner === "HOME_TEAM") === aIsHome) ? "A" : "B";
-                return (
-                  <div key={m.id || i} className={styles.matchRow}>
-                    <span className={styles.matchDate}>{m.date}</span>
-                    <span className={styles.matchOpp} style={{ color: winner === "A" ? "#639922" : "#aaa" }}>
-                      {selectedA?.short || selectedA?.name}
-                    </span>
-                    <span className={styles.matchScore}>{aScore}–{bScore}</span>
-                    <span className={styles.matchOpp} style={{ color: winner === "B" ? "#E24B4A" : "#aaa", textAlign: "right" }}>
-                      {selectedB?.short || selectedB?.name}
-                    </span>
-                    <span className={styles.matchComp}>{m.competition}</span>
-                  </div>
-                );
-              })}
-
-              <button className={styles.h2hResetBtn} onClick={handleReset}>Clear</button>
-            </>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
-
 function TeamCard({ team }) {
   const [showSquad, setShowSquad] = useState(false);
   const [showForm,  setShowForm]  = useState(false);
@@ -351,10 +199,6 @@ export default function TeamsView() {
       <div className={styles.teamsList}>
         {filtered.map((team) => <TeamCard key={team.id} team={team} />)}
       </div>
-
-      {data && data.length > 0 && (
-        <H2HSection teams={data} />
-      )}
     </div>
   );
 }
