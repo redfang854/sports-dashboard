@@ -93,3 +93,4 @@ export const FIGHTER_IMAGES = {
 // ─── LOGOS ───────────────────────────────────────────────────────────────────
 export const UFC_LOGO = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/UFC_Logo.svg/200px-UFC_Logo.svg.png";
 export const F1_LOGO  = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/F1.svg/200px-F1.svg.png";
+// cache bust Sat Apr 25 02:08:36 PM EAT 2026
