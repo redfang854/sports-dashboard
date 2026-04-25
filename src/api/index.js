@@ -89,17 +89,21 @@ export async function fetchF1ConstructorStandings() {
  * Fetch the last 5 F1 race results for the current season.
  */
 export async function fetchF1RecentRaces() {
-  const data = await get(`${JOLPICA}/current/results.json?limit=5`);
+  const data = await get(`${JOLPICA}/current/results.json?limit=100`);
   const races = data?.MRData?.RaceTable?.Races || [];
-  return races.map((race) => ({
-    round:    parseInt(race.round),
-    name:     race.raceName,
-    circuit:  race.Circuit.circuitName,
-    date:     race.date,
-    winner:   `${race.Results[0].Driver.givenName} ${race.Results[0].Driver.familyName}`,
-    team:     race.Results[0].Constructor.name,
-    laps:     race.Results[0].laps,
-  }));
+  return races
+    .filter((race) => race.Results?.length > 0)
+    .sort((a, b) => parseInt(b.round) - parseInt(a.round))
+    .slice(0, 5)
+    .map((race) => ({
+      round:   parseInt(race.round),
+      name:    race.raceName,
+      circuit: race.Circuit.circuitName,
+      date:    race.date,
+      winner:  `${race.Results[0].Driver.givenName} ${race.Results[0].Driver.familyName}`,
+      team:    race.Results[0].Constructor.name,
+      laps:    race.Results[0].laps,
+    }));
 }
 
 /**
@@ -110,7 +114,7 @@ export async function fetchF1Schedule() {
   const races = data?.MRData?.RaceTable?.Races || [];
   const now   = Date.now();
   return races
-    .filter((r) => new Date(r.date).getTime() > now)
+    .filter((r) => new Date(`${r.date}T${r.time || "23:59:00Z"}`).getTime() > now)
     .slice(0, 4)
     .map((r) => ({
       round:   parseInt(r.round),
