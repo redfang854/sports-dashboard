@@ -1,34 +1,59 @@
-// ─── F1 DRIVER HEADSHOTS ─────────────────────────────────────────────────────
-// Wikimedia Commons — exact verified filenames from each driver's Wikipedia page
+import _img_antonelli from "../assets/drivers/antonelli.jpg";
+import _img_russell from "../assets/drivers/russell.jpg";
+import _img_norris from "../assets/drivers/norris.jpg";
+import _img_piastri from "../assets/drivers/piastri.jpg";
+import _img_leclerc from "../assets/drivers/leclerc.jpg";
+import _img_hamilton from "../assets/drivers/hamilton.jpg";
+import _img_verstappen from "../assets/drivers/verstappen.jpg";
+import _img_sainz from "../assets/drivers/sainz.jpg";
+import _img_alonso from "../assets/drivers/alonso.jpg";
+import _img_stroll from "../assets/drivers/stroll.jpg";
+import _img_gasly from "../assets/drivers/gasly.jpg";
+import _img_ocon from "../assets/drivers/ocon.jpg";
+import _img_bearman from "../assets/drivers/bearman.jpg";
+import _img_hulkenberg from "../assets/drivers/hulkenberg.jpg";
+import _img_tsunoda from "../assets/drivers/tsunoda.jpg";
+import _img_lawson from "../assets/drivers/lawson.jpg";
+import _img_albon from "../assets/drivers/albon.jpg";
+import _img_colapinto from "../assets/drivers/colapinto.jpg";
+import _img_bottas from "../assets/drivers/bottas.jpg";
+import _img_zhou from "../assets/drivers/zhou.jpg";
+import _img_sargeant from "../assets/drivers/sargeant.jpg";
+import _img_magnussen from "../assets/drivers/magnussen.jpg";
+import _img_doohan from "../assets/drivers/doohan.jpg";
+import _img_bortoleto from "../assets/drivers/bortoleto.jpg";
+import _img_hadjar from "../assets/drivers/hadjar.jpg";
+import _img_lindblad from "../assets/drivers/lindblad.jpg";
+import _img_aron from "../assets/drivers/aron.jpg";
 
 export const F1_DRIVER_IMAGES = {
-  antonelli:  new URL("../assets/drivers/antonelli.jpg", import.meta.url).href,
-  russell:    new URL("../assets/drivers/russell.jpg", import.meta.url).href,
-  norris:     new URL("../assets/drivers/norris.jpg", import.meta.url).href,
-  piastri:    new URL("../assets/drivers/piastri.jpg", import.meta.url).href,
-  leclerc:    new URL("../assets/drivers/leclerc.jpg", import.meta.url).href,
-  hamilton:   new URL("../assets/drivers/hamilton.jpg", import.meta.url).href,
-  verstappen: new URL("../assets/drivers/verstappen.jpg", import.meta.url).href,
-  sainz:      new URL("../assets/drivers/sainz.jpg", import.meta.url).href,
-  alonso:     new URL("../assets/drivers/alonso.jpg", import.meta.url).href,
-  stroll:     new URL("../assets/drivers/stroll.jpg", import.meta.url).href,
-  gasly:      new URL("../assets/drivers/gasly.jpg", import.meta.url).href,
-  ocon:       new URL("../assets/drivers/ocon.jpg", import.meta.url).href,
-  bearman:    new URL("../assets/drivers/bearman.jpg", import.meta.url).href,
-  hulkenberg: new URL("../assets/drivers/hulkenberg.jpg", import.meta.url).href,
-  tsunoda:    new URL("../assets/drivers/tsunoda.jpg", import.meta.url).href,
-  lawson:     new URL("../assets/drivers/lawson.jpg", import.meta.url).href,
-  albon:      new URL("../assets/drivers/albon.jpg", import.meta.url).href,
-  colapinto:  new URL("../assets/drivers/colapinto.jpg", import.meta.url).href,
-  bottas:     new URL("../assets/drivers/bottas.jpg", import.meta.url).href,
-  zhou:       new URL("../assets/drivers/zhou.jpg", import.meta.url).href,
-  sargeant:   new URL("../assets/drivers/sargeant.jpg", import.meta.url).href,
-  magnussen:  new URL("../assets/drivers/magnussen.jpg", import.meta.url).href,
-  doohan:     new URL("../assets/drivers/doohan.jpg", import.meta.url).href,
-  bortoleto:  new URL("../assets/drivers/bortoleto.jpg", import.meta.url).href,
-  hadjar:     new URL("../assets/drivers/hadjar.jpg", import.meta.url).href,
-  lindblad:   new URL("../assets/drivers/lindblad.jpg", import.meta.url).href,
-  aron:       new URL("../assets/drivers/aron.jpg", import.meta.url).href,
+  antonelli:  _img_antonelli,
+  russell:    _img_russell,
+  norris:     _img_norris,
+  piastri:    _img_piastri,
+  leclerc:    _img_leclerc,
+  hamilton:   _img_hamilton,
+  verstappen: _img_verstappen,
+  sainz:      _img_sainz,
+  alonso:     _img_alonso,
+  stroll:     _img_stroll,
+  gasly:      _img_gasly,
+  ocon:       _img_ocon,
+  bearman:    _img_bearman,
+  hulkenberg: _img_hulkenberg,
+  tsunoda:    _img_tsunoda,
+  lawson:     _img_lawson,
+  albon:      _img_albon,
+  colapinto:  _img_colapinto,
+  bottas:     _img_bottas,
+  zhou:       _img_zhou,
+  sargeant:   _img_sargeant,
+  magnussen:  _img_magnussen,
+  doohan:     _img_doohan,
+  bortoleto:  _img_bortoleto,
+  hadjar:     _img_hadjar,
+  lindblad:   _img_lindblad,
+  aron:       _img_aron,
   devries:    null,
 };
 
