@@ -1,19 +1,36 @@
 // ─── F1 DRIVER HEADSHOTS ─────────────────────────────────────────────────────
 // Wikimedia Commons — exact verified filenames from each driver's Wikipedia page
 
-const WM = "https://upload.wikimedia.org/wikipedia/commons/thumb";
-
 export const F1_DRIVER_IMAGES = {
-  antonelli:  `${WM}/0/0e/Kimi_Antonelli_2025_Bahrain.jpg/200px-Kimi_Antonelli_2025_Bahrain.jpg`,
-  russell:    `${WM}/e/e2/George_Russell_2024_Bahrain.jpg/200px-George_Russell_2024_Bahrain.jpg`,
-  piastri:    `${WM}/c/c2/Oscar_Piastri_2023_Monza.jpg/200px-Oscar_Piastri_2023_Monza.jpg`,
-  leclerc:    `${WM}/e/e1/Charles_Leclerc_2024_Bahrain.jpg/200px-Charles_Leclerc_2024_Bahrain.jpg`,
-  hamilton:   `${WM}/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg/200px-Lewis_Hamilton_2016_Malaysia_2.jpg`,
-  norris:     `${WM}/5/51/Lando_Norris_2024_Bahrain.jpg/200px-Lando_Norris_2024_Bahrain.jpg`,
-  gasly:      `${WM}/f/f4/Pierre_Gasly_2023_Bahrain.jpg/200px-Pierre_Gasly_2023_Bahrain.jpg`,
-  verstappen: `${WM}/e/e0/2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3973_by_Stepro_%28portrait_cropped%29.jpg/200px-2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3973_by_Stepro_%28portrait_cropped%29.jpg`,
-  alonso:     `${WM}/f/f3/Fernando_Alonso_2023_Bahrain.jpg/200px-Fernando_Alonso_2023_Bahrain.jpg`,
-  sainz:      `${WM}/c/c0/Carlos_Sainz_Jr._2024_Bahrain.jpg/200px-Carlos_Sainz_Jr._2024_Bahrain.jpg`,
+  // Race drivers
+  antonelli:  "https://r2.thesportsdb.com/images/media/player/thumb/yz5lys1740214217.jpg",
+  russell:    "https://r2.thesportsdb.com/images/media/player/thumb/pvbdm01717362023.jpg",
+  norris:     "https://r2.thesportsdb.com/images/media/player/thumb/z6jg371717362077.jpg",
+  piastri:    "https://r2.thesportsdb.com/images/media/player/thumb/5t124z1717362132.jpg",
+  leclerc:    "https://r2.thesportsdb.com/images/media/player/thumb/9ryjv91717361703.jpg",
+  hamilton:   "https://r2.thesportsdb.com/images/media/player/thumb/1h8xav1661947105.jpg",
+  verstappen: "https://r2.thesportsdb.com/images/media/player/thumb/xig6b51713259135.jpg",
+  sainz:      "https://r2.thesportsdb.com/images/media/player/thumb/ox4fln1717361942.jpg",
+  alonso:     "https://r2.thesportsdb.com/images/media/player/thumb/207l1w1769372838.jpg",
+  stroll:     "https://r2.thesportsdb.com/images/media/player/thumb/513ev41769372879.jpg",
+  gasly:      "https://r2.thesportsdb.com/images/media/player/thumb/xf5ma81743535257.jpg",
+  ocon:       "https://r2.thesportsdb.com/images/media/player/thumb/j3navx1769372967.jpg",
+  bearman:    "https://r2.thesportsdb.com/images/media/player/thumb/55nvb51769372922.jpg",
+  hulkenberg: "https://r2.thesportsdb.com/images/media/player/thumb/54zzf81769372282.jpg",
+  tsunoda:    "https://r2.thesportsdb.com/images/media/player/thumb/z4kq521769373018.jpg",
+  lawson:     "https://r2.thesportsdb.com/images/media/player/thumb/jsft061769372658.jpg",
+  albon:      "https://r2.thesportsdb.com/images/media/player/thumb/aenc7f1769372740.jpg",
+  colapinto:  "https://r2.thesportsdb.com/images/media/player/thumb/6ivy8s1677441826.jpg",
+  bottas:     "https://r2.thesportsdb.com/images/media/player/thumb/17n2g21772535234.jpg",
+  zhou:       "https://r2.thesportsdb.com/images/media/player/thumb/bsf7lg1565641946.jpg",
+  sargeant:   "https://r2.thesportsdb.com/images/media/player/thumb/onie1r1565713354.jpg",
+  magnussen:  "https://r2.thesportsdb.com/images/media/player/thumb/60xsdm1490969379.jpg",
+  doohan:     "https://r2.thesportsdb.com/images/media/player/thumb/6pjmqz1743534778.jpg",
+  bortoleto:  "https://r2.thesportsdb.com/images/media/player/thumb/ulvxcc1769373052.jpg",
+  hadjar:     "https://r2.thesportsdb.com/images/media/player/thumb/0zpsl31769372695.jpg",
+  lindblad:   "https://r2.thesportsdb.com/images/media/player/thumb/88kmxp1742921594.jpg",
+  aron:       "https://r2.thesportsdb.com/images/media/player/thumb/zatj7w1686222510.jpg",
+  devries:    null,
 };
 
 // ─── F1 TEAM LOGOS ───────────────────────────────────────────────────────────

@@ -21,9 +21,15 @@ const posColor = (p) => p === 1 ? "#BA7517" : p === 2 ? "#999" : p === 3 ? "#7F7
 function resolveDriverKey(apiName) {
   const last = apiName.split(" ").pop().toLowerCase();
   const map = {
-    antonelli: "antonelli", russell: "russell", piastri: "piastri",
-    leclerc: "leclerc", hamilton: "hamilton", norris: "norris",
-    gasly: "gasly", verstappen: "verstappen", alonso: "alonso", sainz: "sainz",
+    antonelli: "antonelli", russell: "russell", norris: "norris",
+    piastri: "piastri", leclerc: "leclerc", hamilton: "hamilton",
+    verstappen: "verstappen", sainz: "sainz", alonso: "alonso",
+    stroll: "stroll", gasly: "gasly", ocon: "ocon",
+    bearman: "bearman", hulkenberg: "hulkenberg", tsunoda: "tsunoda",
+    lawson: "lawson", albon: "albon", colapinto: "colapinto",
+    bottas: "bottas", zhou: "zhou", sargeant: "sargeant",
+    magnussen: "magnussen", doohan: "doohan", bortoleto: "bortoleto",
+    hadjar: "hadjar", lindblad: "lindblad", aron: "aron", vries: "devries",
   };
   return Object.keys(map).find((k) => last.includes(k)) || null;
 }
