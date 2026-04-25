@@ -12,6 +12,7 @@
 }
 
 .left {
+  min-width: 160px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -78,4 +79,11 @@
   display: block;
   text-align: center;
   min-width: 40px;
+}
+
+.circuit {
+  width: 120px;
+  height: 105px;
+  flex-shrink: 0;
+  opacity: 0.9;
 }
