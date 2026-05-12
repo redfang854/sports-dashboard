@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 import { FIGHTER_IMAGES, F1_DRIVER_IMAGES, F1_TEAM_LOGOS } from "../data/images";
 import styles from "./Modal.module.css";
@@ -24,13 +24,7 @@ export function FighterModal({ fighter, onClose }) {
         <button className={styles.closeBtn} onClick={onClose} aria-label="Close">✕</button>
 
         <div className={styles.header}>
-          <Avatar
-            src={imgSrc}
-            name={name}
-            color="#E24B4A"
-            size={64}
-            shape="circle"
-          />
+          <Avatar src={imgSrc} name={name} color="#E24B4A" size={64} shape="circle" />
           <div>
             <h2 className={styles.name}>{name}</h2>
             <p className={styles.sub}>{nationality} · {division}</p>
@@ -67,11 +61,24 @@ export function FighterModal({ fighter, onClose }) {
 
 export function DriverModal({ driver, onClose }) {
   useEscapeKey(onClose);
+  const [careerStats, setCareerStats] = useState(null);
+  const [loadingStats, setLoadingStats] = useState(false);
+
+  useEffect(() => {
+    if (!driver) return;
+    setLoadingStats(true);
+    fetch(`/api/f1-driver?name=${encodeURIComponent(driver.name)}`)
+      .then((r) => r.json())
+      .then((data) => setCareerStats(data.found ? data : null))
+      .catch(() => setCareerStats(null))
+      .finally(() => setLoadingStats(false));
+  }, [driver?.name]);
+
   if (!driver) return null;
 
   const { name, team, nationality, age, pts, wins, podiums, color, bio, id, driverId } = driver;
-  const key    = id || driverId;
-  const imgSrc = F1_DRIVER_IMAGES[key];
+  const key     = id || driverId;
+  const imgSrc  = F1_DRIVER_IMAGES[key];
   const teamLogo = F1_TEAM_LOGOS[team];
 
   return (
@@ -83,13 +90,7 @@ export function DriverModal({ driver, onClose }) {
         <div className={styles.accentBar} style={{ background: color || "#333" }} />
 
         <div className={styles.header}>
-          <Avatar
-            src={imgSrc}
-            name={name}
-            color={color || "#888"}
-            size={64}
-            shape="circle"
-          />
+          <Avatar src={imgSrc} name={name} color={color || "#888"} size={64} shape="circle" />
           <div style={{ flex: 1, minWidth: 0 }}>
             <h2 className={styles.name}>{name}</h2>
             <p className={styles.sub}>{nationality}</p>
@@ -107,6 +108,8 @@ export function DriverModal({ driver, onClose }) {
           </div>
         </div>
 
+        {/* Current season stats */}
+        <p className={styles.sectionLabel}>2025 Season</p>
         <div className={styles.recordRow}>
           <div className={styles.recBox} style={{ background: "#63992215", borderColor: "#63992240" }}>
             <span className={styles.recNum} style={{ color: "#639922" }}>{wins}</span>
@@ -116,16 +119,73 @@ export function DriverModal({ driver, onClose }) {
             <span className={styles.recNum} style={{ color: "#378ADD" }}>{podiums ?? "—"}</span>
             <span className={styles.recLabel}>Podiums</span>
           </div>
-          <div className={styles.recBox} style={{ background: color + "15", borderColor: color + "40" }}>
-            <span className={styles.recNum} style={{ color }}>{pts}</span>
+          <div className={styles.recBox} style={{ background: (color || "#888") + "15", borderColor: (color || "#888") + "40" }}>
+            <span className={styles.recNum} style={{ color: color || "#888" }}>{pts}</span>
             <span className={styles.recLabel}>Points</span>
           </div>
         </div>
 
-        <div className={styles.statsGrid}>
-          <div className={styles.stat}><span className={styles.statVal}>{age ?? "—"}</span><span className={styles.statLabel}>Age</span></div>
-          <div className={styles.stat}><span className={styles.statVal} style={{ fontSize: 12 }}>{team}</span><span className={styles.statLabel}>Constructor</span></div>
-        </div>
+        {/* Career stats from DB */}
+        {loadingStats && (
+          <p className={styles.careerLoading}>Loading career stats...</p>
+        )}
+
+        {careerStats && (
+          <>
+            <p className={styles.sectionLabel}>
+              Career ({careerStats.debutSeason}–{careerStats.lastSeason})
+            </p>
+            <div className={styles.recordRow}>
+              <div className={styles.recBox} style={{ background: "#BA751715", borderColor: "#BA751740" }}>
+                <span className={styles.recNum} style={{ color: "#BA7517" }}>{careerStats.championships}</span>
+                <span className={styles.recLabel}>🏆 Titles</span>
+              </div>
+              <div className={styles.recBox} style={{ background: "#63992215", borderColor: "#63992240" }}>
+                <span className={styles.recNum} style={{ color: "#639922" }}>{careerStats.wins}</span>
+                <span className={styles.recLabel}>Career Wins</span>
+              </div>
+              <div className={styles.recBox} style={{ background: "#37AADD15", borderColor: "#37AADD40" }}>
+                <span className={styles.recNum} style={{ color: "#378ADD" }}>{careerStats.podiums}</span>
+                <span className={styles.recLabel}>Podiums</span>
+              </div>
+            </div>
+
+            <div className={styles.statsGrid}>
+              <div className={styles.stat}>
+                <span className={styles.statVal}>{careerStats.totalPoints.toLocaleString()}</span>
+                <span className={styles.statLabel}>Career Points</span>
+              </div>
+              <div className={styles.stat}>
+                <span className={styles.statVal}>{careerStats.totalRaces}</span>
+                <span className={styles.statLabel}>Races Started</span>
+              </div>
+              <div className={styles.stat}>
+                <span className={styles.statVal}>{careerStats.seasons}</span>
+                <span className={styles.statLabel}>Seasons</span>
+              </div>
+              <div className={styles.stat}>
+                <span className={styles.statVal}>{age ?? "—"}</span>
+                <span className={styles.statLabel}>Age</span>
+              </div>
+            </div>
+
+            {/* Extraordinary performances */}
+            {careerStats.greatRaces?.length > 0 && (
+              <>
+                <p className={styles.sectionLabel}>Recent Race Wins</p>
+                <div className={styles.greatRacesList}>
+                  {careerStats.greatRaces.map((r, i) => (
+                    <div key={i} className={styles.greatRaceRow}>
+                      <span className={styles.greatRaceSeason}>{r.season}</span>
+                      <span className={styles.greatRaceName}>{r.name}</span>
+                      <span className={styles.greatRaceCountry}>{r.country}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        )}
 
         <p className={styles.bio}>{bio}</p>
       </div>
