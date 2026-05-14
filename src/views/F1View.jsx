@@ -52,6 +52,10 @@ export default function F1View() {
     return {
       ...apiDriver,
       id:      key,
+      pts:     apiDriver.points,
+      wins:    apiDriver.wins ?? 0,
+      pts:     apiDriver.points,
+      wins:    apiDriver.wins ?? 0,
       color:   TEAM_COLORS[apiDriver.team] || "#888",
       podiums: local?.podiums ?? "—",
       age:     local?.age ?? "—",
