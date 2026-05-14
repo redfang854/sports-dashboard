@@ -109,7 +109,7 @@ export function DriverModal({ driver, onClose }) {
         </div>
 
         {/* Current season stats */}
-        <p className={styles.sectionLabel}>2025 Season</p>
+        <p className={styles.sectionLabel}>2026 Season</p>
         <div className={styles.recordRow}>
           <div className={styles.recBox} style={{ background: "#63992215", borderColor: "#63992240" }}>
             <span className={styles.recNum} style={{ color: "#639922" }}>{wins}</span>
