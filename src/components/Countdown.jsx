@@ -53,7 +53,7 @@ export default function Countdown({ eventName, venueName, target }) {
         <h2 className={styles.eventName}>{eventName}</h2>
         <p className={styles.venue}>{venueName}</p>
       </div>
-      <CircuitOutline raceName={eventName} />
+      
       <div className={styles.timer}>
         {[{ val: pad(d), unit: "days" }, { val: pad(h), unit: "hrs" }, { val: pad(m), unit: "min" }, { val: pad(s), unit: "sec" }].map(({ val, unit }, i) => (
           <div key={unit} className={styles.unit}>
