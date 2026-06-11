@@ -24,17 +24,17 @@ export default function MmaView() {
   return (
     <div>
       <Countdown
-        eventName="UFC Fight Night: Sterling vs Zalal"
-        venueName="Apr 26, 2026"
-        target="2026-04-26T00:00:00Z"
+        eventName="UFC Freedom 250: Topuria vs Gaethje"
+        venueName="Jun 14, 2026"
+        target="2026-06-14T20:00:00-04:00"
       />
 
       {/* KPI strip */}
       <div className={styles.kpiRow}>
         {[
-          { label: "Last Event",        val: "Burns vs Malott",  sub: "Apr 19, 2026" },
-          { label: "Main Event Result", val: "KO — R3",          sub: "Malott def. Burns · 2:08" },
-          { label: "Title Fight",       val: "Ulberg",           sub: "New LHW Champion" },
+          { label: "Last Event",        val: "Topuria vs Oliveira",      sub: "Mar 2026" },
+          { label: "Main Event Result", val: "KO — R2",                  sub: "Topuria def. Oliveira · 3:17" },
+          { label: "Title Fight",       val: "Topuria",                  sub: "Lightweight Champion" },
           { label: "Finish Rate",       val: `${Math.round((finishes / RECENT_FIGHTS.length) * 100)}%`, sub: `${finishes} finishes · ${decisions} decisions` },
         ].map((k) => (
           <div key={k.label} className={styles.kpi}>
@@ -82,8 +82,8 @@ export default function MmaView() {
         <div>
           {/* ── Upcoming Card ── */}
           <div className={styles.panel} style={{ marginBottom: 16 }}>
-            <h3 className={styles.panelTitle}>Next Card — Apr 26</h3>
-            <p className={styles.eventLabel}>UFC Fight Night · Sterling vs Zalal</p>
+            <h3 className={styles.panelTitle}>Next Card — Jun 14</h3>
+            <p className={styles.eventLabel}>UFC Freedom 250 · Topuria vs Gaethje</p>
             {UPCOMING_FIGHTS.map((f) => (
               <div key={f.bout} className={styles.upcomingRow}>
                 <div>
