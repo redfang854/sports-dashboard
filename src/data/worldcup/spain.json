@@ -1,0 +1,105 @@
+{
+  "team": "Spain",
+  "confederation": "UEFA",
+  "group": "H",
+  "formation": "4-1-2-3",
+  "coach": "Luis de la Fuente",
+  "stage": "Semifinal",
+  "starting_xi": [
+    {
+      "name": "Unai Simón",
+      "position": "GK",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Unai_Sim%C3%B3n_2025_%28cropped%29.jpg/330px-Unai_Sim%C3%B3n_2025_%28cropped%29.jpg"
+    },
+    {
+      "name": "Pedro Porro",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/8/85/Pedro_Porro_2021.png"
+    },
+    {
+      "name": "Pau Cubarsí",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Pau_Cubars%C3%AD_%28cropped%29.jpg/330px-Pau_Cubars%C3%AD_%28cropped%29.jpg"
+    },
+    {
+      "name": "Aymeric Laporte",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Aymeric_Laporte_2023_%28cropped%29_2.jpg"
+    },
+    {
+      "name": "Marc Cucurella",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Spain_football_team_in_202_%28Marc_Cucurella%29.jpg/330px-Spain_football_team_in_202_%28Marc_Cucurella%29.jpg"
+    },
+    {
+      "name": "Rodri",
+      "position": "MID",
+      "captain": true,
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/RODRI_-_SWE_vs_ESP_-_UEFA_EURO_2020_QUALIFIERS_-_2019.10.15_%28cropped%29.jpg/330px-RODRI_-_SWE_vs_ESP_-_UEFA_EURO_2020_QUALIFIERS_-_2019.10.15_%28cropped%29.jpg"
+    },
+    {
+      "name": "Pedri",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Pedri.jpg/330px-Pedri.jpg"
+    },
+    {
+      "name": "Fermín López",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Ferm%C3%ADn_L%C3%B3pez_%28cropped%29.jpg/330px-Ferm%C3%ADn_L%C3%B3pez_%28cropped%29.jpg"
+    },
+    {
+      "name": "Lamine Yamal",
+      "position": "FW",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Lamine_Yamal_a_Xina_%282025%29.png/330px-Lamine_Yamal_a_Xina_%282025%29.png"
+    },
+    {
+      "name": "Mikel Oyarzabal",
+      "position": "FW",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/UEFA_EURO_qualifiers_Sweden_vs_Spain_20191015_108_%28cropped%29.jpg/330px-UEFA_EURO_qualifiers_Sweden_vs_Spain_20191015_108_%28cropped%29.jpg"
+    },
+    {
+      "name": "Nico Williams",
+      "position": "FW",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/ATHLETIC-OSASUNA_SEMIFINAL._MAIDER_GOIKOETXEA_%28168%29_%28cropped%29.jpg/330px-ATHLETIC-OSASUNA_SEMIFINAL._MAIDER_GOIKOETXEA_%28168%29_%28cropped%29.jpg"
+    }
+  ],
+  "bench_notable": [
+    {
+      "name": "David Raya",
+      "position": "GK"
+    },
+    {
+      "name": "Joan García",
+      "position": "GK"
+    },
+    {
+      "name": "Dani Olmo",
+      "position": "MID"
+    },
+    {
+      "name": "Gavi",
+      "position": "MID"
+    },
+    {
+      "name": "Fabián Ruiz",
+      "position": "MID"
+    },
+    {
+      "name": "Mikel Merino",
+      "position": "MID"
+    },
+    {
+      "name": "Martín Zubimendi",
+      "position": "MID"
+    },
+    {
+      "name": "Ferran Torres",
+      "position": "FW"
+    }
+  ],
+  "note": "Squad shirt numbers not verified from a single authoritative source — left out rather than guessed. Starting XI is the most recently reported lineup per public sources as of 2026-07-13; confirm against official lineup for the semifinal itself once announced.",
+  "source": {
+    "formation_roster": "https://mylineups.app/world-cup-2026/teams/spain/, https://www.uefa.com (Spain WC26 squad)",
+    "photos": "run fetch-player-photos.mjs against this file"
+  }
+}

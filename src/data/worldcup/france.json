@@ -1,0 +1,184 @@
+{
+  "team": "France",
+  "confederation": "UEFA",
+  "group": "I",
+  "formation": "4-2-3-1",
+  "coach": "Didier Deschamps",
+  "stage": "Semifinal",
+  "starting_xi": [
+    {
+      "name": "Maignan",
+      "number": 16,
+      "position": "GK",
+      "club": "Milan",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Mike_Maignan_France_v_Norway_26_June_26-132_%28cropped%29.jpg/330px-Mike_Maignan_France_v_Norway_26_June_26-132_%28cropped%29.jpg"
+    },
+    {
+      "name": "Koundé",
+      "number": 5,
+      "position": "DEF",
+      "club": "Barcelona",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Jules_Kounde_France_v_Senegal_16_June_2026-449_%28cropped%29.jpg/330px-Jules_Kounde_France_v_Senegal_16_June_2026-449_%28cropped%29.jpg"
+    },
+    {
+      "name": "Saliba",
+      "number": 17,
+      "position": "DEF",
+      "club": "Arsenal",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/William_Saliba_France_v_Norway_26_June_26-044_%28cropped%29.jpg/330px-William_Saliba_France_v_Norway_26_June_26-044_%28cropped%29.jpg"
+    },
+    {
+      "name": "Upamecano",
+      "number": 4,
+      "position": "DEF",
+      "club": "Bayern München",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Dayot_Upamecano_France_v_Senegal_16_June_2026-402_%28cropped%29.jpg/330px-Dayot_Upamecano_France_v_Senegal_16_June_2026-402_%28cropped%29.jpg"
+    },
+    {
+      "name": "Digne",
+      "number": 3,
+      "position": "DEF",
+      "club": "Aston Villa",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Lucas_Digne_France_v_Norway_26_June_26-043.jpg/330px-Lucas_Digne_France_v_Norway_26_June_26-043.jpg"
+    },
+    {
+      "name": "Koné",
+      "number": 6,
+      "position": "MID",
+      "club": "Roma",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Manu_Kone_France_v_Norway_26_June_26-066_%28cropped%29.jpg/330px-Manu_Kone_France_v_Norway_26_June_26-066_%28cropped%29.jpg"
+    },
+    {
+      "name": "Rabiot",
+      "number": 14,
+      "position": "MID",
+      "club": "Milan",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Adrien_Rabiot_France_v_Senegal_16_June_2026-371_%28cropped%29.jpg/330px-Adrien_Rabiot_France_v_Senegal_16_June_2026-371_%28cropped%29.jpg"
+    },
+    {
+      "name": "Dembélé",
+      "number": 7,
+      "position": "MID/ATT",
+      "club": "Paris Saint-Germain",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Ousmane_Dembele_France_v_Senegal_16_June_2026-341_%28cropped%29_2.jpg/330px-Ousmane_Dembele_France_v_Senegal_16_June_2026-341_%28cropped%29_2.jpg"
+    },
+    {
+      "name": "Olise",
+      "number": 11,
+      "position": "MID/ATT",
+      "club": "Bayern München",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Michael_Olise_France_v_Senegal_16_June_2026-307_%28cropped%29.jpg/330px-Michael_Olise_France_v_Senegal_16_June_2026-307_%28cropped%29.jpg"
+    },
+    {
+      "name": "Barcola",
+      "number": 12,
+      "position": "ATT",
+      "club": "Paris Saint-Germain",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Bradley_Barcola_France_v_Norway_26_June_26-033_%28cropped%29.jpg/330px-Bradley_Barcola_France_v_Norway_26_June_26-033_%28cropped%29.jpg"
+    },
+    {
+      "name": "Mbappé",
+      "number": 10,
+      "position": "FW",
+      "club": "Real Madrid",
+      "captain": true,
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Kylian_Mbappe_France_v_Senegal_16_June_2026-391_%28cropped%29.jpg/330px-Kylian_Mbappe_France_v_Senegal_16_June_2026-391_%28cropped%29.jpg"
+    }
+  ],
+  "bench": [
+    {
+      "name": "Risser",
+      "number": 23,
+      "position": "GK",
+      "club": null
+    },
+    {
+      "name": "Samba",
+      "number": 1,
+      "position": "GK",
+      "club": null
+    },
+    {
+      "name": "Gusto",
+      "number": 2,
+      "position": "DEF",
+      "club": null
+    },
+    {
+      "name": "Hernández",
+      "number": 21,
+      "position": "DEF",
+      "club": "PSG"
+    },
+    {
+      "name": "Hernández",
+      "number": 19,
+      "position": "DEF",
+      "club": null
+    },
+    {
+      "name": "Konaté",
+      "number": 15,
+      "position": "DEF",
+      "club": null
+    },
+    {
+      "name": "Lacroix",
+      "number": 26,
+      "position": "DEF",
+      "club": null
+    },
+    {
+      "name": "Cherki",
+      "number": 24,
+      "position": "MID",
+      "club": null
+    },
+    {
+      "name": "Kanté",
+      "number": 13,
+      "position": "MID",
+      "club": null
+    },
+    {
+      "name": "Tchouaméni",
+      "number": 8,
+      "position": "MID",
+      "club": "Real Madrid"
+    },
+    {
+      "name": "Zaïre-Emery",
+      "number": 18,
+      "position": "MID",
+      "club": "PSG"
+    },
+    {
+      "name": "Akliouche",
+      "number": 25,
+      "position": "ATT",
+      "club": null
+    },
+    {
+      "name": "Doué",
+      "number": 20,
+      "position": "ATT",
+      "club": "PSG"
+    },
+    {
+      "name": "Mateta",
+      "number": 22,
+      "position": "ATT",
+      "club": null
+    },
+    {
+      "name": "Thuram",
+      "number": 9,
+      "position": "ATT",
+      "club": null
+    }
+  ],
+  "source": {
+    "formation_roster": "https://mylineups.app/world-cup-2026/teams/france/",
+    "photos": "pending - Wikimedia Commons (CC-licensed), verified per player"
+  }
+}

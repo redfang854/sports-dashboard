@@ -1,0 +1,109 @@
+{
+  "team": "Argentina",
+  "confederation": "CONMEBOL",
+  "group": "?",
+  "formation": "4-4-2",
+  "coach": "Lionel Scaloni",
+  "stage": "Semifinal",
+  "starting_xi": [
+    {
+      "name": "Emiliano Martínez",
+      "position": "GK",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Emiliano_Martinez_Argentina_v_Egypt_7_July_2026-093_%28cropped%29.jpg/330px-Emiliano_Martinez_Argentina_v_Egypt_7_July_2026-093_%28cropped%29.jpg"
+    },
+    {
+      "name": "Nahuel Molina",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Nahuel_Molina_Argentina_v_Egypt_7_July_2026-067.jpg/330px-Nahuel_Molina_Argentina_v_Egypt_7_July_2026-067.jpg"
+    },
+    {
+      "name": "Cristian Romero",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Cristian_Gabriel_Romero_%28cropped_2%29.png/330px-Cristian_Gabriel_Romero_%28cropped_2%29.png"
+    },
+    {
+      "name": "Lisandro Martínez",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Lisandro_Martinez_Argentina_v_Egypt_7_July_2026-343_%28cropped%29.jpg/330px-Lisandro_Martinez_Argentina_v_Egypt_7_July_2026-343_%28cropped%29.jpg"
+    },
+    {
+      "name": "Nicolás Tagliafico",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Nicolas_Tagliafico_Argentina_v_Egypt_7_July_2026-126_%28cropped%29.jpg/330px-Nicolas_Tagliafico_Argentina_v_Egypt_7_July_2026-126_%28cropped%29.jpg"
+    },
+    {
+      "name": "Rodrigo De Paul",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Rodrigo_De_Paul_NYCFC_Miami_24_Sep_2025-018_%28cropped%29.jpg/330px-Rodrigo_De_Paul_NYCFC_Miami_24_Sep_2025-018_%28cropped%29.jpg"
+    },
+    {
+      "name": "Enzo Fernández",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Enzo_Fernandez_Argentina_v_Egypt_7_July_2026-127.jpg/330px-Enzo_Fernandez_Argentina_v_Egypt_7_July_2026-127.jpg"
+    },
+    {
+      "name": "Alexis Mac Allister",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Alexis_Mac_Allister_Argentina_v_Egypt_7_July_2026-182.jpg/330px-Alexis_Mac_Allister_Argentina_v_Egypt_7_July_2026-182.jpg"
+    },
+    {
+      "name": "Leandro Paredes",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Leandro_Paredes_Argentina_v_Egypt_7_July_2026-219_%28cropped%29.jpg/330px-Leandro_Paredes_Argentina_v_Egypt_7_July_2026-219_%28cropped%29.jpg"
+    },
+    {
+      "name": "Lionel Messi",
+      "position": "FW",
+      "captain": true,
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg/330px-Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg"
+    },
+    {
+      "name": "Julián Álvarez",
+      "position": "FW",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/0/03/Argentina_national_football_team_-_2_-_2022_%28Juli%C3%A1n_%C3%81lvarez%29.jpg"
+    }
+  ],
+  "bench_notable": [
+    {
+      "name": "Juan Musso",
+      "position": "GK"
+    },
+    {
+      "name": "Gerónimo Rulli",
+      "position": "GK"
+    },
+    {
+      "name": "Gonzalo Montiel",
+      "position": "DEF"
+    },
+    {
+      "name": "Nicolás Otamendi",
+      "position": "DEF"
+    },
+    {
+      "name": "Thiago Almada",
+      "position": "MID"
+    },
+    {
+      "name": "Giovani Lo Celso",
+      "position": "MID"
+    },
+    {
+      "name": "Nico Paz",
+      "position": "MID"
+    },
+    {
+      "name": "Lautaro Martínez",
+      "position": "FW"
+    },
+    {
+      "name": "Nicolás González",
+      "position": "FW"
+    }
+  ],
+  "note": "Starting XI is the officially confirmed lineup from the 12 July 2026 quarterfinal vs Switzerland — the most recent and reliable source available. Shirt numbers not verified from a single authoritative source, left out rather than guessed.",
+  "source": {
+    "formation_roster": "https://khelnow.com (confirmed QF lineup), https://www.prizepicks.com/playbook-article",
+    "photos": "run fetch-player-photos.mjs against this file"
+  }
+}

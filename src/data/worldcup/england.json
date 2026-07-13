@@ -1,0 +1,109 @@
+{
+  "team": "England",
+  "confederation": "UEFA",
+  "group": "K",
+  "formation": "4-2-3-1",
+  "coach": "Thomas Tuchel",
+  "stage": "Semifinal",
+  "starting_xi": [
+    {
+      "name": "Jordan Pickford",
+      "position": "GK",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Jordan_Pickford_England_v_Ghana_23_June_2026-316_%28cropped%29.jpg/330px-Jordan_Pickford_England_v_Ghana_23_June_2026-316_%28cropped%29.jpg"
+    },
+    {
+      "name": "Djed Spence",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Djed_Spence_England_v_Ghana_23_June_2026-022.jpg/330px-Djed_Spence_England_v_Ghana_23_June_2026-022.jpg"
+    },
+    {
+      "name": "Ezri Konsa",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Team_England_England_v_Ghana_at_2026_Fifa_World_Cup_by_YantsImages_03_%28Ezri_Konsa%29.jpg/330px-Team_England_England_v_Ghana_at_2026_Fifa_World_Cup_by_YantsImages_03_%28Ezri_Konsa%29.jpg"
+    },
+    {
+      "name": "Marc Guéhi",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Marc_Gu%C3%A9hi_at_2026_FIFA_World_Cup_by_YantsImages_%28cropped%29.jpg/330px-Marc_Gu%C3%A9hi_at_2026_FIFA_World_Cup_by_YantsImages_%28cropped%29.jpg"
+    },
+    {
+      "name": "Nico O'Reilly",
+      "position": "DEF",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Nico_O%27Reilly_England_v_Ghana_23_June_2026-043_%28cropped%29.jpg/330px-Nico_O%27Reilly_England_v_Ghana_23_June_2026-043_%28cropped%29.jpg"
+    },
+    {
+      "name": "Declan Rice",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Declan_Rice_England_v_Ghana_23_June_2026-150.jpg/330px-Declan_Rice_England_v_Ghana_23_June_2026-150.jpg"
+    },
+    {
+      "name": "Elliot Anderson",
+      "position": "MID",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Elliot_Anderson_England_v_Ghana_23_June_2026-059_%28cropped%29.jpg/330px-Elliot_Anderson_England_v_Ghana_23_June_2026-059_%28cropped%29.jpg"
+    },
+    {
+      "name": "Bukayo Saka",
+      "position": "MID/FW",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Bukayo_Saka_England_v_Ghana_23_June_2026-057_%28cropped%29.jpg/330px-Bukayo_Saka_England_v_Ghana_23_June_2026-057_%28cropped%29.jpg"
+    },
+    {
+      "name": "Jude Bellingham",
+      "position": "MID/FW",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Jude_Bellingham_England_v_Ghana_23_June_2026-061_%28cropped%29.jpg/330px-Jude_Bellingham_England_v_Ghana_23_June_2026-061_%28cropped%29.jpg"
+    },
+    {
+      "name": "Anthony Gordon",
+      "position": "FW",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Anthony_Gordon_England_v_Ghana_23_June_2026-017_%28cropped%29.jpg/330px-Anthony_Gordon_England_v_Ghana_23_June_2026-017_%28cropped%29.jpg"
+    },
+    {
+      "name": "Harry Kane",
+      "position": "FW",
+      "captain": true,
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Harry_Kane_England_v_Ghana_23_June_2026-219_%28cropped%29.jpg/330px-Harry_Kane_England_v_Ghana_23_June_2026-219_%28cropped%29.jpg"
+    }
+  ],
+  "bench_notable": [
+    {
+      "name": "Dean Henderson",
+      "position": "GK"
+    },
+    {
+      "name": "James Trafford",
+      "position": "GK"
+    },
+    {
+      "name": "John Stones",
+      "position": "DEF"
+    },
+    {
+      "name": "Reece James",
+      "position": "DEF"
+    },
+    {
+      "name": "Kobbie Mainoo",
+      "position": "MID"
+    },
+    {
+      "name": "Eberechi Eze",
+      "position": "MID"
+    },
+    {
+      "name": "Morgan Rogers",
+      "position": "FW"
+    },
+    {
+      "name": "Ollie Watkins",
+      "position": "FW"
+    },
+    {
+      "name": "Marcus Rashford",
+      "position": "FW"
+    }
+  ],
+  "note": "Starting XI reflects most recent reported lineup (round of 16 vs Mexico) per public sources as of 2026-07-13; lineup rotates by match — confirm against the actual semifinal XI once announced. Shirt numbers not verified from a single authoritative source, left out rather than guessed.",
+  "source": {
+    "formation_roster": "https://www.espn.com (England line-ups coverage), https://www.englandfootball.com (squad announcement)",
+    "photos": "run fetch-player-photos.mjs against this file"
+  }
+}
