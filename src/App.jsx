@@ -7,19 +7,21 @@ import BoxingView   from "./views/BoxingView";
 import RugbyView    from "./views/RugbyView";
 import WrcView      from "./views/WrcView";
 import TeamsView    from "./views/TeamsView";
+import WorldCupSemifinals from "./views/WorldCupSemifinals";
 import LoadingScreen from "./components/LoadingScreen";
 import AuthModal    from "./components/AuthModal";
 import ChatBox      from "./components/ChatBox";
 import styles from "./App.module.css";
 
 const TABS = [
-  { id: "football", label: "⚽ Football" },
-  { id: "f1",       label: "🏎️ Formula 1" },
-  { id: "mma",      label: "🥋 MMA" },
-  { id: "boxing",   label: "🥊 Boxing" },
-  { id: "rugby",    label: "🏉 Rugby" },
-  { id: "wrc",      label: "🚗 WRC" },
-  { id: "teams",    label: "👥 Teams" },
+  { id: "football", label: "Football" },
+  { id: "f1",       label: "Formula 1" },
+  { id: "mma",      label: "MMA" },
+  { id: "boxing",   label: "Boxing" },
+  { id: "rugby",    label: "Rugby" },
+  { id: "wrc",      label: "WRC" },
+  { id: "teams",    label: "Teams" },
+  { id: "worldcup", label: "World Cup" },
 ];
 
 export default function App() {
@@ -96,6 +98,7 @@ export default function App() {
           {activeTab === "rugby"    && <RugbyView />}
           {activeTab === "wrc"      && <WrcView />}
           {activeTab === "teams"    && <TeamsView />}
+          {activeTab === "worldcup" && <WorldCupSemifinals />}
         </main>
 
         <footer className={styles.footer}>
