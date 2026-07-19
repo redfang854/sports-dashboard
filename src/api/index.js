@@ -11,7 +11,7 @@ async function get(url) {
   return res.json();
 }
 
-// ─── MMA ──────────────────────────────────────────────────────────────────────
+// ─── MMA (legacy TheSportsDB — kept for reference, no longer used by MmaView) ──
 
 // TheSportsDB league IDs for MMA orgs
 const UFC_LEAGUE_ID = "4443";
@@ -45,6 +45,131 @@ export async function fetchUFCEvents() {
 export async function fetchEventDetails(eventId) {
   const data = await get(`${SPORTSDB}/lookupevent.php?id=${eventId}`);
   return data.events?.[0] || null;
+}
+
+// ─── MMA (Cito API — live, used by MmaView) ────────────────────────────────────
+
+const CITO_BASE = "/api/citoapi";
+
+async function getCito(endpoint, params = {}) {
+  const query = new URLSearchParams({ endpoint, ...params });
+  const res = await fetch(`${CITO_BASE}?${query}`);
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return data.data ?? data;
+}
+
+// Turn a Cito bout method string ("Decision - Unanimous", "KO/TKO", "Submission")
+// into our simplified UI categories.
+function classifyMethod(method) {
+  const m = (method || "").toLowerCase();
+  if (m.includes("decision")) return { label: "Dec", methodType: "decision" };
+  if (m.includes("submission")) return { label: "Sub", methodType: "finish" };
+  if (m.includes("ko") || m.includes("tko")) return { label: "KO", methodType: "finish" };
+  return { label: method || "—", methodType: "finish" };
+}
+
+function mapBoutToFight(b, eventTitle) {
+  const winner = b.fighters?.find((f) => f.outcome === "win")
+    || b.fighters?.find((f) => f.fighterSlug === b.winnerFighterSlug);
+  const loser = b.fighters?.find((f) => f.outcome === "loss");
+  const { label, methodType } = classifyMethod(b.method);
+
+  return {
+    fighterId: b.id,
+    event: eventTitle,
+    winner: winner?.fighterName || "—",
+    loser: loser?.fighterName || "—",
+    method: label,
+    methodType,
+    round: b.resultRound ? `R${b.resultRound}` : "—",
+    time: b.resultTime || "—",
+    title: !!b.titleBout,
+    // Raw fighter records kept for the fighter-profile modal
+    winnerProfile: winner ? {
+      id: winner.fighterSlug,
+      name: winner.fighterName,
+      nickname: winner.nickname,
+      record: winner.recordText,
+      country: winner.country,
+      division: winner.division,
+      image: winner.imageUrl || winner.headshotUrl,
+    } : null,
+    loserProfile: loser ? {
+      id: loser.fighterSlug,
+      name: loser.fighterName,
+      nickname: loser.nickname,
+      record: loser.recordText,
+      country: loser.country,
+      division: loser.division,
+      image: loser.imageUrl || loser.headshotUrl,
+    } : null,
+  };
+}
+
+/**
+ * Fetch results grouped by event for the most recent COMPLETED UFC cards.
+ * Cito's own "recent" list mixes in future-dated events still marked
+ * "completed" (a data quality quirk on their end), so we filter to
+ * status === "completed" AND startsAt actually in the past, then take
+ * the most recent `maxEvents` by date.
+ * Returns: [{ event, date, fights: [...] }]
+ */
+export async function fetchUFCRecentResults(maxEvents = 3) {
+  const events = await getCito("ufc/events/recent");
+  const now = Date.now();
+
+  const completedPast = (events || [])
+    .filter((e) => e.status === "completed" && new Date(e.startsAt).getTime() <= now)
+    .sort((a, b) => new Date(b.startsAt) - new Date(a.startsAt))
+    .slice(0, maxEvents);
+
+  const grouped = await Promise.all(
+    completedPast.map(async (ev) => {
+      const bouts = await getCito(`ufc/events/${ev.slug}/bouts`);
+      const fights = (bouts || [])
+        .filter((b) => b.status === "completed" && !b.isCancelled)
+        .sort((a, c) => (a.boutOrder ?? 0) - (c.boutOrder ?? 0))
+        .map((b) => mapBoutToFight(b, ev.title));
+      return { event: ev.title, date: ev.startsAt, fights };
+    })
+  );
+
+  return grouped.filter((g) => g.fights.length > 0);
+}
+
+/**
+ * Fetch the next upcoming UFC card's full fight lineup.
+ * Returns: { name, date, fights: [{ bout, division, card, date }] } or null
+ */
+export async function fetchUFCUpcomingCard(maxBouts = 10) {
+  const events = await getCito("ufc/events/upcoming");
+  const now = Date.now();
+
+  const upcoming = (events || [])
+    .filter((e) => new Date(e.startsAt).getTime() > now)
+    .sort((a, b) => new Date(a.startsAt) - new Date(b.startsAt));
+
+  const next = upcoming[0];
+  if (!next) return null;
+
+  const bouts = await getCito(`ufc/events/${next.slug}/bouts`);
+  const fights = (bouts || [])
+    .sort((a, b) => (a.boutOrder ?? 0) - (b.boutOrder ?? 0))
+    .slice(0, maxBouts)
+    .map((b) => {
+      const f1 = b.fighters?.[0];
+      const f2 = b.fighters?.[1];
+      return {
+        bout:     `${f1?.fighterName || "TBA"} vs ${f2?.fighterName || "TBA"}`,
+        division: b.weightClass || "—",
+        card:     `${b.cardSection || "Card"}${b.titleBout ? " — Title" : ""}`,
+        date:     next.startsAt,
+      };
+    });
+
+  return { name: next.title, date: next.startsAt, fights };
 }
 
 // ─── FORMULA 1 ────────────────────────────────────────────────────────────────
