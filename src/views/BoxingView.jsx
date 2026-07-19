@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { BOXING_CHAMPIONS, RECENT_BOXING, UPCOMING_BOXING } from "../data/boxing";
 import styles from "./BoxingView.module.css";
+import Hero from "../components/Hero";
+import SeasonRecap from "../components/SeasonRecap";
 
 const BELT_COLORS = { WBC: "#007A33", WBA: "#CC0000", IBF: "#003580", WBO: "#6A0DAD" };
 
@@ -55,6 +57,8 @@ export default function BoxingView() {
 
   return (
     <div>
+      <Hero pageKey="boxing" />
+      <SeasonRecap pageKey="boxing" />
       <div className={styles.kpiRow}>
         {[
           { label: "Undisputed Champions", val: "3", sub: "HW · S.WW · S.MW" },

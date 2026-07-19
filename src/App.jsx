@@ -6,12 +6,12 @@ import FootballView from "./views/FootballView";
 import BoxingView   from "./views/BoxingView";
 import RugbyView    from "./views/RugbyView";
 import WrcView      from "./views/WrcView";
-import TeamsView    from "./views/TeamsView";
-import WorldCupSemifinals from "./views/WorldCupSemifinals";
 import LoadingScreen from "./components/LoadingScreen";
 import AuthModal    from "./components/AuthModal";
+import ResetPasswordModal from "./components/ResetPasswordModal";
 import ChatBox      from "./components/ChatBox";
 import styles from "./App.module.css";
+import AdminView from "./views/AdminView";
 
 const TABS = [
   { id: "football", label: "Football" },
@@ -20,12 +20,12 @@ const TABS = [
   { id: "boxing",   label: "Boxing" },
   { id: "rugby",    label: "Rugby" },
   { id: "wrc",      label: "WRC" },
-  { id: "teams",    label: "Teams" },
-  { id: "worldcup", label: "World Cup" },
 ];
 
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+
 export default function App() {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, passwordRecovery } = useAuth();
   const [activeTab,  setActiveTab]  = useState("football");
   const [loaded,     setLoaded]     = useState(false);
   const [showAuth,   setShowAuth]   = useState(false);
@@ -86,6 +86,16 @@ export default function App() {
                   {tab.label}
                 </button>
               ))}
+              {user?.email === ADMIN_EMAIL && (
+                <button
+                  role="tab"
+                  aria-selected={activeTab === "admin"}
+                  className={`${styles.tab} ${activeTab === "admin" ? styles.tabActive : ""}`}
+                  onClick={() => setActiveTab("admin")}
+                >
+                  Admin
+                </button>
+              )}
             </nav>
           </div>
         </header>
@@ -97,8 +107,7 @@ export default function App() {
           {activeTab === "boxing"   && <BoxingView />}
           {activeTab === "rugby"    && <RugbyView />}
           {activeTab === "wrc"      && <WrcView />}
-          {activeTab === "teams"    && <TeamsView />}
-          {activeTab === "worldcup" && <WorldCupSemifinals />}
+          {activeTab === "admin"    && user?.email === ADMIN_EMAIL && <AdminView />}
         </main>
 
         <footer className={styles.footer}>
@@ -109,6 +118,9 @@ export default function App() {
 
       {/* Auth modal */}
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+
+      {/* Password recovery — shown when the user arrives via a reset-password email link */}
+      {passwordRecovery && <ResetPasswordModal />}
     </>
   );
 }

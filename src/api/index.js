@@ -107,6 +107,33 @@ export async function fetchF1RecentRaces() {
 }
 
 /**
+ * Fetch the FULL driver-by-driver results for the most recently completed race.
+ * Returns { round, name, circuit, date, results: [...] } or null if none yet.
+ */
+export async function fetchF1LatestRaceResults() {
+  const data = await get(`${JOLPICA}/current/last/results.json`);
+  const race = data?.MRData?.RaceTable?.Races?.[0];
+  if (!race) return null;
+
+  return {
+    round:   parseInt(race.round),
+    name:    race.raceName,
+    circuit: race.Circuit.circuitName,
+    date:    race.date,
+    results: (race.Results || []).map((r) => ({
+      pos:      parseInt(r.position),
+      driverId: r.Driver.driverId,
+      name:     `${r.Driver.givenName} ${r.Driver.familyName}`,
+      team:     r.Constructor.name,
+      points:   parseFloat(r.points),
+      status:   r.status,
+      time:     r.Time?.time || null,
+      laps:     parseInt(r.laps),
+    })),
+  };
+}
+
+/**
  * Fetch the upcoming F1 race schedule.
  */
 export async function fetchF1Schedule() {

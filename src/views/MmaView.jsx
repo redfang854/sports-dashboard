@@ -3,6 +3,8 @@ import { RECENT_FIGHTS, UPCOMING_FIGHTS, FIGHTERS } from "../data";
 import Countdown from "../components/Countdown";
 import { FighterModal } from "../components/Modal";
 import styles from "./MmaView.module.css";
+import Hero from "../components/Hero";
+import SeasonRecap from "../components/SeasonRecap";
 
 function methodStyle(type) {
   if (type === "finish")
@@ -23,6 +25,8 @@ export default function MmaView() {
 
   return (
     <div>
+      <Hero pageKey="mma" />
+      <SeasonRecap pageKey="mma" />
       <Countdown
         eventName="UFC Freedom 250: Topuria vs Gaethje"
         venueName="Jun 14, 2026"

@@ -125,3 +125,20 @@ export async function fetchH2HBetween(teamId1, teamId2) {
     competition: m.competition.name,
   }));
 }
+
+export async function fetchFixtures(leagueCode) {
+  const comp = COMPETITIONS[leagueCode];
+  if (!comp) throw new Error("Unknown league");
+  const data = await getFD(`competitions/${comp.id}/matches`, {
+    status: "SCHEDULED",
+  });
+  return (data.matches || []).slice(0, 15).map((m) => ({
+    id: m.id,
+    date: m.utcDate,
+    matchday: m.matchday,
+    homeTeam: m.homeTeam.name,
+    homeCrest: m.homeTeam.crest,
+    awayTeam: m.awayTeam.name,
+    awayCrest: m.awayTeam.crest,
+  }));
+}

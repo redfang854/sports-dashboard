@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { fetchF1DriverStandings, fetchF1ConstructorStandings, fetchF1RecentRaces, fetchF1Schedule } from "../api";
+import { fetchF1DriverStandings, fetchF1ConstructorStandings, fetchF1RecentRaces, fetchF1Schedule, fetchF1LatestRaceResults } from "../api";
 import Countdown from "../components/Countdown";
 import { DriverModal } from "../components/Modal";
 import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates";
@@ -8,6 +8,8 @@ import Avatar from "../components/Avatar";
 import { F1_DRIVER_IMAGES, F1_TEAM_LOGOS } from "../data/images";
 import { F1_DRIVERS } from "../data";
 import styles from "./F1View.module.css";
+import Hero from "../components/Hero";
+import SeasonRecap from "../components/SeasonRecap";
 
 const TEAM_COLORS = {
   Mercedes: "#00D2BE", McLaren: "#FF8700", Ferrari: "#DC0000",
@@ -34,13 +36,22 @@ function resolveDriverKey(apiName) {
   return Object.keys(map).find((k) => last.includes(k)) || null;
 }
 
+// Format a driver's latest-race finish for display
+function formatResult(r) {
+  if (r.status === "Finished") return r.time || `+${r.laps} laps`;
+  if (r.status?.includes("Lap")) return r.status; // e.g. "+1 Lap"
+  return r.status || "DNF";
+}
+
 export default function F1View() {
   const [selectedDriver, setSelectedDriver] = useState(null);
+  const latestRef = useRef(null);
 
   const drivers      = useFetch(fetchF1DriverStandings);
   const constructors = useFetch(fetchF1ConstructorStandings);
   const races        = useFetch(fetchF1RecentRaces);
   const schedule     = useFetch(fetchF1Schedule);
+  const latestRace   = useFetch(fetchF1LatestRaceResults);
 
   const nextRace  = schedule.data?.[0];
   const topPts    = drivers.data?.[0]?.points ?? 1;
@@ -64,6 +75,8 @@ export default function F1View() {
 
   return (
     <div>
+      <Hero pageKey="f1" />
+      <SeasonRecap pageKey="f1" />
       {schedule.loading
         ? <div className={styles.cdPlaceholder}>Loading race schedule...</div>
         : nextRace && (
@@ -98,6 +111,14 @@ export default function F1View() {
           <p className={styles.kpiSub}>{schedule.loading ? "loading..." : nextRace?.date}</p>
         </div>
       </div>
+
+      <button
+        type="button"
+        className={styles.jumpButton}
+        onClick={() => latestRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+      >
+        Latest Race Results ↓
+      </button>
 
       <div className={styles.grid}>
 
@@ -206,6 +227,41 @@ export default function F1View() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* ── LATEST RACE RESULTS (full grid, every driver) ── */}
+      <div className={styles.panel} style={{ marginTop: 16 }} ref={latestRef}>
+        <h3 className={styles.panelTitle}>
+          Latest Race Results <LiveBadge />
+        </h3>
+        <p className={styles.eventLabel}>
+          {latestRace.loading
+            ? "Loading..."
+            : latestRace.data
+              ? `${latestRace.data.name} · ${latestRace.data.circuit} · ${latestRace.data.date}`
+              : "No completed race yet this season"}
+        </p>
+
+        {latestRace.loading && <LoadingState message="Fetching latest race results..." />}
+        {latestRace.error   && <ErrorState message={latestRace.error} onRetry={latestRace.refetch} />}
+
+        {latestRace.data?.results.map((r) => {
+          const color = TEAM_COLORS[r.team] || "#888";
+          return (
+            <div key={r.driverId} className={styles.resultRow}>
+              <span className={styles.pos} style={{ color: posColor(r.pos) }}>{r.pos}</span>
+              <div className={styles.teamDot} style={{ background: color, marginRight: 2 }} />
+              <div className={styles.driverInfo}>
+                <p className={styles.driverName}>{r.name}</p>
+                <p className={styles.driverTeam}>{r.team}</p>
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <p className={styles.raceWinner}>{formatResult(r)}</p>
+                <p className={styles.raceTeam}>{r.points} pts</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {selectedDriver && (

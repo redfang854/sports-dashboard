@@ -1,5 +1,7 @@
 import { WRC_DRIVER_STANDINGS_2026, WRC_MANUFACTURER_STANDINGS_2026, WRC_CALENDAR_2026 } from "../data/wrc";
 import styles from "./WrcView.module.css";
+import Hero from "../components/Hero";
+import SeasonRecap from "../components/SeasonRecap";
 
 const posColor = (p) => p === 1 ? "#BA7517" : p === 2 ? "#999" : p === 3 ? "#7F77DD" : "#444";
 
@@ -12,6 +14,8 @@ export default function WrcView() {
 
   return (
     <div>
+      <Hero pageKey="wrc" />
+      <SeasonRecap pageKey="wrc" />
       <div className={styles.kpiRow}>
         {[
           { label: "Championship Leader", val: leader.name.split(" ").pop(), sub: `${leader.team} · ${leader.pts} pts` },

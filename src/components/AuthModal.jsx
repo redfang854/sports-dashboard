@@ -3,8 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import styles from "./AuthModal.module.css";
 
 export default function AuthModal({ onClose }) {
-  const { signUpWithEmail, signInWithEmail, signInWithGoogle } = useAuth();
-  const [mode,     setMode]     = useState("signin"); // signin | signup
+  const { signUpWithEmail, signInWithEmail, signInWithGoogle, resetPassword } = useAuth();
+  const [mode,     setMode]     = useState("signin"); // signin | signup | forgot
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -21,6 +21,9 @@ export default function AuthModal({ onClose }) {
         await signUpWithEmail(email, password, username);
         setMode("signin");
         setSuccess("Account created! You can now sign in.");
+      } else if (mode === "forgot") {
+        await resetPassword(email);
+        setSuccess("Password reset email sent. Check your inbox for a link.");
       } else {
         await signInWithEmail(email, password);
         onClose();
@@ -52,16 +55,41 @@ export default function AuthModal({ onClose }) {
         </div>
 
         <h2 className={styles.title}>
-          {mode === "signin" ? "Sign in" : "Create account"}
+          {mode === "signin" ? "Sign in" : mode === "forgot" ? "Reset password" : "Create account"}
         </h2>
         <p className={styles.sub}>
           {mode === "signin"
             ? "Join the APEX community"
+            : mode === "forgot"
+            ? "Enter your email to receive a reset link"
             : "Start tracking every sport"}
         </p>
 
         {success ? (
           <div className={styles.successBox}>{success}</div>
+        ) : mode === "forgot" ? (
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.field}>
+              <label className={styles.label}>Email</label>
+              <input
+                className={styles.input}
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            {error && <p className={styles.error}>{error}</p>}
+            <button className={styles.submitBtn} type="submit" disabled={loading}>
+              {loading ? "Sending..." : "Send reset link"}
+            </button>
+            <p className={styles.switchText}>
+              <button className={styles.switchBtn} onClick={() => { setMode("signin"); setError(""); }}>
+                Back to sign in
+              </button>
+            </p>
+          </form>
         ) : (
           <>
             <button className={styles.googleBtn} onClick={handleGoogle}>
@@ -129,6 +157,13 @@ export default function AuthModal({ onClose }) {
                 {mode === "signin" ? "Sign up" : "Sign in"}
               </button>
             </p>
+            {mode === "signin" && (
+              <p className={styles.switchText}>
+                <button className={styles.switchBtn} onClick={() => { setMode("forgot"); setError(""); }}>
+                  Forgot password?
+                </button>
+              </p>
+            )}
           </>
         )}
       </div>
