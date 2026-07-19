@@ -1,0 +1,62 @@
+.hero {
+  position: relative;
+  min-height: 280px;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  background-color: #111;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.heroSkeleton {
+  min-height: 280px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 24px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 100%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: 24px 32px;
+  color: #fff;
+}
+
+.heroContent h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.heroSubtitle {
+  margin: 0 0 16px;
+  font-size: 16px;
+  opacity: 0.85;
+  max-width: 600px;
+}
+
+.heroCta {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #fff;
+  color: #111;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+}

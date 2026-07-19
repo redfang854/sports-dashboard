@@ -1,0 +1,44 @@
+.admin {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: #999;
+}
+
+.input, .textarea {
+  width: 100%;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.saveBtn {
+  margin-top: 14px;
+  padding: 10px 18px;
+  background: #fff;
+  color: #111;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.status {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #999;
+}

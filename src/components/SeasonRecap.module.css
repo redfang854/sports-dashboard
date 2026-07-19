@@ -1,0 +1,23 @@
+.recapBlock {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.recapLabel {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.recapBlock p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
