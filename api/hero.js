@@ -1,18 +1,36 @@
 import { neon } from "@neondatabase/serverless";
 import { verifyAdmin } from "./_supabaseAdmin.js";
+import { checkRateLimit } from "./_rateLimit.js";
 
-const sql = neon(process.env.DATABASE_URL);
+const sql = neon(process.env.POSTGRES_URL_NON_POOLING);
+
+async function withRetry(fn, attempts = 5) {
+  let lastErr;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      console.error(`withRetry attempt ${i + 1}/${attempts} failed:`, err.message);
+      await new Promise(r => setTimeout(r, 500 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
 
 export default async function handler(req, res) {
+  const allowed = await checkRateLimit(req, res, "hero", { requests: 60, window: "60 s" });
+  if (!allowed) return;
+
   if (req.method === "GET") {
     const { page } = req.query;
     if (!page) return res.status(400).json({ error: "page param required" });
     try {
-      const rows = await sql`
+      const rows = await withRetry(() => sql`
         SELECT title, subtitle, image_url, cta_label, cta_link
         FROM hero_sections
         WHERE page_key = ${page}
-      `;
+      `);
       if (rows.length === 0) return res.status(404).json({ error: "Not found" });
       res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=60");
       return res.status(200).json(rows[0]);
@@ -31,7 +49,7 @@ export default async function handler(req, res) {
     }
 
     try {
-      await sql`
+      await withRetry(() => sql`
         INSERT INTO hero_sections (page_key, title, subtitle, image_url, cta_label, cta_link)
         VALUES (${page_key}, ${title}, ${subtitle || null}, ${image_url || null}, ${cta_label || null}, ${cta_link || null})
         ON CONFLICT (page_key) DO UPDATE SET
@@ -41,7 +59,7 @@ export default async function handler(req, res) {
           cta_label = EXCLUDED.cta_label,
           cta_link = EXCLUDED.cta_link,
           updated_at = NOW()
-      `;
+      `);
       return res.status(200).json({ success: true });
     } catch (err) {
       return res.status(500).json({ error: err.message });

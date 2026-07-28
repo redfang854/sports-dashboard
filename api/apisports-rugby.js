@@ -1,4 +1,9 @@
+import { checkRateLimit } from "./_rateLimit.js";
+
 export default async function handler(req, res) {
+  const allowed = await checkRateLimit(req, res, "apisports-rugby", { requests: 30, window: "60 s" });
+  if (!allowed) return;
+
   const { endpoint, ...rest } = req.query;
 
   if (!endpoint) {

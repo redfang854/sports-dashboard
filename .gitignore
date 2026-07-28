@@ -25,3 +25,6 @@ full_structure.txt
 *.sw?
 .env*.local
 data/
+.env
+.env*
+*.bak*

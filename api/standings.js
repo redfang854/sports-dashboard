@@ -1,4 +1,9 @@
+import { checkRateLimit } from "./_rateLimit.js";
+
 export default async function handler(req, res) {
+  const allowed = await checkRateLimit(req, res, "standings", { requests: 60, window: "60 s" });
+  if (!allowed) return;
+
   const { comp } = req.query;
   if (!comp) return res.status(400).json({ error: "comp param required" });
 

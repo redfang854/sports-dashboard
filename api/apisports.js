@@ -1,9 +1,14 @@
+import { checkRateLimit } from "./_rateLimit.js";
+
 export default async function handler(req, res) {
   const { endpoint, ...rest } = req.query;
 
   if (!endpoint) {
     return res.status(400).json({ error: "endpoint param required" });
   }
+
+  const allowed = await checkRateLimit(req, res, "apisports", { requests: 30, window: "60 s" });
+  if (!allowed) return;
 
   const key = process.env.API_SPORTS_KEY;
   if (!key) {

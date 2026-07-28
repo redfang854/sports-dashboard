@@ -1,4 +1,9 @@
+import { checkRateLimit } from "./_rateLimit.js";
+
 export default async function handler(req, res) {
+  const allowed = await checkRateLimit(req, res, "citoapi", { requests: 30, window: "60 s" });
+  if (!allowed) return;
+
   const { endpoint, ...rest } = req.query;
 
   if (!endpoint) {
@@ -10,7 +15,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "CITO_API_KEY not configured on server" });
   }
 
-  // Build query string from remaining params
   const params = new URLSearchParams();
   Object.entries(rest).forEach(([k, v]) => params.append(k, v));
 
@@ -26,7 +30,6 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Surface Cito-level errors clearly (their error shape: { success: false, error: { code, message } })
     if (data.success === false) {
       const errMsg = data.error?.message || "Cito API error";
       return res.status(400).json({ error: errMsg });

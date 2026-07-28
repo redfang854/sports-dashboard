@@ -1,4 +1,9 @@
+import { checkRateLimit } from "./_rateLimit.js";
+
 export default async function handler(req, res) {
+  const allowed = await checkRateLimit(req, res, "teams", { requests: 60, window: "60 s" });
+  if (!allowed) return;
+
   const { endpoint, ...rest } = req.query;
   if (!endpoint) return res.status(400).json({ error: "endpoint required" });
   const key = process.env.FOOTBALL_API_KEY;

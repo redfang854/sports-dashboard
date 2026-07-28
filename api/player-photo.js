@@ -1,4 +1,9 @@
+import { checkRateLimit } from "./_rateLimit.js";
+
 export default async function handler(req, res) {
+  const allowed = await checkRateLimit(req, res, "player-photo", { requests: 200, window: "60 s" });
+  if (!allowed) return;
+
   const { url } = req.query;
   if (!url || !url.startsWith("https://media.api-sports.io/")) {
     return res.status(400).json({ error: "Invalid URL" });

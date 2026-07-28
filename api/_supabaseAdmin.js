@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // Server-only client using the service_role key — NEVER expose this to the browser.
 const supabaseAdmin = createClient(
-  process.env.VITE_SUPABASE_URL,
+  process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
