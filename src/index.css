@@ -23,3 +23,62 @@ button {
   font-family: inherit;
   cursor: pointer;
 }
+
+/* ============================================
+   APEX Design Tokens
+   Centralized source of truth for the blue/indigo
+   redesign. Added as an append — existing CSS above
+   this point is untouched.
+   ============================================ */
+:root {
+  /* Backgrounds */
+  --bg: #0A0A0A;
+  --surface: #111318;
+  --surface-2: #161A22;
+
+  /* Brand accent (blue/indigo) */
+  --accent: #3B8BD4;
+  --accent-hover: #4D9DE8;
+  --accent-dim: #2A5F94;
+
+  /* Text */
+  --text: #F5F7FA;
+  --text-muted: #A8B3C7;
+
+  /* Borders */
+  --border: #273142;
+
+  /* Semantic status colors */
+  --success: #38C172;
+  --warning: #F6C343;
+  --danger: #E55353;
+
+  /* Podium / ranking colors — deliberately separate from brand accent */
+  --gold: #BA7517;
+  --silver: #999999;
+  --bronze: #B87333;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadow */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Blur (for glass panels — hero/cards only, per design decision) */
+  --blur-sm: 8px;
+  --blur-md: 16px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
