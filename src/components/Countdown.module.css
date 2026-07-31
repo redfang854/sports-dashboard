@@ -123,3 +123,33 @@
     gap: 2px;
   }
 }
+
+/* ── Mobile countdown fix, pass 2 ──
+   First pass still left "sec" clipping a few px past the card edge.
+   Tightened further and added overflow:hidden as a hard safety net. */
+@media (max-width: 480px) {
+  .card {
+    overflow: hidden;
+  }
+
+  .num {
+    font-size: 20px;
+    min-width: 22px;
+  }
+
+  .unitLabel {
+    min-width: 22px;
+    font-size: 8px;
+  }
+
+  .sep {
+    font-size: 15px;
+    padding-bottom: 2px;
+  }
+
+  .timer {
+    gap: 1px;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+}
