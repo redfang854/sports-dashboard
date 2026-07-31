@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { WRC_DRIVER_STANDINGS_2026, WRC_MANUFACTURER_STANDINGS_2026, WRC_CALENDAR_2026 } from "../data/wrc";
 import styles from "./WrcView.module.css";
 import Hero from "../components/Hero";
@@ -6,6 +7,20 @@ import SeasonRecap from "../components/SeasonRecap";
 const posColor = (p) => p === 1 ? "#BA7517" : p === 2 ? "#999" : p === 3 ? "#7F77DD" : "#444";
 
 export default function WrcView() {
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const id = window.location.hash.slice(1);
+    const tryScroll = (attempts = 0) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (attempts < 10) {
+        setTimeout(() => tryScroll(attempts + 1), 100);
+      }
+    };
+    tryScroll();
+  }, []);
+
   const leader  = WRC_DRIVER_STANDINGS_2026[0];
   const topPts  = leader.pts;
   const topMPts = WRC_MANUFACTURER_STANDINGS_2026[0].pts;

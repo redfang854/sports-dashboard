@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { fetchUFCRecentResults, fetchUFCUpcomingCard } from "../api";
 import Countdown from "../components/Countdown";
@@ -20,6 +20,20 @@ function formatEventDate(iso) {
 }
 
 export default function MmaView() {
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const id = window.location.hash.slice(1);
+    const tryScroll = (attempts = 0) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (attempts < 10) {
+        setTimeout(() => tryScroll(attempts + 1), 100);
+      }
+    };
+    tryScroll();
+  }, []);
+
   const [selectedFighter, setSelectedFighter] = useState(null);
 
   const recent   = useFetch(fetchUFCRecentResults);

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { fetchF1DriverStandings, fetchF1ConstructorStandings, fetchF1RecentRaces, fetchF1Schedule, fetchF1LatestRaceResults } from "../api";
 import Countdown from "../components/Countdown";
@@ -44,6 +44,20 @@ function formatResult(r) {
 }
 
 export default function F1View() {
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const id = window.location.hash.slice(1);
+    const tryScroll = (attempts = 0) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (attempts < 10) {
+        setTimeout(() => tryScroll(attempts + 1), 100);
+      }
+    };
+    tryScroll();
+  }, []);
+
   const [selectedDriver, setSelectedDriver] = useState(null);
   const latestRef = useRef(null);
 

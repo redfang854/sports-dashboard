@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import {
   FOOTBALL_COMPETITIONS, EPL_STANDINGS_STATIC, LA_LIGA_STATIC,
@@ -454,6 +454,20 @@ function TeamsPanel({ compId }) {
 }
 
 export default function FootballView() {
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const id = window.location.hash.slice(1);
+    const tryScroll = (attempts = 0) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (attempts < 10) {
+        setTimeout(() => tryScroll(attempts + 1), 100);
+      }
+    };
+    tryScroll();
+  }, []);
+
   const [comp, setComp] = useState("PL");
   const [subView, setSubView] = useState("standings"); // "standings" | "teams" | "fixtures"
   const selected = TOURNAMENTS.find((c) => c.id === comp);
