@@ -20,6 +20,12 @@
   border-radius: 6px;
   color: #fff;
   font-size: 14px;
+  color-scheme: dark;
+}
+
+.input option {
+  background: #1a1a1a;
+  color: #fff;
 }
 
 .textarea {
