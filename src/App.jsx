@@ -26,7 +26,10 @@ const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
 export default function App() {
   const { user, profile, signOut, passwordRecovery } = useAuth();
-  const [activeTab,  setActiveTab]  = useState("football");
+  const [activeTab,  setActiveTab]  = useState(() => {
+    const hash = window.location.hash.replace("#", "");
+    return TABS.some((t) => t.id === hash) ? hash : "football";
+  });
   const [loaded,     setLoaded]     = useState(false);
   const [showAuth,   setShowAuth]   = useState(false);
 
