@@ -1,10 +1,10 @@
 .app { min-height: 100vh; display: flex; flex-direction: column; }
 
 .header {
-  border-bottom: 1px solid #ffffff08;
+  border-bottom: 1px solid var(--border);
   position: sticky; top: 0;
   background: #0d0d0ddd;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--blur-md));
   z-index: 100;
 }
 
@@ -17,7 +17,7 @@
 .brand {
   display: flex; align-items: center; gap: 14px;
   padding: 10px 0 8px;
-  border-bottom: 1px solid #ffffff08;
+  border-bottom: 1px solid var(--border);
 }
 
 /* ── Logo ── */
@@ -32,7 +32,7 @@
   font-family: "Arial Black", Arial, sans-serif;
   font-size: 28px;
   font-weight: 900;
-  color: #E24B4A;
+  color: var(--accent);
   line-height: 1;
   letter-spacing: 0;
 }
@@ -41,7 +41,7 @@
   font-family: "Arial Black", Arial, sans-serif;
   font-size: 28px;
   font-weight: 900;
-  color: #ffffff;
+  color: var(--text);
   line-height: 1;
   letter-spacing: 2px;
 }
@@ -52,13 +52,13 @@
   left: 0;
   width: 40px;
   height: 3px;
-  background: #E24B4A;
+  background: var(--accent);
   border-radius: 2px;
 }
 
 .tagline {
   font-size: 12px;
-  color: #444;
+  color: var(--text-muted);
   letter-spacing: 0.3px;
 }
 
@@ -76,18 +76,18 @@
   padding: 8px 16px;
   background: transparent; border: none;
   font-size: 13px; font-weight: 500;
-  color: #555; cursor: pointer;
-  transition: all 0.15s ease;
+  color: var(--text-muted); cursor: pointer;
+  transition: all var(--transition-fast);
   white-space: nowrap;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 }
 
-.tab:hover { color: #aaa; background: #ffffff08; transform: translateY(-1px); }
+.tab:hover { color: var(--text); background: rgba(255,255,255,0.03); transform: translateY(-1px); }
 
 .tabActive {
-  background: #E24B4A18 !important;
-  color: #E24B4A !important;
-  border: 1px solid #E24B4A30;
+  background: rgba(var(--accent-rgb), 0.094) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.188);
 }
 .tabActive:hover { transform: none; }
 
@@ -99,18 +99,39 @@
 }
 
 .footer {
-  border-top: 1px solid #ffffff08;
+  border-top: 1px solid var(--border);
   padding: 16px 20px; text-align: center;
 }
 
 .footer p { font-size: 11px; color: #2a2a2a; }
 
-.topRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 8px; border-bottom: 1px solid #ffffff08; }
+.topRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 8px; border-bottom: 1px solid var(--border); }
 .authArea { flex-shrink: 0; }
-.signInBtn { padding: 8px 20px; background: #E24B4A; border: none; border-radius: 8px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s ease; }
-.signInBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+.signInBtn { padding: 8px 20px; background: var(--accent); border: none; border-radius: var(--radius-sm); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all var(--transition-fast); }
+.signInBtn:hover { background: var(--accent-hover); transform: translateY(-1px); }
 .userRow { display: flex; align-items: center; gap: 10px; }
-.userAvatar { width: 30px; height: 30px; border-radius: 50%; background: #E24B4A22; border: 1px solid #E24B4A44; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #E24B4A; }
-.userName { font-size: 13px; color: #aaa; }
-.signOutBtn { padding: 6px 14px; background: transparent; border: 1px solid #ffffff18; border-radius: 6px; color: #666; font-size: 12px; cursor: pointer; transition: all 0.15s ease; }
-.signOutBtn:hover { color: #aaa; border-color: #ffffff30; transform: translateY(-1px); }
+.userAvatar { width: 30px; height: 30px; border-radius: 50%; background: rgba(var(--accent-rgb), 0.133); border: 1px solid rgba(var(--accent-rgb), 0.267); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--accent); }
+.userName { font-size: 13px; color: var(--text-muted); }
+.signOutBtn { padding: 6px 14px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); font-size: 12px; cursor: pointer; transition: all var(--transition-fast); }
+.signOutBtn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); transform: translateY(-1px); }
+
+/* ── Mobile header fix ──
+   Header row (logo + Chats + Sign in) was overlapping/cramping on
+   narrow viewports since .topRow never wrapped. Below 480px, let it
+   wrap onto two lines and hide the decorative tagline text, which
+   was the main space hog. */
+@media (max-width: 480px) {
+  .topRow {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .tagline {
+    display: none;
+  }
+
+  .brand {
+    border-bottom: none;
+    padding-bottom: 4px;
+  }
+}
