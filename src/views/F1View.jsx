@@ -123,7 +123,7 @@ export default function F1View() {
       <div className={styles.grid}>
 
         {/* ── DRIVERS ── */}
-        <div className={styles.panel}>
+        <div className={styles.panel} id="standings">
           <h3 className={styles.panelTitle}>Drivers' Championship <LiveBadge /></h3>
           <p className={styles.eventLabel}>Current season · live standings</p>
 

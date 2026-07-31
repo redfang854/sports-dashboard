@@ -33,7 +33,7 @@ export default function WrcView() {
 
       <div className={styles.grid}>
         <div>
-          <div className={styles.panel} style={{ marginBottom: 16 }}>
+          <div className={styles.panel} style={{ marginBottom: 16 }} id="standings">
             <h3 className={styles.panelTitle}>Driver Standings</h3>
             <p className={styles.eventLabel}>2026 WRC season · after Round {done}</p>
             {WRC_DRIVER_STANDINGS_2026.map((d) => (

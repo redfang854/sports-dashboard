@@ -76,7 +76,7 @@ export default function RugbyView() {
       </div>
 
       <div className={styles.grid}>
-        <div className={styles.panel}>
+        <div className={styles.panel} id="standings">
           <div className={styles.compTabs}>
             {COMPS.map((c) => (
               <button

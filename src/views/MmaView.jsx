@@ -70,7 +70,7 @@ export default function MmaView() {
       <div className={styles.grid}>
 
         {/* ── Recent Results ── */}
-        <div className={styles.panel}>
+        <div className={styles.panel} id="results">
           <h3 className={styles.panelTitle}>
             Recent Results <LiveBadge />
             <span className={styles.hint}>click a row for fighter profile</span>

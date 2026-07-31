@@ -75,7 +75,7 @@ export default function BoxingView() {
       </div>
 
       <div className={styles.grid}>
-        <div className={styles.panel}>
+        <div className={styles.panel} id="champions">
           <h3 className={styles.panelTitle}>
             World Champions
             <span className={styles.hint}>click for profile</span>

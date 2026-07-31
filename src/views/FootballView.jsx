@@ -514,7 +514,7 @@ export default function FootballView() {
           <WorldCupSemifinals />
         </>
       ) : (
-        <div className={styles.panel}>
+        <div className={styles.panel} id="standings">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
             <h3 className={styles.panelTitle}>{selected?.flag} {selected?.name}</h3>
             {showTeamsToggle && (
