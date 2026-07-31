@@ -38,6 +38,7 @@ button {
 
   /* Brand accent (blue/indigo) */
   --accent: #3B8BD4;
+  --accent-rgb: 59, 139, 212;
   --accent-hover: #4D9DE8;
   --accent-dim: #2A5F94;
 
@@ -52,6 +53,7 @@ button {
   --success: #38C172;
   --warning: #F6C343;
   --danger: #E55353;
+  --danger-rgb: 229, 83, 83;
 
   /* Podium / ranking colors — deliberately separate from brand accent */
   --gold: #BA7517;

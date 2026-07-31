@@ -5,15 +5,16 @@
   align-items: flex-end;
   background-size: cover;
   background-position: center;
-  background-color: #111;
-  border-radius: 12px;
+  background-color: var(--surface);
+  border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
 }
 
 .heroSkeleton {
   min-height: 280px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -29,13 +30,14 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 100%);
+  backdrop-filter: blur(var(--blur-sm));
 }
 
 .heroContent {
   position: relative;
   z-index: 1;
   padding: 24px 32px;
-  color: #fff;
+  color: var(--text);
 }
 
 .heroContent h1 {
@@ -54,9 +56,14 @@
 .heroCta {
   display: inline-block;
   padding: 10px 20px;
-  background: #fff;
-  color: #111;
-  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.heroCta:hover {
+  background: var(--accent-hover);
 }

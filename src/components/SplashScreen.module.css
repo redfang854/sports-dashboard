@@ -1,7 +1,7 @@
 .splash {
   position: fixed;
   inset: 0;
-  background: #0d0d0d;
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +54,7 @@
   to { stroke-dashoffset: 0; }
 }
 
-/* Red fill fades in after outline */
+/* Accent fill fades in after outline */
 .triangleFill {
   opacity: 0;
   animation: fadeIn 0.3s ease 0.7s forwards;
@@ -109,7 +109,7 @@
 }
 
 .letterA {
-  color: #E24B4A;
+  color: var(--accent);
   animation: letterDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s forwards;
 }
 
@@ -171,7 +171,7 @@
 
 .barFill {
   height: 100%;
-  background: #E24B4A;
+  background: var(--accent);
   border-radius: 100px;
   width: 0%;
   animation: loadBar 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;

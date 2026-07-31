@@ -22,7 +22,7 @@
   letter-spacing: 4px;
 }
 
-.a   { color: #E24B4A; }
+.a   { color: var(--accent); }
 .pex { color: #ffffff; }
 
 .tagline {

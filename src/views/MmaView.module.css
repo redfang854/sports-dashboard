@@ -6,9 +6,9 @@
 }
 
 .kpi {
-  background: #161616;
+  background: var(--surface-2);
   border: 1px solid #ffffff0d;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 14px 16px;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .panel {
-  background: #111;
+  background: var(--surface);
   border: 1px solid #ffffff0d;
   border-radius: 14px;
   padding: 18px 20px;
@@ -100,7 +100,7 @@
   padding: 8px 6px;
   background: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background 0.12s;
   text-align: left;
@@ -157,7 +157,7 @@
 
 .titleBadge {
   font-size: 9px;
-  color: #E24B4A;
+  color: var(--accent);
   letter-spacing: 1px;
   font-weight: 600;
 }
