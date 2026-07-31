@@ -15,14 +15,28 @@ export default function ChatBox() {
 
   useEffect(() => {
     if (!open || !supabaseReady) return;
-    supabase.from("messages").select("*, profiles(username)")
-      .order("created_at", { ascending: true }).limit(60)
-      .then(({ data }) => setMessages(data || []));
+
+    (async () => {
+      const { data: msgs } = await supabase.from("messages").select("*")
+        .order("created_at", { ascending: true }).limit(60);
+
+      if (!msgs || msgs.length === 0) {
+        setMessages([]);
+        return;
+      }
+
+      const userIds = [...new Set(msgs.map((m) => m.user_id))];
+      const { data: profiles } = await supabase.from("public_profiles")
+        .select("id, username").in("id", userIds);
+
+      const profileMap = Object.fromEntries((profiles || []).map((p) => [p.id, p]));
+      setMessages(msgs.map((m) => ({ ...m, profiles: profileMap[m.user_id] })));
+    })();
 
     const channel = supabase.channel("global-chat")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" },
         async (payload) => {
-          const { data: p } = await supabase.from("profiles").select("username").eq("id", payload.new.user_id).single();
+          const { data: p } = await supabase.from("public_profiles").select("username").eq("id", payload.new.user_id).single();
           setMessages((prev) => [...prev, { ...payload.new, profiles: p }]);
         }).subscribe();
     return () => supabase.removeChannel(channel);
