@@ -7,6 +7,7 @@ const STORY_BUCKET = "story-images";
 
 export default function AdminView() {
   const [pageKey, setPageKey] = useState("football");
+  const [pageMenuOpen, setPageMenuOpen] = useState(false);
   const [form, setForm] = useState({ title: "", subtitle: "", image_url: "", cta_label: "", cta_link: "" });
   const [recap, setRecap] = useState("");
   const [story, setStory] = useState({ title: "", body: "", image_url: "" });
@@ -148,9 +149,28 @@ export default function AdminView() {
       <h2>CMS — Hero, Season Recap & Story</h2>
 
       <label className={styles.label}>Page</label>
-      <select className={styles.input} value={pageKey} onChange={(e) => setPageKey(e.target.value)}>
-        {PAGES.map((p) => <option key={p} value={p}>{p}</option>)}
-      </select>
+      <div className={styles.selectWrap}>
+        <button
+          type="button"
+          className={styles.selectButton}
+          onClick={() => setPageMenuOpen((o) => !o)}
+        >
+          {pageKey} <span className={styles.selectCaret}>&#9662;</span>
+        </button>
+        {pageMenuOpen && (
+          <div className={styles.selectMenu}>
+            {PAGES.map((p) => (
+              <div
+                key={p}
+                className={styles.selectOption}
+                onClick={() => { setPageKey(p); setPageMenuOpen(false); }}
+              >
+                {p}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <h3>Hero Section</h3>
       <label className={styles.label}>Title</label>
