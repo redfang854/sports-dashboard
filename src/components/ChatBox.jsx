@@ -76,7 +76,27 @@ export default function ChatBox() {
     setSending(true);
     const text = input.trim();
     setInput("");
-    await supabase.from("messages").insert({ user_id: user.id, content: text });
+
+    const { data: inserted, error } = await supabase
+      .from("messages")
+      .insert({ user_id: user.id, content: text })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Failed to send message:", error.message);
+      setInput(text); // give the text back so it isn't lost
+    } else if (inserted) {
+      // Add immediately - don't depend on the realtime round-trip
+      // (which requires Realtime replication to be enabled on the
+      // messages table) for the sender to see their own message.
+      setMessages((prev) =>
+        prev.some((m) => m.id === inserted.id)
+          ? prev
+          : [...prev, { ...inserted, profiles: { username } }]
+      );
+    }
+
     setSending(false);
   }
 
