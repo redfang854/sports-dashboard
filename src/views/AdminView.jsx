@@ -3,7 +3,6 @@ import { supabase } from "../lib/supabase";
 import styles from "./AdminView.module.css";
 
 const PAGES = ["home", "football", "f1", "mma", "boxing", "rugby", "wrc"];
-const STORY_BUCKET = "story-images";
 
 export default function AdminView() {
   const [pageKey, setPageKey] = useState("football");
@@ -119,28 +118,52 @@ export default function AdminView() {
     }
   }
 
+  function readFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        // reader.result looks like "data:image/jpeg;base64,AAAA..."
+        // strip the prefix, keep just the base64 payload
+        const base64 = reader.result.split(",")[1];
+        resolve(base64);
+      };
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function handleImageUpload(e) {
     const file = e.target.files?.[0];
     if (!file) return;
+
     setUploading(true);
     setStatus("Uploading image...");
     try {
-      const path = `${pageKey}-${Date.now()}-${file.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from(STORY_BUCKET)
-        .upload(path, file, { upsert: true });
-      if (uploadError) throw uploadError;
+      const authHeader = await getAuthHeader();
+      const data_base64 = await readFileAsBase64(file);
 
-      const { data: publicUrlData } = supabase.storage
-        .from(STORY_BUCKET)
-        .getPublicUrl(path);
+      const res = await fetch("/api/upload-story-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader },
+        body: JSON.stringify({
+          page_key: pageKey,
+          filename: file.name,
+          content_type: file.type,
+          data_base64,
+        }),
+      });
 
-      setStory((s) => ({ ...s, image_url: publicUrlData.publicUrl }));
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Upload failed");
+
+      setStory((s) => ({ ...s, image_url: result.url }));
       setStatus("Image uploaded — remember to click Save Story.");
     } catch (err) {
       setStatus(`Upload error: ${err.message}`);
     } finally {
       setUploading(false);
+      // Reset the file input so selecting the same file again still fires onChange
+      e.target.value = "";
     }
   }
 
