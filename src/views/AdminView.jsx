@@ -1,8 +1,36 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
 import styles from "./AdminView.module.css";
 
 const PAGES = ["home", "football", "f1", "mma", "boxing", "rugby", "wrc"];
+
+// Reads the Supabase session's access token directly out of localStorage
+// instead of calling supabase.auth.getSession(), which was hanging
+// indefinitely behind a stuck navigator.locks lock
+// ("lock:sb-<project-ref>-auth-token"). This is a synchronous read -
+// it cannot hang, because it never touches the lock at all.
+function getStoredAccessToken() {
+  const key = Object.keys(localStorage).find(
+    (k) => k.startsWith("sb-") && k.endsWith("-auth-token")
+  );
+  if (!key) throw new Error("Not signed in (no stored session found)");
+
+  let parsed;
+  try {
+    parsed = JSON.parse(localStorage.getItem(key));
+  } catch {
+    throw new Error("Not signed in (stored session unreadable)");
+  }
+
+  const token = parsed?.access_token || parsed?.currentSession?.access_token;
+  if (!token) throw new Error("Not signed in (no access token in stored session)");
+
+  const expiresAt = parsed?.expires_at;
+  if (expiresAt && Date.now() / 1000 > expiresAt) {
+    throw new Error("Session expired — please sign out and back in");
+  }
+
+  return token;
+}
 
 export default function AdminView() {
   const [pageKey, setPageKey] = useState("football");
@@ -58,16 +86,15 @@ export default function AdminView() {
     load();
   }, [pageKey]);
 
-  async function getAuthHeader() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw new Error("Not signed in");
-    return { Authorization: `Bearer ${session.access_token}` };
+  function getAuthHeader() {
+    const token = getStoredAccessToken();
+    return { Authorization: `Bearer ${token}` };
   }
 
   async function saveHero() {
     setStatus("Saving hero...");
     try {
-      const authHeader = await getAuthHeader();
+      const authHeader = getAuthHeader();
       const res = await fetch("/api/hero", {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeader },
@@ -83,7 +110,7 @@ export default function AdminView() {
   async function saveRecap() {
     setStatus("Saving recap...");
     try {
-      const authHeader = await getAuthHeader();
+      const authHeader = getAuthHeader();
       const res = await fetch("/api/page-content", {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeader },
@@ -97,7 +124,7 @@ export default function AdminView() {
   }
 
   async function saveStorySection(sectionKey, content) {
-    const authHeader = await getAuthHeader();
+    const authHeader = getAuthHeader();
     const res = await fetch("/api/page-content", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader },
@@ -121,12 +148,7 @@ export default function AdminView() {
   function readFileAsBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => {
-        // reader.result looks like "data:image/jpeg;base64,AAAA..."
-        // strip the prefix, keep just the base64 payload
-        const base64 = reader.result.split(",")[1];
-        resolve(base64);
-      };
+      reader.onload = () => resolve(reader.result.split(",")[1]);
       reader.onerror = () => reject(new Error("Failed to read file"));
       reader.readAsDataURL(file);
     });
@@ -139,7 +161,7 @@ export default function AdminView() {
     setUploading(true);
     setStatus("Uploading image...");
     try {
-      const authHeader = await getAuthHeader();
+      const authHeader = getAuthHeader();
       const data_base64 = await readFileAsBase64(file);
 
       const res = await fetch("/api/upload-story-image", {
@@ -162,7 +184,6 @@ export default function AdminView() {
       setStatus(`Upload error: ${err.message}`);
     } finally {
       setUploading(false);
-      // Reset the file input so selecting the same file again still fires onChange
       e.target.value = "";
     }
   }
