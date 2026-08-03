@@ -39,6 +39,7 @@ export default function AdminView() {
   const [recap, setRecap] = useState("");
   const [story, setStory] = useState({ title: "", body: "", image_url: "" });
   const [uploading, setUploading] = useState(false);
+  const [uploadingHero, setUploadingHero] = useState(false);
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -188,6 +189,40 @@ export default function AdminView() {
     }
   }
 
+  async function handleHeroImageUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingHero(true);
+    setStatus("Uploading hero image...");
+    try {
+      const authHeader = getAuthHeader();
+      const data_base64 = await readFileAsBase64(file);
+
+      const res = await fetch("/api/upload-hero-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader },
+        body: JSON.stringify({
+          page_key: pageKey,
+          filename: file.name,
+          content_type: file.type,
+          data_base64,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Upload failed");
+
+      setForm((f) => ({ ...f, image_url: result.url }));
+      setStatus("Hero image uploaded — remember to click Save Hero.");
+    } catch (err) {
+      setStatus(`Upload error: ${err.message}`);
+    } finally {
+      setUploadingHero(false);
+      e.target.value = "";
+    }
+  }
+
   return (
     <div className={styles.admin}>
       <h2>CMS — Hero, Season Recap & Story</h2>
@@ -225,6 +260,10 @@ export default function AdminView() {
 
       <label className={styles.label}>Image URL</label>
       <input className={styles.input} value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+      <input type="file" accept="image/*" onChange={handleHeroImageUpload} disabled={uploadingHero} style={{ marginTop: 8 }} />
+      {form.image_url && (
+        <img src={form.image_url} alt="Hero preview" style={{ maxWidth: "100%", maxHeight: 160, marginTop: 10, borderRadius: 8, display: "block" }} />
+      )}
 
       <label className={styles.label}>CTA Label</label>
       <input className={styles.input} value={form.cta_label} onChange={(e) => setForm({ ...form, cta_label: e.target.value })} />
@@ -232,7 +271,7 @@ export default function AdminView() {
       <label className={styles.label}>CTA Link</label>
       <input className={styles.input} value={form.cta_link} onChange={(e) => setForm({ ...form, cta_link: e.target.value })} />
 
-      <button className={styles.saveBtn} onClick={saveHero}>Save Hero</button>
+      <button className={styles.saveBtn} onClick={saveHero} disabled={uploadingHero}>Save Hero</button>
 
       <h3>Season Recap</h3>
       <textarea className={styles.textarea} rows={5} value={recap} onChange={(e) => setRecap(e.target.value)} />
