@@ -31,6 +31,43 @@ const CIRCUITS = {
 
 const DEFAULT = "M28,88 L25,50 L48,22 L90,15 L130,28 L142,65 L128,88 L102,98 L80,90 L65,102 L45,108 Z";
 
+// Race name -> ISO 3166-1 alpha-2 country code, for flag display
+const RACE_COUNTRY = {
+  "Canadian Grand Prix": "CA",
+  "Monaco Grand Prix": "MC",
+  "Bahrain Grand Prix": "BH",
+  "Saudi Arabian Grand Prix": "SA",
+  "Australian Grand Prix": "AU",
+  "Japanese Grand Prix": "JP",
+  "Chinese Grand Prix": "CN",
+  "Spanish Grand Prix": "ES",
+  "Austrian Grand Prix": "AT",
+  "British Grand Prix": "GB",
+  "Hungarian Grand Prix": "HU",
+  "Belgian Grand Prix": "BE",
+  "Dutch Grand Prix": "NL",
+  "Italian Grand Prix": "IT",
+  "Azerbaijan Grand Prix": "AZ",
+  "Singapore Grand Prix": "SG",
+  "United States Grand Prix": "US",
+  "Mexico City Grand Prix": "MX",
+  "São Paulo Grand Prix": "BR",
+  "Las Vegas Grand Prix": "US",
+  "Qatar Grand Prix": "QA",
+  "Abu Dhabi Grand Prix": "AE",
+  "Miami Grand Prix": "US",
+  "Emilia Romagna Grand Prix": "IT",
+  "Madrid Grand Prix": "ES",
+};
+
+// Converts an ISO 3166-1 alpha-2 code (e.g. "JP") into its flag emoji
+// by mapping each letter to a Regional Indicator Symbol codepoint.
+function countryCodeToFlag(code) {
+  if (!code || code.length !== 2) return null;
+  const codePoints = [...code.toUpperCase()].map((c) => 0x1f1e6 + (c.charCodeAt(0) - 65));
+  return String.fromCodePoint(...codePoints);
+}
+
 function CircuitOutline({ raceName }) {
   const d = CIRCUITS[raceName] || DEFAULT;
   return (
@@ -45,12 +82,16 @@ function CircuitOutline({ raceName }) {
 export default function Countdown({ eventName, venueName, target }) {
   const { d, h, m, s } = useCountdown(target);
   const pad = (n) => String(n).padStart(2, "0");
+  const flag = countryCodeToFlag(RACE_COUNTRY[eventName]);
 
   return (
     <div className={styles.card}>
       <div className={styles.left}>
         <p className={styles.label}>Next up</p>
-        <h2 className={styles.eventName}>{eventName}</h2>
+        <h2 className={styles.eventName}>
+          {flag && <span style={{ marginRight: 10, fontSize: "0.85em" }}>{flag}</span>}
+          {eventName}
+        </h2>
         <p className={styles.venue}>{venueName}</p>
       </div>
       
