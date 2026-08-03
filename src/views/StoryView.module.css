@@ -1,5 +1,5 @@
 .page {
-  max-width: 760px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -17,50 +17,28 @@
   100% { background-position: -200% 0; }
 }
 
-.heroBand {
-  position: relative;
-  min-height: 180px;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--surface);
-  display: flex;
-  align-items: flex-end;
+.backLink {
+  display: inline-block;
   margin-bottom: 16px;
-}
-
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
-}
-
-.heroContent {
-  position: relative;
-  z-index: 1;
-  padding: 20px 24px;
-  color: #fff;
-}
-
-.eyebrow {
-  margin: 0 0 4px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--accent);
+  text-decoration: none;
 }
 
-.title {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 28px;
-  font-weight: 400;
-  margin: 0 0 10px;
+.backLink:hover {
+  text-decoration: underline;
 }
 
-.panel {
+.card {
   background: var(--surface);
   border: 1px solid #ffffff0d;
   border-radius: var(--radius-lg);
-  padding: 20px 24px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 28px 32px 20px;
 }
 
 .eventLabel {
@@ -71,50 +49,118 @@
   margin-bottom: 12px;
 }
 
-.featuredImage {
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0 0 12px;
+  color: #fff;
+}
+
+.meta {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.heroImageWrap {
   width: 100%;
-  height: auto;
-  max-height: 340px;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  background: #111;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: var(--radius-sm);
-  border: 1px solid #ffffff0d;
-  margin-bottom: 16px;
   display: block;
 }
 
+.content {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding: 32px 24px 8px;
+}
+
 .bodyText {
-  font-size: 14px;
-  line-height: 1.75;
+  font-size: 15px;
+  line-height: 1.8;
   color: #ccc;
-  margin: 0 0 14px;
+  margin: 0 0 20px;
 }
 
-.backBtn {
-  display: inline-block;
-  padding: 8px 14px;
-  background: #fff;
-  color: #111;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
+.pullQuote {
+  margin: 32px 0;
+  padding: 4px 0 4px 20px;
+  border-left: 3px solid var(--accent);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 26px;
+  line-height: 1.3;
+  color: var(--accent);
+  font-style: normal;
 }
 
-.backBtnFooter {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 8px 14px;
+.relatedSection {
+  padding: 8px 32px 32px;
+}
+
+.divider {
+  height: 1px;
+  background: #ffffff14;
+  margin: 8px 0 24px;
+}
+
+.relatedHeading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin: 0 0 16px;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.relatedItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
   background: var(--surface-2);
-  border: 1px solid #ffffff14;
-  color: #ccc;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  border: 1px solid #ffffff0d;
+  border-radius: var(--radius-sm);
   text-decoration: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
-.backBtnFooter:hover {
+.relatedItem:hover {
+  border-color: var(--accent);
   background: #1e1e1e;
-  border-color: #ffffff2a;
+}
+
+.relatedSport {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.relatedTitle {
+  font-size: 14px;
+  font-weight: 600;
   color: #fff;
+  line-height: 1.3;
 }
