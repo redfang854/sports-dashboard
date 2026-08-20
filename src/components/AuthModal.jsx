@@ -2,6 +2,34 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import styles from "./AuthModal.module.css";
 
+// supabase-js can occasionally deadlock on its internal navigator.locks
+// session lock and never resolve the signIn promise, even though the
+// network request itself succeeded (same root cause as the stuck-lock
+// workaround in AdminView.jsx). This races the call against a timeout so
+// the UI can never hang on "Please wait..." forever.
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise.then((value) => ({ timedOut: false, value })),
+    new Promise((resolve) => setTimeout(() => resolve({ timedOut: true }), ms)),
+  ]);
+}
+
+// If the sign-in promise times out, check whether supabase-js actually
+// managed to persist a session to localStorage in the background despite
+// the stuck lock — if so, the sign-in really did succeed underneath.
+function hasStoredSession() {
+  const key = Object.keys(localStorage).find(
+    (k) => k.startsWith("sb-") && k.endsWith("-auth-token")
+  );
+  if (!key) return false;
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key));
+    return !!(parsed?.access_token || parsed?.currentSession?.access_token);
+  } catch {
+    return false;
+  }
+}
+
 export default function AuthModal({ onClose }) {
   const { signUpWithEmail, signInWithEmail, signInWithGoogle, resetPassword } = useAuth();
   const [mode,     setMode]     = useState("signin"); // signin | signup | forgot
@@ -25,8 +53,24 @@ export default function AuthModal({ onClose }) {
         await resetPassword(email);
         setSuccess("Password reset email sent. Check your inbox for a link.");
       } else {
-        await signInWithEmail(email, password);
-        onClose();
+        const result = await withTimeout(signInWithEmail(email, password), 8000);
+
+        if (!result.timedOut) {
+          onClose();
+          return;
+        }
+
+        // Sign-in call never resolved — check if it actually succeeded
+        // underneath despite the stuck lock.
+        if (hasStoredSession()) {
+          // Session did get persisted; a full reload lets AuthContext pick
+          // it up cleanly via getSession() on mount, sidestepping whatever
+          // is stuck in this tab's current state.
+          window.location.reload();
+          return;
+        }
+
+        setError("Sign-in is taking longer than expected. Please try again — if this keeps happening, refresh the page first.");
       }
     } catch (err) {
       setError(err.message);
