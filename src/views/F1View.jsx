@@ -8,7 +8,6 @@ import Avatar from "../components/Avatar";
 import { F1_DRIVER_IMAGES, F1_TEAM_LOGOS } from "../data/images";
 import { F1_DRIVERS } from "../data";
 import styles from "./F1View.module.css";
-import Hero from "../components/Hero";
 import SeasonRecap from "../components/SeasonRecap";
 
 const TEAM_COLORS = {
@@ -89,7 +88,6 @@ export default function F1View() {
 
   return (
     <div>
-      <Hero pageKey="f1" />
       <SeasonRecap pageKey="f1" />
       {schedule.loading
         ? <div className={styles.cdPlaceholder}>Loading race schedule...</div>

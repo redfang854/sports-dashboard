@@ -11,7 +11,6 @@ import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates"
 import WorldCupSemifinals from "./WorldCupSemifinals";
 import styles from "./FootballView.module.css";
 import teamStyles from "./TeamsView.module.css";
-import Hero from "../components/Hero";
 import SeasonRecap from "../components/SeasonRecap";
 
 const WC_TAB = { id: "WC", name: "World Cup 2026", flag: "🌍", color: "#8B5CF6" };
@@ -480,7 +479,6 @@ export default function FootballView() {
 
   return (
     <div>
-      <Hero pageKey="football" />
       <SeasonRecap pageKey="football" />
       <div className={styles.kpiRow}>
         {[

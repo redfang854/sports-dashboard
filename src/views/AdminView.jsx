@@ -3,6 +3,11 @@ import styles from "./AdminView.module.css";
 
 const PAGES = ["home", "football", "f1", "mma", "boxing", "rugby", "wrc"];
 
+// Pages ESPN's hidden news API actually covers. boxing/rugby/wrc/home
+// need to stay manual (RSS or hand-entry) — keep this in sync with
+// PAGE_TO_ESPN_NEWS in api/sync-hero.js.
+const ESPN_SYNC_PAGES = new Set(["football", "f1", "mma"]);
+
 // Reads the Supabase session's access token directly out of localStorage
 // instead of calling supabase.auth.getSession(), which was hanging
 // indefinitely behind a stuck navigator.locks lock
@@ -40,6 +45,7 @@ export default function AdminView() {
   const [story, setStory] = useState({ title: "", body: "", image_url: "" });
   const [uploading, setUploading] = useState(false);
   const [uploadingHero, setUploadingHero] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -105,6 +111,34 @@ export default function AdminView() {
       setStatus("Hero saved.");
     } catch (err) {
       setStatus(`Error: ${err.message}`);
+    }
+  }
+
+  async function syncFromEspn() {
+    setSyncing(true);
+    setStatus("Pulling latest story from ESPN...");
+    try {
+      const authHeader = getAuthHeader();
+      const res = await fetch("/api/sync-hero", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader },
+        body: JSON.stringify({ page_key: pageKey }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Sync failed");
+
+      setForm({
+        title: result.title || "",
+        subtitle: result.subtitle || "",
+        image_url: result.image_url || "",
+        cta_label: result.cta_label || "",
+        cta_link: result.cta_link || "",
+      });
+      setStatus("Pulled from ESPN — review below, then click Save Hero.");
+    } catch (err) {
+      setStatus(`Sync error: ${err.message}`);
+    } finally {
+      setSyncing(false);
     }
   }
 
@@ -252,6 +286,22 @@ export default function AdminView() {
       </div>
 
       <h3>Hero Section</h3>
+      {ESPN_SYNC_PAGES.has(pageKey) ? (
+        <button
+          type="button"
+          className={styles.saveBtn}
+          onClick={syncFromEspn}
+          disabled={syncing}
+          style={{ marginBottom: 12 }}
+        >
+          {syncing ? "Syncing..." : "Sync from ESPN"}
+        </button>
+      ) : (
+        <p className={styles.status} style={{ marginBottom: 12 }}>
+          No ESPN source for "{pageKey}" — enter this hero manually.
+        </p>
+      )}
+
       <label className={styles.label}>Title</label>
       <input className={styles.input} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
 

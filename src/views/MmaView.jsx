@@ -5,7 +5,6 @@ import Countdown from "../components/Countdown";
 import { FighterModal } from "../components/Modal";
 import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates";
 import styles from "./MmaView.module.css";
-import Hero from "../components/Hero";
 import SeasonRecap from "../components/SeasonRecap";
 
 function methodStyle(type) {
@@ -51,7 +50,6 @@ export default function MmaView() {
 
   return (
     <div>
-      <Hero pageKey="mma" />
       <SeasonRecap pageKey="mma" />
 
       {upcoming.loading
