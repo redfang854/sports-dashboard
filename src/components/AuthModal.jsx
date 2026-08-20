@@ -59,10 +59,10 @@ export default function AuthModal({ onClose }) {
         </h2>
         <p className={styles.sub}>
           {mode === "signin"
-            ? "Join the APEX community"
+            ? "Sign in to join the live chat"
             : mode === "forgot"
             ? "Enter your email to receive a reset link"
-            : "Start tracking every sport"}
+            : "Create an account to join the live chat"}
         </p>
 
         {success ? (
