@@ -59,6 +59,9 @@ button {
   --fs-xl: 24px;
   --fs-2xl: 28px;
 
+  /* Page content width */
+  --container: 1400px;
+
   /* Borders */
   --border: #273142;
 
@@ -97,3 +100,34 @@ button {
   --spacing-md: 16px;
   --spacing-lg: 24px;
 }
+
+/* Large screens (1600px+): wider content and one step larger text, so the
+   dashboard doesn't look tiny on big monitors. (Large Bebas display
+   numerals, 32px+, keep their fixed sizes.) */
+@media (min-width: 1600px) {
+  :root {
+    --container: 1600px;
+    --fs-2xs: 12px;
+    --fs-xs: 13px;
+    --fs-sm: 15px;
+    --fs-md: 17px;
+    --fs-lg: 22px;
+    --fs-xl: 26px;
+    --fs-2xl: 31px;
+  }
+}
+
+/* Very large screens (2200px+, e.g. 1440p/4K or zoomed-out browsers). */
+@media (min-width: 2200px) {
+  :root {
+    --container: 1840px;
+    --fs-2xs: 13px;
+    --fs-xs: 14px;
+    --fs-sm: 17px;
+    --fs-md: 19px;
+    --fs-lg: 24px;
+    --fs-xl: 29px;
+    --fs-2xl: 34px;
+  }
+}
+
