@@ -5,7 +5,7 @@ import Countdown from "../components/Countdown";
 import { FighterModal } from "../components/Modal";
 import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates";
 import styles from "./MmaView.module.css";
-import SeasonRecap from "../components/SeasonRecap";
+import SportsRecents from "../components/SportsRecents";
 
 function methodStyle(type) {
   if (type === "finish")
@@ -50,7 +50,7 @@ export default function MmaView() {
 
   return (
     <div>
-      <SeasonRecap pageKey="mma" />
+      <SportsRecents sport="mma" />
 
       {upcoming.loading
         ? <div className={styles.kpi} style={{ marginBottom: 20 }}><p className={styles.kpiSub}>Loading next event...</p></div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SIX_NATIONS_2026, URC_STANDINGS_2026, PREMIERSHIP_STANDINGS_2026, RECENT_RUGBY } from "../data/rugby";
 import styles from "./RugbyView.module.css";
-import SeasonRecap from "../components/SeasonRecap";
+import SportsRecents from "../components/SportsRecents";
 
 const COMPS = [
   { id: "sixnations",    label: "Six Nations" },
@@ -71,7 +71,7 @@ export default function RugbyView() {
 
   return (
     <div>
-      <SeasonRecap pageKey="rugby" />
+      <SportsRecents sport="rugby" />
       <div className={styles.kpiRow}>
         {[
           { label: "Six Nations Winner", val: "Ireland",  sub: "2026 Grand Slam" },

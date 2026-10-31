@@ -8,7 +8,7 @@ import Avatar from "../components/Avatar";
 import { F1_DRIVER_IMAGES, F1_TEAM_LOGOS } from "../data/images";
 import { F1_DRIVERS } from "../data";
 import styles from "./F1View.module.css";
-import SeasonRecap from "../components/SeasonRecap";
+import SportsRecents from "../components/SportsRecents";
 
 const TEAM_COLORS = {
   Mercedes: "#00D2BE", McLaren: "#FF8700", Ferrari: "#DC0000",
@@ -88,7 +88,7 @@ export default function F1View() {
 
   return (
     <div>
-      <SeasonRecap pageKey="f1" />
+      <SportsRecents sport="f1" />
       {schedule.loading
         ? <div className={styles.cdPlaceholder}>Loading race schedule...</div>
         : nextRace && (

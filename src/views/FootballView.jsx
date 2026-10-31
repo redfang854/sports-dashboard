@@ -11,7 +11,7 @@ import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates"
 import WorldCupSemifinals from "./WorldCupSemifinals";
 import styles from "./FootballView.module.css";
 import teamStyles from "./TeamsView.module.css";
-import SeasonRecap from "../components/SeasonRecap";
+import SportsRecents from "../components/SportsRecents";
 
 const WC_TAB = { id: "WC", name: "World Cup 2026", flag: "🌍", color: "#8B5CF6" };
 const TOURNAMENTS = [...FOOTBALL_COMPETITIONS, WC_TAB];
@@ -479,7 +479,7 @@ export default function FootballView() {
 
   return (
     <div>
-      <SeasonRecap pageKey="football" />
+      <SportsRecents sport="football" />
       <div className={styles.kpiRow}>
         {[
           { label: "EPL Leaders",     val: "Liverpool",   sub: "77 pts · 24W" },
