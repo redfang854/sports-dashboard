@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Avatar from "./Avatar";
-import { FIGHTER_IMAGES, F1_DRIVER_IMAGES, F1_TEAM_LOGOS } from "../data/images";
+import { FIGHTER_IMAGES, F1_DRIVER_IMAGES } from "../data/images";
 import styles from "./Modal.module.css";
 
 function useEscapeKey(onClose) {
@@ -79,7 +79,6 @@ export function DriverModal({ driver, onClose }) {
   const { name, team, nationality, age, pts, wins, podiums, color, bio, id, driverId } = driver;
   const key     = id || driverId;
   const imgSrc  = F1_DRIVER_IMAGES[key];
-  const teamLogo = F1_TEAM_LOGOS[team];
 
   return (
     <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -95,14 +94,6 @@ export function DriverModal({ driver, onClose }) {
             <h2 className={styles.name}>{name}</h2>
             <p className={styles.sub}>{nationality}</p>
             <div className={styles.teamRow}>
-              {teamLogo && (
-                <img
-                  src={teamLogo}
-                  alt={team}
-                  className={styles.teamLogo}
-                  onError={(e) => { e.currentTarget.style.display = "none"; }}
-                />
-              )}
               <span className={styles.teamName}>{team}</span>
             </div>
           </div>

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import styles from "./SportsRecents.module.css";
 import { timeAgo } from "../lib/timeAgo";
 
+// Headlines listed under the lead story on phones before "More headlines".
+const MOBILE_VISIBLE = 2;
+
 // Latest headlines for one sport, served by /api/news (RSS, CDN-cached).
 // The lead story gets an image and summary; the rest are compact links.
 export default function SportsRecents({ sport }) {
@@ -19,6 +22,7 @@ export default function SportsRecents({ sport }) {
     return () => { cancelled = true; };
   }, [sport]);
 
+  const [expanded, setExpanded] = useState(false);
   const { loading, items, error } = state;
   const [lead, ...rest] = items;
 
@@ -47,7 +51,7 @@ export default function SportsRecents({ sport }) {
       )}
 
       {rest.length > 0 && (
-        <ul className={styles.list}>
+        <ul className={`${styles.list} ${expanded ? styles.expanded : ""}`}>
           {rest.map((item) => (
             <li key={item.url}>
               <a className={styles.item} href={item.url} target="_blank" rel="noopener noreferrer">
@@ -57,6 +61,14 @@ export default function SportsRecents({ sport }) {
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Phones show the lead + 2 headlines so the standings stay near the
+          top; this button (hidden on wider screens by CSS) reveals the rest. */}
+      {rest.length > MOBILE_VISIBLE && !expanded && (
+        <button type="button" className={styles.moreBtn} onClick={() => setExpanded(true)}>
+          More headlines ({rest.length - MOBILE_VISIBLE})
+        </button>
       )}
     </section>
   );

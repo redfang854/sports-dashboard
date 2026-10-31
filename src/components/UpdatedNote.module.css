@@ -1,0 +1,2 @@
+.note { margin: -8px 0 20px; font-size: var(--fs-2xs); color: var(--text-faint); }
+.stale { color: var(--warning); }

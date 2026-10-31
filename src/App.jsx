@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import MmaView      from "./views/MmaView";
@@ -37,11 +37,29 @@ export default function App() {
 
   const handleDone = useCallback(() => setLoaded(true), []);
 
+  // The tab row scrolls sideways on narrow screens with its scrollbar
+  // hidden; track which edges have more tabs so CSS can fade them as a hint.
+  const tabsRef = useRef(null);
+  const [tabEdges, setTabEdges] = useState({ left: false, right: false });
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+    const update = () => setTabEdges({
+      left:  el.scrollLeft > 2,
+      right: el.scrollLeft + el.clientWidth < el.scrollWidth - 2,
+    });
+    const observer = typeof ResizeObserver === "function" ? new ResizeObserver(update) : null;
+    if (observer) observer.observe(el); else update();
+    el.addEventListener("scroll", update, { passive: true });
+    return () => { observer?.disconnect(); el.removeEventListener("scroll", update); };
+  }, []);
+
   // The Admin tab lives at /admin; sport tabs live at /. The route decides
   // which one is showing, so there is no state to keep in sync.
   const currentTab = onAdminRoute ? "admin" : activeTab;
 
-  function selectTab(id) {
+  function selectTab(id, target) {
+    target?.scrollIntoView?.({ block: "nearest", inline: "nearest", behavior: "smooth" });
     if (id === "admin") { navigate("/admin"); return; }
     setActiveTab(id);
     if (onAdminRoute) navigate("/");
@@ -79,14 +97,18 @@ export default function App() {
             </div>
 
             {/* Sport tabs */}
-            <nav className={styles.tabs} role="tablist">
+            <nav
+              ref={tabsRef}
+              className={`${styles.tabs} ${tabEdges.left ? styles.fadeLeft : ""} ${tabEdges.right ? styles.fadeRight : ""}`}
+              role="tablist"
+            >
               {TABS.map((tab) => (
                 <button
                   key={tab.id}
                   role="tab"
                   aria-selected={currentTab === tab.id}
                   className={`${styles.tab} ${currentTab === tab.id ? styles.tabActive : ""}`}
-                  onClick={() => selectTab(tab.id)}
+                  onClick={(e) => selectTab(tab.id, e.currentTarget)}
                 >
                   {tab.label}
                 </button>

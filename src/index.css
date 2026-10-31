@@ -14,7 +14,7 @@ body {
   background: #0d0d0d;
   color: #e8e8e8;
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 16px;
+  font-size: var(--fs-md);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -45,6 +45,19 @@ button {
   /* Text */
   --text: #F5F7FA;
   --text-muted: #A8B3C7;
+  /* Lowest text tier (labels, meta, timestamps). Passes WCAG AA (>=5:1)
+     on every page and card background; never use darker grays for text. */
+  --text-faint: #8A93A3;
+
+  /* Type scale. Text sizes only; large Bebas display numerals (32px+)
+     are set per component. 11px is the floor for any readable text. */
+  --fs-2xs: 11px;
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 20px;
+  --fs-xl: 24px;
+  --fs-2xl: 28px;
 
   /* Borders */
   --border: #273142;

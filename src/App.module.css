@@ -30,7 +30,7 @@
 
 .logoA {
   font-family: "Arial Black", Arial, sans-serif;
-  font-size: 28px;
+  font-size: var(--fs-2xl);
   font-weight: 900;
   color: var(--accent);
   line-height: 1;
@@ -39,7 +39,7 @@
 
 .logoPEX {
   font-family: "Arial Black", Arial, sans-serif;
-  font-size: 28px;
+  font-size: var(--fs-2xl);
   font-weight: 900;
   color: var(--text);
   line-height: 1;
@@ -57,7 +57,7 @@
 }
 
 .tagline {
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text-muted);
   letter-spacing: 0.3px;
 }
@@ -71,11 +71,15 @@
 }
 
 .tabs::-webkit-scrollbar { display: none; }
+/* Edge fades signal more tabs off-screen (toggled from App.jsx). */
+.fadeRight { -webkit-mask-image: linear-gradient(to right, #000 82%, transparent); mask-image: linear-gradient(to right, #000 82%, transparent); }
+.fadeLeft { -webkit-mask-image: linear-gradient(to left, #000 82%, transparent); mask-image: linear-gradient(to left, #000 82%, transparent); }
+.fadeLeft.fadeRight { -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent); }
 
 .tab {
   padding: 8px 16px;
   background: transparent; border: none;
-  font-size: 13px; font-weight: 500;
+  font-size: var(--fs-sm); font-weight: 500;
   color: var(--text-muted); cursor: pointer;
   transition: all var(--transition-fast);
   white-space: nowrap;
@@ -103,13 +107,13 @@
   padding: 16px 20px; text-align: center;
 }
 
-.footer p { font-size: 11px; color: #2a2a2a; }
+.footer p { font-size: var(--fs-2xs); color: var(--text-faint); }
 
 .topRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 8px; border-bottom: 1px solid var(--border); }
 .authArea { flex-shrink: 0; }
 .userRow { display: flex; align-items: center; gap: 10px; }
-.userName { font-size: 13px; color: var(--text-muted); }
-.signOutBtn { padding: 6px 14px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); font-size: 12px; cursor: pointer; transition: all var(--transition-fast); }
+.userName { font-size: var(--fs-sm); color: var(--text-muted); }
+.signOutBtn { padding: 6px 14px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); font-size: var(--fs-xs); cursor: pointer; transition: all var(--transition-fast); }
 .signOutBtn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); transform: translateY(-1px); }
 
 /* ── Mobile header fix ──

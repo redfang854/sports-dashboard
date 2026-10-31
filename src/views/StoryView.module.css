@@ -20,7 +20,7 @@
 .backLink {
   display: inline-block;
   margin-bottom: 16px;
-  font-size: 13px;
+  font-size: var(--fs-sm);
   font-weight: 600;
   color: var(--accent);
   text-decoration: none;
@@ -42,16 +42,16 @@
 }
 
 .eventLabel {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #444;
+  color: var(--text-faint);
   margin-bottom: 12px;
 }
 
 .eyebrow {
   margin: 0 0 8px;
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--accent);
@@ -67,7 +67,7 @@
 }
 
 .meta {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   color: #888;
   margin: 0;
 }
@@ -93,7 +93,7 @@
 }
 
 .bodyText {
-  font-size: 15px;
+  font-size: var(--fs-sm);
   line-height: 1.8;
   color: #ccc;
   margin: 0 0 20px;
@@ -104,7 +104,7 @@
   padding: 4px 0 4px 20px;
   border-left: 3px solid var(--accent);
   font-family: "Bebas Neue", sans-serif;
-  font-size: 26px;
+  font-size: var(--fs-2xl);
   line-height: 1.3;
   color: var(--accent);
   font-style: normal;
@@ -121,7 +121,7 @@
 }
 
 .relatedHeading {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #888;
@@ -152,14 +152,14 @@
 }
 
 .relatedSport {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--accent);
 }
 
 .relatedTitle {
-  font-size: 14px;
+  font-size: var(--fs-sm);
   font-weight: 600;
   color: #fff;
   line-height: 1.3;

@@ -59,24 +59,6 @@ export const F1_DRIVER_IMAGES = {
 
 // ─── F1 TEAM LOGOS ───────────────────────────────────────────────────────────
 
-export const F1_TEAM_LOGOS = {
-  Mercedes:             "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/mercedes.png",
-  McLaren:              "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/mclaren.png",
-  Ferrari:              "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/ferrari.png",
-  "Red Bull":           "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/red-bull-racing.png",
-  "Red Bull Racing":    "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/red-bull-racing.png",
-  Alpine:               "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/alpine.png",
-  "Alpine F1 Team":     "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/alpine.png",
-  "Aston Martin":       "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/aston-martin.png",
-  Williams:             "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/williams.png",
-  Haas:                 "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/haas.png",
-  "Haas F1 Team":       "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/haas.png",
-  RB:                   "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/alphatauri.png",
-  "RB F1 Team":         "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/alphatauri.png",
-  Audi:                 "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/sauber.png",
-  Sauber:               "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/sauber.png",
-  "Cadillac F1 Team":   "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/team%20logos/williams.png",
-};
 
 // ─── UFC FIGHTER IMAGES ──────────────────────────────────────────────────────
 

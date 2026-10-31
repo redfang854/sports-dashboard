@@ -38,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: var(--fs-sm);
   color: #888;
   transition: all 0.15s;
 }
@@ -65,14 +65,14 @@
   align-items: center;
   justify-content: center;
   font-family: "Bebas Neue", sans-serif;
-  font-size: 20px;
+  font-size: var(--fs-lg);
   color: #e8e8e8;
   flex-shrink: 0;
 }
 
 .name {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 26px;
+  font-size: var(--fs-2xl);
   font-weight: 400;
   letter-spacing: 0.5px;
   color: #fff;
@@ -80,8 +80,8 @@
 }
 
 .sub {
-  font-size: 12px;
-  color: #666;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
   margin-top: 2px;
 }
 
@@ -104,13 +104,13 @@
 
 .recNum {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 28px;
+  font-size: var(--fs-2xl);
   line-height: 1;
 }
 
 .recLabel {
-  font-size: 10px;
-  color: #666;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -133,20 +133,20 @@
 
 .statVal {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 20px;
+  font-size: var(--fs-lg);
   color: #fff;
   line-height: 1;
 }
 
 .statLabel {
-  font-size: 10px;
-  color: #555;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
 
 .bio {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   color: #888;
   line-height: 1.7;
   border-top: 1px solid #ffffff0d;
@@ -175,13 +175,13 @@
 }
 
 .teamName {
-  font-size: 12px;
-  color: #666;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
 }
 /* Add these to the bottom of Modal.module.css */
 
 .sectionLabel {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -190,8 +190,8 @@
 }
 
 .careerLoading {
-  font-size: 12px;
-  color: #666;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
   text-align: center;
   padding: 12px 0;
 }
@@ -214,14 +214,14 @@
 }
 
 .greatRaceSeason {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
   color: #BA7517;
   min-width: 36px;
 }
 
 .greatRaceName {
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: #ddd;
   flex: 1;
   white-space: nowrap;
@@ -230,14 +230,14 @@
 }
 
 .greatRaceCountry {
-  font-size: 11px;
-  color: #666;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   flex-shrink: 0;
 }
 /* Add these to the bottom of Modal.module.css */
 
 .sectionLabel {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -246,8 +246,8 @@
 }
 
 .careerLoading {
-  font-size: 12px;
-  color: #666;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
   text-align: center;
   padding: 12px 0;
 }
@@ -270,14 +270,14 @@
 }
 
 .greatRaceSeason {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
   color: #BA7517;
   min-width: 36px;
 }
 
 .greatRaceName {
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: #ddd;
   flex: 1;
   white-space: nowrap;
@@ -286,7 +286,7 @@
 }
 
 .greatRaceCountry {
-  font-size: 11px;
-  color: #666;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   flex-shrink: 0;
 }

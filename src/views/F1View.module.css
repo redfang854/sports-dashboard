@@ -13,23 +13,23 @@
 }
 
 .kpiLabel {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #555;
+  color: var(--text-faint);
   margin-bottom: 4px;
 }
 
 .kpiVal {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 22px;
+  font-size: var(--fs-xl);
   color: #fff;
   line-height: 1.1;
 }
 
 .kpiSub {
-  font-size: 11px;
-  color: #555;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   margin-top: 3px;
 }
 
@@ -52,7 +52,7 @@
 
 .panelTitle {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 18px;
+  font-size: var(--fs-lg);
   font-weight: 400;
   letter-spacing: 0.5px;
   color: #fff;
@@ -66,18 +66,18 @@
 
 .hint {
   font-family: "Inter", sans-serif;
-  font-size: 10px;
-  color: #444;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
 }
 
 .eventLabel {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #444;
+  color: var(--text-faint);
   margin-bottom: 12px;
 }
 
@@ -131,7 +131,7 @@
 
 .pos {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 22px;
+  font-size: var(--fs-xl);
   width: 24px;
   text-align: center;
   flex-shrink: 0;
@@ -144,7 +144,7 @@
 }
 
 .driverName {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   font-weight: 500;
   color: #e8e8e8;
   white-space: nowrap;
@@ -153,8 +153,8 @@
 }
 
 .driverTeam {
-  font-size: 11px;
-  color: #555;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   margin-bottom: 4px;
 }
 
@@ -178,15 +178,15 @@
 
 .pts {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 24px;
+  font-size: var(--fs-xl);
   color: #fff;
   display: block;
   line-height: 1;
 }
 
 .ptsLabel {
-  font-size: 9px;
-  color: #444;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -205,28 +205,28 @@
 
 .raceNum {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 20px;
-  color: #333;
+  font-size: var(--fs-lg);
+  color: var(--text-faint);
   width: 24px;
   flex-shrink: 0;
   text-align: center;
 }
 
 .raceName {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   font-weight: 500;
   color: #e8e8e8;
 }
 
 .raceCircuit {
-  font-size: 11px;
-  color: #555;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   margin-top: 1px;
 }
 
 .raceDate {
-  font-size: 11px;
-  color: #444;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   margin-left: auto;
   white-space: nowrap;
   flex-shrink: 0;
@@ -241,16 +241,16 @@
 }
 
 .contextTitle {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #444;
+  color: var(--text-faint);
   margin-bottom: 6px;
 }
 
 .contextText {
-  font-size: 12px;
-  color: #666;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
   line-height: 1.7;
 }
 
@@ -265,19 +265,19 @@
   border-radius: 14px;
   padding: 18px 24px;
   margin-bottom: 20px;
-  font-size: 13px;
-  color: #444;
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
 }
 
 .raceWinner {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   font-weight: 500;
   color: #e8e8e8;
 }
 
 .raceTeam {
-  font-size: 11px;
-  color: #555;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   margin-top: 1px;
 }
 
@@ -316,7 +316,7 @@
   border: 1px solid #ffffff14;
   border-radius: 10px;
   color: #ccc;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 0.4px;
   text-transform: uppercase;
@@ -329,3 +329,5 @@
   border-color: #ffffff2a;
   color: #fff;
 }
+
+.teamInitials { font-family: "Bebas Neue", sans-serif; font-size: var(--fs-md); letter-spacing: 0.5px; line-height: 1; }

@@ -5,10 +5,17 @@ import Countdown from "../components/Countdown";
 import { DriverModal } from "../components/Modal";
 import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates";
 import Avatar from "../components/Avatar";
-import { F1_DRIVER_IMAGES, F1_TEAM_LOGOS } from "../data/images";
+import { F1_DRIVER_IMAGES } from "../data/images";
 import { F1_DRIVERS } from "../data";
 import styles from "./F1View.module.css";
 import SportsRecents from "../components/SportsRecents";
+
+// "Red Bull Racing" -> "RB", "Haas F1 Team" -> "HA", "Mercedes" -> "ME"
+function teamInitials(name) {
+  const words = String(name).replace(/\b(F1|Team|Racing)\b/g, "").trim().split(/\s+/).filter(Boolean);
+  if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
+  return (words[0] || "?").slice(0, 2).toUpperCase();
+}
 
 const TEAM_COLORS = {
   Mercedes: "#00D2BE", McLaren: "#FF8700", Ferrari: "#DC0000",
@@ -16,7 +23,7 @@ const TEAM_COLORS = {
   Williams: "#005AFF", Haas: "#E8002D", RB: "#6692FF", Audi: "#bb0f28",
 };
 
-const posColor = (p) => p === 1 ? "#BA7517" : p === 2 ? "#999" : p === 3 ? "#7F77DD" : "#444";
+const posColor = (p) => p === 1 ? "#BA7517" : p === 2 ? "#999" : p === 3 ? "#7F77DD" : "var(--text-faint)";
 
 // Map API driver name → our local ID key for images
 function resolveDriverKey(apiName) {
@@ -76,7 +83,6 @@ export default function F1View() {
     return {
       ...apiDriver,
       id:      key,
-      pts:     apiDriver.points,
       pts:     apiDriver.points,
       wins:    apiDriver.wins ?? 0,
       color:   TEAM_COLORS[apiDriver.team] || "#888",
@@ -176,15 +182,13 @@ export default function F1View() {
 
             {constructors.data?.map((team) => {
               const color   = TEAM_COLORS[team.name] || "#888";
-              const logoSrc = F1_TEAM_LOGOS[team.name];
               return (
                 <div key={team.constructorId} className={styles.constructorRow}>
                   <span className={styles.pos} style={{ color: posColor(team.pos) }}>{team.pos}</span>
-                  <div className={styles.teamLogoWrap}>
-                    {logoSrc
-                      ? <img src={logoSrc} alt={team.name} className={styles.teamLogoImg} onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                      : <div className={styles.teamDot} style={{ background: color }} />
-                    }
+                  {/* Team-colour initials badge. Remote F1 logo URLs were broken
+                      for several teams and hotlink trademarked assets. */}
+                  <div className={styles.teamLogoWrap} style={{ background: `${color}26`, borderColor: `${color}66` }} aria-hidden="true">
+                    <span className={styles.teamInitials} style={{ color }}>{teamInitials(team.name)}</span>
                   </div>
                   <div className={styles.driverInfo}>
                     <p className={styles.driverName}>{team.name}</p>

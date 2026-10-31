@@ -17,7 +17,7 @@
 
 .wordmark {
   font-family: "Bebas Neue", "Arial Black", sans-serif;
-  font-size: 28px;
+  font-size: var(--fs-2xl);
   line-height: 1;
   letter-spacing: 4px;
 }
@@ -26,9 +26,9 @@
 .pex { color: #ffffff; }
 
 .tagline {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #444;
+  color: var(--text-faint);
   margin-top: 1px;
 }

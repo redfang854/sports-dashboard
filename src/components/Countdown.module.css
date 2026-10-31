@@ -19,16 +19,16 @@
 }
 
 .label {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  color: #555;
+  color: var(--text-faint);
 }
 
 .eventName {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 22px;
+  font-size: var(--fs-xl);
   font-weight: 400;
   letter-spacing: 0.5px;
   color: #fff;
@@ -36,8 +36,8 @@
 }
 
 .venue {
-  font-size: 12px;
-  color: #555;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
   margin-top: 2px;
 }
 
@@ -55,8 +55,8 @@
 
 .sep {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 28px;
-  color: #333;
+  font-size: var(--fs-2xl);
+  color: var(--text-faint);
   line-height: 1;
   padding-bottom: 6px;
 }
@@ -72,8 +72,8 @@
 }
 
 .unitLabel {
-  font-size: 10px;
-  color: #444;
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
   letter-spacing: 0.5px;
   padding-bottom: 6px;
   display: block;
@@ -105,17 +105,17 @@
   }
 
   .num {
-    font-size: 24px;
+    font-size: var(--fs-xl);
     min-width: 26px;
   }
 
   .unitLabel {
     min-width: 26px;
-    font-size: 9px;
+    font-size: var(--fs-2xs);
   }
 
   .sep {
-    font-size: 18px;
+    font-size: var(--fs-lg);
     padding-bottom: 3px;
   }
 
@@ -133,17 +133,17 @@
   }
 
   .num {
-    font-size: 20px;
+    font-size: var(--fs-lg);
     min-width: 22px;
   }
 
   .unitLabel {
     min-width: 22px;
-    font-size: 8px;
+    font-size: var(--fs-2xs);
   }
 
   .sep {
-    font-size: 15px;
+    font-size: var(--fs-sm);
     padding-bottom: 2px;
   }
 

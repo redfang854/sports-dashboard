@@ -1,16 +1,16 @@
 .viewHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-.viewTitle { font-family: "Bebas Neue", sans-serif; font-size: 28px; color: #fff; letter-spacing: 0.5px; }
-.viewSub { font-size: 13px; color: #555; margin-top: 4px; }
+.viewTitle { font-family: "Bebas Neue", sans-serif; font-size: var(--fs-2xl); color: #fff; letter-spacing: 0.5px; }
+.viewSub { font-size: var(--fs-sm); color: var(--text-faint); margin-top: 4px; }
 
 .teamsList { display: flex; flex-direction: column; gap: 8px; }
 .teamCard { background: var(--surface); border: 1px solid #ffffff08; border-radius: var(--radius-md); padding: 12px 16px; }
 .teamCardHeader { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
 .teamCardInfo { flex: 1; min-width: 0; }
-.teamName { font-family: "Bebas Neue", sans-serif; font-size: 18px; color: #fff; letter-spacing: 0.3px; margin-bottom: 2px; }
-.teamMeta { font-size: 11px; color: #555; }
-.expandIcon { font-size: 20px; color: var(--accent); flex-shrink: 0; width: 24px; text-align: center; }
+.teamName { font-family: "Bebas Neue", sans-serif; font-size: var(--fs-lg); color: #fff; letter-spacing: 0.3px; margin-bottom: 2px; }
+.teamMeta { font-size: var(--fs-2xs); color: var(--text-faint); }
+.expandIcon { font-size: var(--fs-lg); color: var(--accent); flex-shrink: 0; width: 24px; text-align: center; }
 
-.note { font-size: 10px; color: #444; margin-top: 14px; line-height: 1.5; font-style: italic; }
+.note { font-size: var(--fs-2xs); color: var(--text-faint); margin-top: 14px; line-height: 1.5; font-style: italic; }
 
 /* ── Pitch ── */
 .pitch {
@@ -78,7 +78,7 @@
 
 .pitchName {
   margin-top: 4px;
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   font-weight: 600;
   color: #fff;
   text-align: center;

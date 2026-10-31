@@ -32,7 +32,7 @@ function SquadModal({ team, onClose }) {
           <div>
             <h2 className={styles.modalTitle}>{team.name}</h2>
             <p className={styles.modalSub}>Est. {team.founded} · {team.venue}</p>
-            <p className={styles.modalSub} style={{ color: "#444" }}>{team.colors}</p>
+            <p className={styles.modalSub} style={{ color: "var(--text-faint)" }}>{team.colors}</p>
           </div>
         </div>
         {loading && <LoadingState message="Loading squad..." />}
@@ -235,9 +235,9 @@ function H2HSection({ teams }) {
                 </div>
                 <div className={styles.h2hScoreBig}>
                   <span style={{ color: "#639922" }}>{winsA}</span>
-                  <span style={{ color: "#444", margin: "0 4px" }}>—</span>
-                  <span style={{ color: "#666" }}>{draws}</span>
-                  <span style={{ color: "#444", margin: "0 4px" }}>—</span>
+                  <span style={{ color: "var(--text-faint)", margin: "0 4px" }}>—</span>
+                  <span style={{ color: "var(--text-faint)" }}>{draws}</span>
+                  <span style={{ color: "var(--text-faint)", margin: "0 4px" }}>—</span>
                   <span style={{ color: "#E24B4A" }}>{winsB}</span>
                 </div>
                 <div className={styles.h2hTeam} style={{ alignItems: "flex-end" }}>
@@ -249,7 +249,7 @@ function H2HSection({ teams }) {
 
               <div className={styles.h2hRecordLabels}>
                 <span style={{ color: "#639922" }}>{winsA} wins</span>
-                <span style={{ color: "#666" }}>{draws} draws</span>
+                <span style={{ color: "var(--text-faint)" }}>{draws} draws</span>
                 <span style={{ color: "#E24B4A" }}>{winsB} wins</span>
               </div>
 

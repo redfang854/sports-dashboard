@@ -60,7 +60,7 @@
 /* ── Tagline ── */
 .tagline {
   font-family: Arial, sans-serif;
-  font-size: 13px;
+  font-size: var(--fs-sm);
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text-muted);

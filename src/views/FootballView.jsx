@@ -19,21 +19,27 @@ const TOURNAMENTS = [...FOOTBALL_COMPETITIONS, WC_TAB];
 // Leagues that support the Teams/Fixtures flow (have an entry in api/teams.js COMPETITIONS)
 const TEAMS_CAPABLE = new Set(Object.keys(COMPETITIONS));
 
-// Mid-July is off-season for these leagues — 2025-26 concluded, 2026-27 hasn't started
-const OFF_SEASON_INFO = {
-  PL:  "2025–26 season concluded · 2026–27 season kicks off mid-August",
-  PD:  "2025–26 season concluded · 2026–27 season kicks off mid-August",
-  SA:  "2025–26 season concluded · 2026–27 season kicks off mid-August",
-  BL1: "2025–26 season concluded · 2026–27 season kicks off mid-August",
-  FL1: "2025–26 season concluded · 2026–27 season kicks off mid-August",
-};
-
 const STATIC_STANDINGS = {
   PL: EPL_STANDINGS_STATIC, PD: LA_LIGA_STATIC,
   SA: SERIE_A_STATIC, BL1: BUNDESLIGA_STATIC, FL1: LIGUE_1_STATIC,
 };
 
-async function fetchStandings(compId) {
+// Leader cards and the standings table both need the same league table;
+// share one request per competition for a few minutes.
+const STANDINGS_TTL_MS = 5 * 60 * 1000;
+const standingsCache = new Map();
+function fetchStandings(compId) {
+  const hit = standingsCache.get(compId);
+  if (hit && Date.now() - hit.at < STANDINGS_TTL_MS) return hit.promise;
+  const promise = loadStandings(compId).catch((err) => {
+    standingsCache.delete(compId); // never cache failures
+    throw err;
+  });
+  standingsCache.set(compId, { at: Date.now(), promise });
+  return promise;
+}
+
+async function loadStandings(compId) {
   const res = await fetch(`/api/standings?comp=${compId}`);
   if (res.status === 429) throw new Error("Rate limited — try again in a moment");
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -51,9 +57,34 @@ async function fetchStandings(compId) {
   }));
 }
 
+// Summary card for one league, built only from LIVE standings. On failure
+// it says so instead of falling back to last season's static table.
+function LeaderCard({ compId, label }) {
+  const { data, loading, error } = useFetch(() => fetchStandings(compId), [compId]);
+  const leader = data?.[0];
+  return (
+    <div className={styles.kpi}>
+      <p className={styles.kpiLabel}>{label}</p>
+      <p className={styles.kpiVal}>{leader ? leader.team : "—"}</p>
+      <p className={styles.kpiSub}>
+        {leader ? `${leader.pts} pts · ${leader.w}W · ${leader.p} played`
+          : loading ? "Loading live table…"
+          : error ? "Live table unavailable" : "No data"}
+      </p>
+    </div>
+  );
+}
+
+const LEADER_CARDS = [
+  { compId: "PL",  label: "Premier League Leaders" },
+  { compId: "PD",  label: "La Liga Leaders" },
+  { compId: "SA",  label: "Serie A Leaders" },
+  { compId: "BL1", label: "Bundesliga Leaders" },
+];
+
 const posColor = (p) =>
   p === 1 ? "#BA7517" : p === 2 ? "#999" : p === 3 ? "#7F77DD"
-  : p <= 4 ? "#378ADD" : p >= 18 ? "#E24B4A" : "#555";
+  : p <= 4 ? "#378ADD" : p >= 18 ? "#E24B4A" : "var(--text-faint)";
 
 function age(dob) {
   if (!dob) return null;
@@ -72,17 +103,24 @@ function StandingsPanel({ compId, compName }) {
   const { data, loading, error, refetch } = useFetch(() => fetchStandings(compId), [compId]);
   const rows   = data || STATIC_STANDINGS[compId] || [];
   const topPts = rows[0]?.pts ?? 1;
-  const offSeasonNote = OFF_SEASON_INFO[compId];
 
   return (
     <div>
       <div className={styles.panelMeta}>
         {data
           ? <LiveBadge />
-          : <span className={styles.staticBadge}>Final table · {offSeasonNote || "2025–26 season"}</span>}
+          : !loading && <span className={styles.staticBadge}>Live table unavailable · showing 2025–26 final table</span>}
       </div>
       {loading && <LoadingState message={`Loading ${compName}...`} />}
       {error   && <ErrorState message={error} onRetry={refetch} />}
+      {rows.length > 0 && (
+        <div className={styles.colHeaders} aria-hidden="true">
+          <span style={{ flex: 1 }} />
+          {[["P", "Played"], ["W", "Won"], ["L", "Lost"], ["GD", "Goal difference"], ["Pts", "Points"]].map(([h, title]) => (
+            <span key={h} className={styles.colHeader} title={title}>{h}</span>
+          ))}
+        </div>
+      )}
       {rows.map((t) => (
         <div key={t.team} className={styles.teamRow}>
           <span className={styles.pos} style={{ color: posColor(t.pos) }}>{t.pos}</span>
@@ -104,17 +142,12 @@ function StandingsPanel({ compId, compName }) {
           </div>
         </div>
       ))}
-      <div className={styles.colHeaders}>
-        <span style={{ flex: 1 }} />
-        {["P","W","L","GD","Pts"].map((h) => <span key={h} className={styles.colHeader}>{h}</span>)}
-      </div>
     </div>
   );
 }
 
 function FixturesPanel({ compId }) {
   const { data, loading, error, refetch } = useFetch(() => fetchFixtures(compId), [compId]);
-  const offSeasonNote = OFF_SEASON_INFO[compId];
 
   return (
     <div>
@@ -124,10 +157,7 @@ function FixturesPanel({ compId }) {
       {data && data.length === 0 && (
         <div>
           <p className={styles.eventLabel}>
-            {offSeasonNote || "No upcoming scheduled fixtures found."}
-          </p>
-          <p style={{ fontSize: 12, color: "#555", marginTop: -4 }}>
-            Check back once preseason fixtures are announced.
+            No upcoming scheduled fixtures found.
           </p>
         </div>
       )}
@@ -169,7 +199,7 @@ function SquadModal({ team, onClose }) {
           <div>
             <h2 className={teamStyles.modalTitle}>{team.name}</h2>
             <p className={teamStyles.modalSub}>Est. {team.founded} · {team.venue}</p>
-            <p className={teamStyles.modalSub} style={{ color: "#444" }}>{team.colors}</p>
+            <p className={teamStyles.modalSub} style={{ color: "var(--text-faint)" }}>{team.colors}</p>
           </div>
         </div>
         {loading && <LoadingState message="Loading squad..." />}
@@ -351,9 +381,9 @@ function H2HSection({ teams }) {
                 </div>
                 <div className={teamStyles.h2hScoreBig}>
                   <span style={{ color: "#639922" }}>{winsA}</span>
-                  <span style={{ color: "#444", margin: "0 4px" }}>—</span>
-                  <span style={{ color: "#666" }}>{draws}</span>
-                  <span style={{ color: "#444", margin: "0 4px" }}>—</span>
+                  <span style={{ color: "var(--text-faint)", margin: "0 4px" }}>—</span>
+                  <span style={{ color: "var(--text-faint)" }}>{draws}</span>
+                  <span style={{ color: "var(--text-faint)", margin: "0 4px" }}>—</span>
                   <span style={{ color: "#E24B4A" }}>{winsB}</span>
                 </div>
                 <div className={teamStyles.h2hTeam} style={{ alignItems: "flex-end" }}>
@@ -364,7 +394,7 @@ function H2HSection({ teams }) {
               </div>
               <div className={teamStyles.h2hRecordLabels}>
                 <span style={{ color: "#639922" }}>{winsA} wins</span>
-                <span style={{ color: "#666" }}>{draws} draws</span>
+                <span style={{ color: "var(--text-faint)" }}>{draws} draws</span>
                 <span style={{ color: "#E24B4A" }}>{winsB} wins</span>
               </div>
               <div className={teamStyles.predBar} style={{ marginBottom: 20 }}>
@@ -481,18 +511,7 @@ export default function FootballView() {
     <div>
       <SportsRecents sport="football" />
       <div className={styles.kpiRow}>
-        {[
-          { label: "EPL Leaders",     val: "Liverpool",   sub: "77 pts · 24W" },
-          { label: "La Liga Leaders", val: "Barcelona",   sub: "73 pts · 23W" },
-          { label: "Serie A Leaders", val: "Napoli",      sub: "72 pts · 22W" },
-          { label: "UCL Last 16",     val: "Real Madrid", sub: "Won 3–1 vs Man City" },
-        ].map((k) => (
-          <div key={k.label} className={styles.kpi}>
-            <p className={styles.kpiLabel}>{k.label}</p>
-            <p className={styles.kpiVal}>{k.val}</p>
-            <p className={styles.kpiSub}>{k.sub}</p>
-          </div>
-        ))}
+        {LEADER_CARDS.map((c) => <LeaderCard key={c.compId} {...c} />)}
       </div>
 
       <div className={styles.compTabs}>
