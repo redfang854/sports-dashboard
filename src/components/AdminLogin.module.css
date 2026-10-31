@@ -23,3 +23,6 @@
 .switchText { font-size: 13px; color: var(--text-muted); margin-top: 16px; text-align: center; }
 .switchBtn { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 500; }
 .successBox { background: #63992218; border: 1px solid #63992240; border-radius: var(--radius-md); padding: 14px; color: #639922; font-size: 13px; line-height: 1.6; }
+.page { display: flex; justify-content: center; padding: 48px 20px; }
+.page .modal { animation: none; }
+.signedInAs { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }

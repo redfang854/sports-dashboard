@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import MmaView      from "./views/MmaView";
 import F1View       from "./views/F1View";
@@ -7,9 +8,7 @@ import BoxingView   from "./views/BoxingView";
 import RugbyView    from "./views/RugbyView";
 import WrcView      from "./views/WrcView";
 import LoadingScreen from "./components/LoadingScreen";
-import AuthModal    from "./components/AuthModal";
-import ResetPasswordModal from "./components/ResetPasswordModal";
-import ChatBox      from "./components/ChatBox";
+import AdminLogin   from "./components/AdminLogin";
 import styles from "./App.module.css";
 import AdminView from "./views/AdminView";
 
@@ -25,17 +24,30 @@ const TABS = [
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
 export default function App() {
-  const { user, profile, signOut, passwordRecovery } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const onAdminRoute = location.pathname.replace(/\/+$/, "") === "/admin";
+  const isAdmin = !!user && !!ADMIN_EMAIL && user.email === ADMIN_EMAIL;
   const [activeTab,  setActiveTab]  = useState(() => {
     const hash = window.location.hash.replace("#", "");
     return TABS.some((t) => t.id === hash) ? hash : "football";
   });
   const [loaded,     setLoaded]     = useState(false);
-  const [showAuth,   setShowAuth]   = useState(false);
 
   const handleDone = useCallback(() => setLoaded(true), []);
 
-  const username = profile?.username || user?.email?.split("@")[0];
+  // The Admin tab lives at /admin; sport tabs live at /. The route decides
+  // which one is showing, so there is no state to keep in sync.
+  const currentTab = onAdminRoute ? "admin" : activeTab;
+
+  function selectTab(id) {
+    if (id === "admin") { navigate("/admin"); return; }
+    setActiveTab(id);
+    if (onAdminRoute) navigate("/");
+  }
+
+  const showAdminLogin = onAdminRoute && !isAdmin && !authLoading;
 
   return (
     <>
@@ -55,25 +67,15 @@ export default function App() {
                 <span className={styles.tagline}>Your edge in every sport</span>
               </div>
 
-              {/* Chat dropdown — left side */}
-              <ChatBox />
-
-              {/* Auth */}
-              <div className={styles.authArea}>
-                {user ? (
+              {/* Admin session controls — only visible to the signed-in admin */}
+              {isAdmin && (
+                <div className={styles.authArea}>
                   <div className={styles.userRow}>
-                    <div className={styles.userAvatar}>
-                      {username?.slice(0, 2).toUpperCase()}
-                    </div>
-                    <span className={styles.userName}>{username}</span>
+                    <span className={styles.userName}>Admin</span>
                     <button className={styles.signOutBtn} onClick={signOut}>Sign out</button>
                   </div>
-                ) : (
-                  <button className={styles.signInBtn} onClick={() => setShowAuth(true)}>
-                    Sign in
-                  </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Sport tabs */}
@@ -82,19 +84,19 @@ export default function App() {
                 <button
                   key={tab.id}
                   role="tab"
-                  aria-selected={activeTab === tab.id}
-                  className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ""}`}
-                  onClick={() => setActiveTab(tab.id)}
+                  aria-selected={currentTab === tab.id}
+                  className={`${styles.tab} ${currentTab === tab.id ? styles.tabActive : ""}`}
+                  onClick={() => selectTab(tab.id)}
                 >
                   {tab.label}
                 </button>
               ))}
-              {user?.email === ADMIN_EMAIL && (
+              {isAdmin && (
                 <button
                   role="tab"
-                  aria-selected={activeTab === "admin"}
-                  className={`${styles.tab} ${activeTab === "admin" ? styles.tabActive : ""}`}
-                  onClick={() => setActiveTab("admin")}
+                  aria-selected={currentTab === "admin"}
+                  className={`${styles.tab} ${currentTab === "admin" ? styles.tabActive : ""}`}
+                  onClick={() => selectTab("admin")}
                 >
                   Admin
                 </button>
@@ -104,13 +106,15 @@ export default function App() {
         </header>
 
         <main className={styles.main}>
-          {activeTab === "football" && <FootballView />}
-          {activeTab === "f1"       && <F1View />}
-          {activeTab === "mma"      && <MmaView />}
-          {activeTab === "boxing"   && <BoxingView />}
-          {activeTab === "rugby"    && <RugbyView />}
-          {activeTab === "wrc"      && <WrcView />}
-          {activeTab === "admin"    && user?.email === ADMIN_EMAIL && <AdminView />}
+          {showAdminLogin ? <AdminLogin adminEmail={ADMIN_EMAIL} /> : <>
+          {currentTab === "football" && <FootballView />}
+          {currentTab === "f1"       && <F1View />}
+          {currentTab === "mma"      && <MmaView />}
+          {currentTab === "boxing"   && <BoxingView />}
+          {currentTab === "rugby"    && <RugbyView />}
+          {currentTab === "wrc"      && <WrcView />}
+          {currentTab === "admin"    && isAdmin && <AdminView />}
+          </>}
         </main>
 
         <footer className={styles.footer}>
@@ -118,12 +122,6 @@ export default function App() {
         </footer>
       </div>
 
-
-      {/* Auth modal */}
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
-
-      {/* Password recovery — shown when the user arrives via a reset-password email link */}
-      {passwordRecovery && <ResetPasswordModal />}
     </>
   );
 }

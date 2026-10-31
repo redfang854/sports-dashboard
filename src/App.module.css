@@ -107,10 +107,7 @@
 
 .topRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 8px; border-bottom: 1px solid var(--border); }
 .authArea { flex-shrink: 0; }
-.signInBtn { padding: 8px 20px; background: var(--accent); border: none; border-radius: var(--radius-sm); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all var(--transition-fast); }
-.signInBtn:hover { background: var(--accent-hover); transform: translateY(-1px); }
 .userRow { display: flex; align-items: center; gap: 10px; }
-.userAvatar { width: 30px; height: 30px; border-radius: 50%; background: rgba(var(--accent-rgb), 0.133); border: 1px solid rgba(var(--accent-rgb), 0.267); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--accent); }
 .userName { font-size: 13px; color: var(--text-muted); }
 .signOutBtn { padding: 6px 14px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); font-size: 12px; cursor: pointer; transition: all var(--transition-fast); }
 .signOutBtn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); transform: translateY(-1px); }
