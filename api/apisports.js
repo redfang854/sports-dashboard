@@ -1,4 +1,5 @@
 import { checkRateLimit } from "./_rateLimit.js";
+import { isAllowedEndpoint, safeParams, API_FOOTBALL_ENDPOINTS } from "./_endpointGuard.js";
 
 export default async function handler(req, res) {
   const { endpoint, ...rest } = req.query;
@@ -16,8 +17,11 @@ export default async function handler(req, res) {
   }
 
   // Build query string from remaining params
-  const params = new URLSearchParams();
-  Object.entries(rest).forEach(([k, v]) => params.append(k, v));
+  if (!isAllowedEndpoint(endpoint, API_FOOTBALL_ENDPOINTS)) {
+    return res.status(400).json({ error: "endpoint not allowed" });
+  }
+  const params = safeParams(rest);
+  if (!params) return res.status(400).json({ error: "invalid query parameters" });
 
   const url = `https://v3.football.api-sports.io/${endpoint}${params.toString() ? "?" + params.toString() : ""}`;
 
@@ -38,7 +42,6 @@ export default async function handler(req, res) {
     }
 
     res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=60");
-    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(200).json(data);
 
   } catch (err) {

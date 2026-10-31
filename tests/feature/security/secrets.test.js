@@ -114,3 +114,19 @@ describe.skipIf(!isGitRepo)("secrets: API routes", () => {
     expect(bad).toEqual([]);
   });
 });
+
+describe.skipIf(!isGitRepo)("secrets: key-bearing proxies stay locked down", () => {
+  const routes = () => tracked("api").filter((f) => /^api\/[^_][^/]*\.js$/.test(f));
+
+  it("no API route allows every origin (Access-Control-Allow-Origin: *)", () => {
+    expect(routes().filter((f) => /Access-Control-Allow-Origin["'`]\s*,\s*["'`]\*/.test(read(f)))).toEqual([]);
+  });
+
+  it("every route that forwards a caller-supplied endpoint uses the allow-list guard", () => {
+    const unguarded = routes().filter((f) => {
+      const src = read(f);
+      return /req\.query/.test(src) && /\bendpoint\b/.test(src) && !/isAllowedEndpoint\(/.test(src);
+    });
+    expect(unguarded, "Route forwards ?endpoint= without isAllowedEndpoint() from api/_endpointGuard.js").toEqual([]);
+  });
+});

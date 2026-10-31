@@ -1,4 +1,5 @@
 import { checkRateLimit } from "./_rateLimit.js";
+import { isAllowedEndpoint, safeParams, CITO_ENDPOINTS } from "./_endpointGuard.js";
 
 export default async function handler(req, res) {
   const allowed = await checkRateLimit(req, res, "citoapi", { requests: 30, window: "60 s" });
@@ -15,8 +16,11 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "CITO_API_KEY not configured on server" });
   }
 
-  const params = new URLSearchParams();
-  Object.entries(rest).forEach(([k, v]) => params.append(k, v));
+  if (!isAllowedEndpoint(endpoint, CITO_ENDPOINTS)) {
+    return res.status(400).json({ error: "endpoint not allowed" });
+  }
+  const params = safeParams(rest);
+  if (!params) return res.status(400).json({ error: "invalid query parameters" });
 
   const url = `https://api.citoapi.com/api/v1/${endpoint}${params.toString() ? "?" + params.toString() : ""}`;
 
@@ -36,7 +40,6 @@ export default async function handler(req, res) {
     }
 
     res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=60");
-    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(200).json(data);
 
   } catch (err) {

@@ -1,11 +1,14 @@
 import { checkRateLimit } from "./_rateLimit.js";
+import { STANDINGS_COMPETITIONS } from "./_endpointGuard.js";
 
 export default async function handler(req, res) {
   const allowed = await checkRateLimit(req, res, "standings", { requests: 60, window: "60 s" });
   if (!allowed) return;
 
   const { comp } = req.query;
-  if (!comp) return res.status(400).json({ error: "comp param required" });
+  if (typeof comp !== "string" || !STANDINGS_COMPETITIONS.includes(comp)) {
+    return res.status(400).json({ error: `comp must be one of: ${STANDINGS_COMPETITIONS.join(", ")}` });
+  }
 
   // Champions League requires paid plan — return static flag
   if (comp === "CL") {
@@ -34,7 +37,6 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=60");
-    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(200).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });
