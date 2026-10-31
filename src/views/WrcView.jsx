@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import {
-  WRC_DRIVER_STANDINGS_2026, WRC_MANUFACTURER_STANDINGS_2026, WRC_CALENDAR_2026,
-  WRC_UPDATED, WRC_SOURCE, wrcRoundStatus, wrcDateRange,
+  WRC_DRIVER_STANDINGS, WRC_MANUFACTURER_STANDINGS, WRC_CALENDAR,
+  WRC_UPDATED, WRC_SOURCE, WRC_SEASON, wrcRoundStatus, wrcDateRange,
 } from "../data/wrc";
 import UpdatedNote from "../components/UpdatedNote";
 import styles from "./WrcView.module.css";
@@ -24,24 +24,24 @@ export default function WrcView() {
     tryScroll();
   }, []);
 
-  const leader   = WRC_DRIVER_STANDINGS_2026[0];
+  const leader   = WRC_DRIVER_STANDINGS[0];
   const topPts   = leader.pts;
-  const topMan   = WRC_MANUFACTURER_STANDINGS_2026[0];
-  const rounds   = WRC_CALENDAR_2026.map((r) => ({ ...r, status: wrcRoundStatus(r) }));
+  const topMan   = WRC_MANUFACTURER_STANDINGS[0];
+  const rounds   = WRC_CALENDAR.map((r) => ({ ...r, status: wrcRoundStatus(r) }));
   const done     = rounds.filter((r) => r.status === "done").length;
   const current  = rounds.find((r) => r.status === "live") || rounds.find((r) => r.status === "next");
   const complete = done === rounds.length;
 
   const kpis = complete
     ? [
-        { label: "2026 Champion",          val: leader.name.split(" ").pop(), sub: `${leader.team} · ${leader.pts} pts` },
-        { label: "Title Margin",           val: `${leader.pts - WRC_DRIVER_STANDINGS_2026[1].pts} pts`, sub: `over ${WRC_DRIVER_STANDINGS_2026[1].name}` },
+        { label: `${WRC_SEASON} Champion`,          val: leader.name.split(" ").pop(), sub: `${leader.team} · ${leader.pts} pts` },
+        { label: "Title Margin",           val: `${leader.pts - WRC_DRIVER_STANDINGS[1].pts} pts`, sub: `over ${WRC_DRIVER_STANDINGS[1].name}` },
         { label: "Season",                 val: "Complete", sub: `${done} of ${rounds.length} rounds run` },
         { label: "Manufacturers' Champion", val: topMan.short, sub: `${topMan.pts} pts` },
       ]
     : [
         { label: "Championship Leader", val: leader.name.split(" ").pop(), sub: `${leader.team} · ${leader.pts} pts` },
-        { label: "Rounds Complete",     val: `${done}/${rounds.length}`, sub: "2026 WRC season" },
+        { label: "Rounds Complete",     val: `${done}/${rounds.length}`, sub: `${WRC_SEASON} WRC season` },
         { label: current?.status === "live" ? "Rally Now" : "Next Rally",
           val: current ? current.name.replace(/^Rally(e)? /, "") : "—",
           sub: current ? `${current.country} · ${wrcDateRange(current)}` : "" },
@@ -66,8 +66,8 @@ export default function WrcView() {
         <div>
           <div className={styles.panel} style={{ marginBottom: 16 }} id="standings">
             <h3 className={styles.panelTitle}>Driver Standings</h3>
-            <p className={styles.eventLabel}>2026 WRC season · {complete ? "final standings" : `after Round ${done}`}</p>
-            {WRC_DRIVER_STANDINGS_2026.map((d) => (
+            <p className={styles.eventLabel}>{WRC_SEASON} WRC season · {complete ? "final standings" : `after Round ${done}`}</p>
+            {WRC_DRIVER_STANDINGS.map((d) => (
               <div key={d.name} className={styles.driverRow}>
                 <span className={styles.pos} style={{ color: posColor(d.pos) }}>{d.pos}</span>
                 <div className={styles.driverInfo}>
@@ -87,7 +87,7 @@ export default function WrcView() {
 
           <div className={styles.panel}>
             <h3 className={styles.panelTitle}>Manufacturers</h3>
-            {WRC_MANUFACTURER_STANDINGS_2026.map((m) => (
+            {WRC_MANUFACTURER_STANDINGS.map((m) => (
               <div key={m.name} className={styles.driverRow}>
                 <span className={styles.pos} style={{ color: posColor(m.pos) }}>{m.pos}</span>
                 <div className={styles.driverInfo}>
@@ -106,7 +106,7 @@ export default function WrcView() {
         </div>
 
         <div className={styles.panel}>
-          <h3 className={styles.panelTitle}>2026 Calendar</h3>
+          <h3 className={styles.panelTitle}>{WRC_SEASON} Calendar</h3>
           <div className={styles.calendar}>
             {rounds.map((r) => (
               <div key={r.round} className={`${styles.calRow} ${r.status === "next" || r.status === "live" ? styles.calNext : r.status === "done" ? styles.calDone : ""}`}>

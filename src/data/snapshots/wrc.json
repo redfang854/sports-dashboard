@@ -1,0 +1,233 @@
+{
+  "updated": "2026-10-27",
+  "source": "FIA WRC results via Wikipedia (CC BY-SA 4.0)",
+  "season": "2026",
+  "drivers": [
+    {
+      "pos": 1,
+      "name": "Elfyn Evans",
+      "nationality": "🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales",
+      "team": "Toyota",
+      "car": "GR Yaris Rally1",
+      "pts": 243,
+      "color": "#CC0000"
+    },
+    {
+      "pos": 2,
+      "name": "Oliver Solberg",
+      "nationality": "🇸🇪 Sweden",
+      "team": "Toyota",
+      "car": "GR Yaris Rally1",
+      "pts": 238,
+      "color": "#CC0000"
+    },
+    {
+      "pos": 3,
+      "name": "Sami Pajari",
+      "nationality": "🇫🇮 Finland",
+      "team": "Toyota",
+      "car": "GR Yaris Rally1",
+      "pts": 237,
+      "color": "#CC0000"
+    },
+    {
+      "pos": 4,
+      "name": "Sébastien Ogier",
+      "nationality": "🇫🇷 France",
+      "team": "Toyota",
+      "car": "GR Yaris Rally1",
+      "pts": 189,
+      "color": "#CC0000"
+    },
+    {
+      "pos": 5,
+      "name": "Adrien Fourmaux",
+      "nationality": "🇫🇷 France",
+      "team": "Hyundai",
+      "car": "i20 N Rally1",
+      "pts": 183,
+      "color": "#002C5F"
+    },
+    {
+      "pos": 6,
+      "name": "Takamoto Katsuta",
+      "nationality": "🇯🇵 Japan",
+      "team": "Toyota",
+      "car": "GR Yaris Rally1",
+      "pts": 175,
+      "color": "#CC0000"
+    },
+    {
+      "pos": 7,
+      "name": "Thierry Neuville",
+      "nationality": "🇧🇪 Belgium",
+      "team": "Hyundai",
+      "car": "i20 N Rally1",
+      "pts": 134,
+      "color": "#002C5F"
+    },
+    {
+      "pos": 8,
+      "name": "Hayden Paddon",
+      "nationality": "🇳🇿 New Zealand",
+      "team": "Hyundai",
+      "car": "i20 N Rally1",
+      "pts": 38,
+      "color": "#002C5F"
+    },
+    {
+      "pos": 9,
+      "name": "Josh McErlean",
+      "nationality": "🇮🇪 Ireland",
+      "team": "M-Sport",
+      "car": "Puma Rally1",
+      "pts": 35,
+      "color": "#003580"
+    },
+    {
+      "pos": 10,
+      "name": "Esapekka Lappi",
+      "nationality": "🇫🇮 Finland",
+      "team": "Hyundai",
+      "car": "i20 N Rally1",
+      "pts": 33,
+      "color": "#002C5F"
+    }
+  ],
+  "manufacturers": [
+    {
+      "pos": 1,
+      "name": "Toyota Gazoo Racing WRT",
+      "short": "Toyota",
+      "pts": 662,
+      "color": "#CC0000"
+    },
+    {
+      "pos": 2,
+      "name": "Hyundai Shell Mobis WRT",
+      "short": "Hyundai",
+      "pts": 440,
+      "color": "#002C5F"
+    },
+    {
+      "pos": 3,
+      "name": "Toyota Gazoo Racing WRT2",
+      "short": "Toyota",
+      "pts": 251,
+      "color": "#CC0000"
+    },
+    {
+      "pos": 4,
+      "name": "M-Sport Ford WRT",
+      "short": "M-Sport",
+      "pts": 168,
+      "color": "#003580"
+    }
+  ],
+  "calendar": [
+    {
+      "round": 1,
+      "name": "Rallye Monte-Carlo",
+      "country": "🇲🇨 Monaco",
+      "start": "2026-01-22",
+      "end": "2026-01-25",
+      "winner": "Solberg"
+    },
+    {
+      "round": 2,
+      "name": "Rally Sweden",
+      "country": "🇸🇪 Sweden",
+      "start": "2026-02-12",
+      "end": "2026-02-15",
+      "winner": "Evans"
+    },
+    {
+      "round": 3,
+      "name": "Safari Rally Kenya",
+      "country": "🇰🇪 Kenya",
+      "start": "2026-03-12",
+      "end": "2026-03-15",
+      "winner": "Katsuta"
+    },
+    {
+      "round": 4,
+      "name": "Croatia Rally",
+      "country": "🇭🇷 Croatia",
+      "start": "2026-04-09",
+      "end": "2026-04-12",
+      "winner": "Katsuta"
+    },
+    {
+      "round": 5,
+      "name": "Rally Islas Canarias",
+      "country": "🇪🇸 Spain",
+      "start": "2026-04-23",
+      "end": "2026-04-26",
+      "winner": "Ogier"
+    },
+    {
+      "round": 6,
+      "name": "Rally de Portugal",
+      "country": "🇵🇹 Portugal",
+      "start": "2026-05-07",
+      "end": "2026-05-10",
+      "winner": "Neuville"
+    },
+    {
+      "round": 7,
+      "name": "Rally Japan",
+      "country": "🇯🇵 Japan",
+      "start": "2026-05-28",
+      "end": "2026-05-31",
+      "winner": "Evans"
+    },
+    {
+      "round": 8,
+      "name": "Acropolis Rally",
+      "country": "🇬🇷 Greece",
+      "start": "2026-06-25",
+      "end": "2026-06-28",
+      "winner": "Ogier"
+    },
+    {
+      "round": 9,
+      "name": "Rally Estonia",
+      "country": "🇪🇪 Estonia",
+      "start": "2026-07-16",
+      "end": "2026-07-19",
+      "winner": "Pajari"
+    },
+    {
+      "round": 10,
+      "name": "Rally Finland",
+      "country": "🇫🇮 Finland",
+      "start": "2026-07-30",
+      "end": "2026-08-02",
+      "winner": "Pajari"
+    },
+    {
+      "round": 11,
+      "name": "Rally del Paraguay",
+      "country": "🇵🇾 Paraguay",
+      "start": "2026-08-27",
+      "end": "2026-08-30",
+      "winner": "Pajari"
+    },
+    {
+      "round": 12,
+      "name": "Rally Chile",
+      "country": "🇨🇱 Chile",
+      "start": "2026-09-10",
+      "end": "2026-09-13",
+      "winner": "Solberg"
+    },
+    {
+      "round": 13,
+      "name": "Rally Italia Sardegna",
+      "country": "🇮🇹 Italy",
+      "start": "2026-10-01",
+      "end": "2026-10-04",
+      "winner": "Solberg"
+    }
+  ]
+}

@@ -13,8 +13,8 @@
  */
 import { describe, it, expect } from "vitest";
 import {
-  WRC_CALENDAR_2026 as CAL, WRC_DRIVER_STANDINGS_2026 as DRIVERS,
-  WRC_MANUFACTURER_STANDINGS_2026 as MAKERS, WRC_UPDATED, wrcRoundStatus, wrcDateRange,
+  WRC_CALENDAR as CAL, WRC_DRIVER_STANDINGS as DRIVERS,
+  WRC_MANUFACTURER_STANDINGS as MAKERS, WRC_UPDATED, wrcRoundStatus, wrcDateRange,
 } from "../../../src/data/wrc.js";
 
 const at = (iso) => new Date(`${iso}T12:00:00Z`);

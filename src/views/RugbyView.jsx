@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import {
-  SIX_NATIONS_2026, URC_STANDINGS_2026_27, PREMIERSHIP_STANDINGS_2026_27, RECENT_RUGBY,
-  RUGBY_UPDATED, RUGBY_SOURCE,
+  SIX_NATIONS, URC_STANDINGS, PREMIERSHIP_STANDINGS, RECENT_RUGBY,
+  RUGBY_UPDATED, RUGBY_SOURCE, RUGBY_SEASONS,
 } from "../data/rugby";
 import UpdatedNote from "../components/UpdatedNote";
 import styles from "./RugbyView.module.css";
 import SportsRecents from "../components/SportsRecents";
 
 const COMPS = [
-  { id: "sixnations",  label: "Six Nations", season: "2026 · final table",   data: SIX_NATIONS_2026 },
-  { id: "urc",         label: "URC",         season: "2026–27 · in progress", data: URC_STANDINGS_2026_27 },
-  { id: "premiership", label: "Premiership", season: "2026–27 · in progress", data: PREMIERSHIP_STANDINGS_2026_27 },
+  { id: "sixnations",  label: "Six Nations", season: RUGBY_SEASONS.sixnations,  data: SIX_NATIONS },
+  { id: "urc",         label: "URC",         season: RUGBY_SEASONS.urc,         data: URC_STANDINGS },
+  { id: "premiership", label: "Premiership", season: RUGBY_SEASONS.premiership, data: PREMIERSHIP_STANDINGS },
 ];
 const fmtDate = (iso) => new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 
@@ -72,9 +72,9 @@ export default function RugbyView() {
 
   const active    = COMPS.find((c) => c.id === comp) || COMPS[0];
   const standings = active.data;
-  const six = SIX_NATIONS_2026[0], urc = URC_STANDINGS_2026_27[0], prem = PREMIERSHIP_STANDINGS_2026_27[0];
+  const six = SIX_NATIONS[0], urc = URC_STANDINGS[0], prem = PREMIERSHIP_STANDINGS[0];
   const kpis = [
-    { label: "Six Nations 2026",    val: six.team,  sub: `Champions · ${six.pts} pts${six.l === 0 && six.d === 0 ? " · Grand Slam" : ""}` },
+    { label: `Six Nations ${RUGBY_SEASONS.sixnations.split(" ")[0]}`, val: six.team,  sub: `${/final/.test(RUGBY_SEASONS.sixnations) ? "Champions" : "Leaders"} · ${six.pts} pts${/final/.test(RUGBY_SEASONS.sixnations) && six.l === 0 && six.d === 0 ? " · Grand Slam" : ""}` },
     { label: "URC Leaders",         val: urc.team,  sub: `${urc.pts} pts from ${urc.p}` },
     { label: "Premiership Leaders", val: prem.team, sub: `${prem.pts} pts from ${prem.p}` },
     { label: "World Champions",     val: "S. Africa", sub: "Rugby World Cup 2023" },

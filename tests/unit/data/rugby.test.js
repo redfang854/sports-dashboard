@@ -8,10 +8,10 @@
  */
 import { describe, it, expect } from "vitest";
 import {
-  SIX_NATIONS_2026, URC_STANDINGS_2026_27, PREMIERSHIP_STANDINGS_2026_27, RECENT_RUGBY, RUGBY_UPDATED,
+  SIX_NATIONS, URC_STANDINGS, PREMIERSHIP_STANDINGS, RECENT_RUGBY, RUGBY_UPDATED,
 } from "../../../src/data/rugby.js";
 
-const tables = [["Six Nations", SIX_NATIONS_2026], ["URC", URC_STANDINGS_2026_27], ["Premiership", PREMIERSHIP_STANDINGS_2026_27]];
+const tables = [["Six Nations", SIX_NATIONS], ["URC", URC_STANDINGS], ["Premiership", PREMIERSHIP_STANDINGS]];
 
 describe.each(tables)("%s table", (_, table) => {
   it("is in position order with points never increasing", () => {
@@ -29,8 +29,8 @@ describe.each(tables)("%s table", (_, table) => {
 });
 
 it("Six Nations has six teams who each played five matches", () => {
-  expect(SIX_NATIONS_2026).toHaveLength(6);
-  expect(SIX_NATIONS_2026.every((t) => t.p === 5)).toBe(true);
+  expect(SIX_NATIONS).toHaveLength(6);
+  expect(SIX_NATIONS.every((t) => t.p === 5)).toBe(true);
 });
 
 it("recent results have valid dates on or before RUGBY_UPDATED and non-negative scores", () => {
