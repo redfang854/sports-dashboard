@@ -24,7 +24,7 @@ const auth = vi.hoisted(() => ({ value: null }));
 vi.mock("../../src/context/AuthContext", () => ({ useAuth: () => auth.value }));
 
 vi.mock("../../src/components/LoadingScreen", () => ({
-  default: function LoadingScreen({ onDone }) { useEffect(() => { onDone(); }, [onDone]); return null; },
+  default: function LoadingScreen({ onDone }) { useEffect(() => { onDone(); }, [onDone]); return <div data-testid="intro" />; },
 }));
 const stub = (name) => ({ default: () => <div data-testid="view">{name}</div> });
 vi.mock("../../src/views/FootballView", () => stub("football-view"));
@@ -56,7 +56,7 @@ async function renderAt(path, { adminEmail = ADMIN } = {}) {
 const signedIn = (email) => ({ user: { email }, loading: false, supabaseReady: true, signInWithEmail: vi.fn(), signOut: vi.fn() });
 const visitor = () => ({ user: null, loading: false, supabaseReady: true, signInWithEmail: vi.fn(), signOut: vi.fn() });
 
-beforeEach(() => { auth.value = visitor(); });
+beforeEach(() => { auth.value = visitor(); sessionStorage.clear(); });
 
 describe("public visitor", () => {
   it("sees the six sport tabs, football by default, and no auth or chat UI", async () => {
@@ -68,18 +68,18 @@ describe("public visitor", () => {
     expect(screen.queryByText(/chat|online/i)).not.toBeInTheDocument();
   });
 
-  it("switches views when a sport tab is clicked", async () => {
+  it("switches views when a sport tab is clicked, and puts the tab in the URL", async () => {
     await renderAt("/");
     fireEvent.click(screen.getByRole("tab", { name: "WRC" }));
     expect(screen.getByTestId("view")).toHaveTextContent("wrc-view");
     expect(screen.getByRole("tab", { name: "WRC" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByTestId("path")).toHaveTextContent("/wrc");
+    expect(document.title).toBe("WRC · Apex");
   });
 
-  it("opens the sport named in the URL hash", async () => {
-    window.location.hash = "#boxing";
-    await renderAt("/");
+  it("still honours old #sport links (e.g. /#boxing)", async () => {
+    await renderAt("/#boxing");
     expect(screen.getByTestId("view")).toHaveTextContent("boxing-view");
-    window.location.hash = "";
   });
 
   it("gets the admin sign-in form at /admin and never AdminView", async () => {
@@ -97,7 +97,7 @@ describe("public visitor", () => {
   it("leaves /admin when a sport tab is clicked", async () => {
     await renderAt("/admin");
     fireEvent.click(screen.getByRole("tab", { name: "Rugby" }));
-    expect(screen.getByTestId("path")).toHaveTextContent(/^\/$/);
+    expect(screen.getByTestId("path")).toHaveTextContent("/rugby");
     expect(screen.getByTestId("view")).toHaveTextContent("rugby-view");
   });
 });
@@ -150,5 +150,38 @@ describe("misconfiguration and loading", () => {
     await renderAt("/admin");
     expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     expect(screen.queryByText("admin-view")).not.toBeInTheDocument();
+  });
+});
+
+describe("reloading keeps the visitor where they were", () => {
+  it.each([["/f1", "f1-view", "Formula 1"], ["/boxing", "boxing-view", "Boxing"], ["/rugby/", "rugby-view", "Rugby"], ["/MMA", "mma-view", "MMA"]])(
+    "%s opens %s directly", async (path, view, tab) => {
+      await renderAt(path);
+      expect(screen.getByTestId("view")).toHaveTextContent(view);
+      expect(screen.getByRole("tab", { name: tab })).toHaveAttribute("aria-selected", "true");
+    }
+  );
+
+  it("unknown paths fall back to Football instead of a blank page", async () => {
+    await renderAt("/nonsense");
+    expect(screen.getByTestId("view")).toHaveTextContent("football-view");
+  });
+
+  it("plays the intro on the first visit and records it for the session", async () => {
+    await renderAt("/");
+    expect(sessionStorage.getItem("apex:intro-seen")).toBe("1");
+  });
+
+  it("skips the intro on a reload in the same session", async () => {
+    sessionStorage.setItem("apex:intro-seen", "1");
+    await renderAt("/boxing");
+    expect(screen.queryByTestId("intro")).not.toBeInTheDocument();
+    expect(screen.getByTestId("view")).toHaveTextContent("boxing-view");
+  });
+
+  it("does not repeat a navigation when the current tab is clicked", async () => {
+    await renderAt("/f1");
+    fireEvent.click(screen.getByRole("tab", { name: "Formula 1" }));
+    expect(screen.getByTestId("path")).toHaveTextContent("/f1");
   });
 });

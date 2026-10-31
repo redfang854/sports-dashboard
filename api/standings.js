@@ -36,7 +36,10 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=60");
+    // football-data.org's free plan allows 10 requests/minute and a page
+    // load needs up to 5 tables, so lean on Vercel's CDN: fresh for 10 min,
+    // then served stale for up to an hour while refreshing in the background.
+    res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=3600");
     return res.status(200).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });

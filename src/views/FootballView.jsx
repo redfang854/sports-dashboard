@@ -39,9 +39,16 @@ function fetchStandings(compId) {
   return promise;
 }
 
-async function loadStandings(compId) {
+async function loadStandings(compId, retried = false) {
   const res = await fetch(`/api/standings?comp=${compId}`);
-  if (res.status === 429) throw new Error("Rate limited — try again in a moment");
+  if (res.status === 429) {
+    // Upstream free tier is 10 req/min; one delayed retry usually succeeds.
+    if (!retried) {
+      await new Promise((r) => setTimeout(r, 7000));
+      return loadStandings(compId, true);
+    }
+    throw new Error("Rate limited — try again in a moment");
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
   return data.standings[0].table.map((e) => ({

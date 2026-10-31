@@ -22,20 +22,32 @@ const TABS = [
 ];
 
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+const INTRO_KEY = "apex:intro-seen";
+
+// "/f1" -> "f1"; "/admin" -> "admin"; "/" or unknown -> legacy "#boxing"
+// hash links still work, otherwise Football.
+function tabFromLocation({ pathname, hash }) {
+  const segment = pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+  if (segment === "admin") return "admin";
+  if (TABS.some((t) => t.id === segment)) return segment;
+  const fromHash = hash.replace("#", "");
+  return TABS.some((t) => t.id === fromHash) ? fromHash : "football";
+}
 
 export default function App() {
   const { user, loading: authLoading, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const onAdminRoute = location.pathname.replace(/\/+$/, "") === "/admin";
   const isAdmin = !!user && !!ADMIN_EMAIL && user.email === ADMIN_EMAIL;
-  const [activeTab,  setActiveTab]  = useState(() => {
-    const hash = window.location.hash.replace("#", "");
-    return TABS.some((t) => t.id === hash) ? hash : "football";
+  // Intro animation plays once per browser session, so a reload drops the
+  // visitor straight back onto the page they were on.
+  const [loaded, setLoaded] = useState(() => {
+    try { return sessionStorage.getItem(INTRO_KEY) === "1"; } catch { return false; }
   });
-  const [loaded,     setLoaded]     = useState(false);
-
-  const handleDone = useCallback(() => setLoaded(true), []);
+  const handleDone = useCallback(() => {
+    try { sessionStorage.setItem(INTRO_KEY, "1"); } catch { /* private mode: just replay next time */ }
+    setLoaded(true);
+  }, []);
 
   // The tab row scrolls sideways on narrow screens with its scrollbar
   // hidden; track which edges have more tabs so CSS can fade them as a hint.
@@ -54,18 +66,22 @@ export default function App() {
     return () => { observer?.disconnect(); el.removeEventListener("scroll", update); };
   }, []);
 
-  // The Admin tab lives at /admin; sport tabs live at /. The route decides
-  // which one is showing, so there is no state to keep in sync.
-  const currentTab = onAdminRoute ? "admin" : activeTab;
+  // Every tab has its own URL (/football, /f1, ..., /admin), so reloading,
+  // bookmarking, sharing and Back/Forward all keep the current tab. The URL
+  // is the single source of truth: no tab state to keep in sync.
+  const currentTab = tabFromLocation(location);
+
+  useEffect(() => {
+    const label = currentTab === "admin" ? "Admin" : TABS.find((t) => t.id === currentTab)?.label;
+    document.title = label ? `${label} · Apex` : "Apex — Your Edge in Every Sport";
+  }, [currentTab]);
 
   function selectTab(id, target) {
     target?.scrollIntoView?.({ block: "nearest", inline: "nearest", behavior: "smooth" });
-    if (id === "admin") { navigate("/admin"); return; }
-    setActiveTab(id);
-    if (onAdminRoute) navigate("/");
+    if (id !== currentTab) navigate(`/${id}`);
   }
 
-  const showAdminLogin = onAdminRoute && !isAdmin && !authLoading;
+  const showAdminLogin = currentTab === "admin" && !isAdmin && !authLoading;
 
   return (
     <>
