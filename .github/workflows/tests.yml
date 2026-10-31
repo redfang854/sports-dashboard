@@ -22,6 +22,9 @@ jobs:
 
       - run: npm ci
 
+      # Whole-project lint (React hooks rules, unused code). Clean as of this commit.
+      - run: npm run lint
+
       # Unit + feature suites. Every external service (Supabase, Upstash,
       # RSS feeds) is mocked, so no secrets are needed here.
       - run: npm test

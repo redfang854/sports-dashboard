@@ -55,6 +55,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ url: publicUrlData.publicUrl, path });
   } catch (err) {
     console.error("upload-hero-image error:", err.message);
-    return res.status(500).json({ error: err.message });
+    console.error("upload-hero-image failed:", err);
+    return res.status(500).json({ error: "Internal error" });
   }
 }

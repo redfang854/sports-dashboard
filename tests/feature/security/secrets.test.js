@@ -130,3 +130,13 @@ describe.skipIf(!isGitRepo)("secrets: key-bearing proxies stay locked down", () 
     expect(unguarded, "Route forwards ?endpoint= without isAllowedEndpoint() from api/_endpointGuard.js").toEqual([]);
   });
 });
+
+describe.skipIf(!isGitRepo)("errors: API routes don't leak internals", () => {
+  it("never send raw error messages (stack/DB/upstream details) to the client", () => {
+    const leaky = tracked("api").filter((f) => /^api\/[^_]/.test(f)).filter((f) =>
+      /res\.(?:status\([^)]*\)\.)?json\(\{[^}]*(?:err|error|e)\.message/.test(read(f).replace(/\s+/g, " "))
+    );
+    expect(leaky, "Log the error server-side and return a generic message instead").toEqual([]);
+  });
+});
+

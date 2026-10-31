@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Avatar from "./Avatar";
-import { FIGHTER_IMAGES, F1_DRIVER_IMAGES } from "../data/images";
 import styles from "./Modal.module.css";
 
 function useEscapeKey(onClose) {
@@ -15,8 +14,7 @@ export function FighterModal({ fighter, onClose }) {
   useEscapeKey(onClose);
   if (!fighter) return null;
 
-  const { name, nationality, division, record, age, reach, finishRate, lastResult, bio, id } = fighter;
-  const imgSrc = FIGHTER_IMAGES[id] || FIGHTER_IMAGES[fighter.fighterId];
+  const { name, nationality, division, record, age, reach, finishRate, lastResult, bio } = fighter;
 
   return (
     <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -24,7 +22,7 @@ export function FighterModal({ fighter, onClose }) {
         <button className={styles.closeBtn} onClick={onClose} aria-label="Close">✕</button>
 
         <div className={styles.header}>
-          <Avatar src={imgSrc} name={name} color="#E24B4A" size={64} shape="circle" />
+          <Avatar name={name} color="#E24B4A" size={64} shape="circle" />
           <div>
             <h2 className={styles.name}>{name}</h2>
             <p className={styles.sub}>{nationality} · {division}</p>
@@ -61,24 +59,29 @@ export function FighterModal({ fighter, onClose }) {
 
 export function DriverModal({ driver, onClose }) {
   useEscapeKey(onClose);
-  const [careerStats, setCareerStats] = useState(null);
-  const [loadingStats, setLoadingStats] = useState(false);
+  // Stats are tagged with the driver they belong to, so "loading" is derived
+  // (no synchronous setState in the effect) and a slow response for a
+  // previous driver can never show under the current one.
+  const driverName = driver?.name;
+  const [stats, setStats] = useState({ name: null, data: null });
 
   useEffect(() => {
-    if (!driver) return;
-    setLoadingStats(true);
-    fetch(`/api/f1-driver?name=${encodeURIComponent(driver.name)}`)
+    if (!driverName) return;
+    let cancelled = false;
+    fetch(`/api/f1-driver?name=${encodeURIComponent(driverName)}`)
       .then((r) => r.json())
-      .then((data) => setCareerStats(data.found ? data : null))
-      .catch(() => setCareerStats(null))
-      .finally(() => setLoadingStats(false));
-  }, [driver?.name]);
+      .then((data) => data.found ? data : null)
+      .catch(() => null)
+      .then((data) => { if (!cancelled) setStats({ name: driverName, data }); });
+    return () => { cancelled = true; };
+  }, [driverName]);
+
+  const loadingStats = !!driverName && stats.name !== driverName;
+  const careerStats  = stats.name === driverName ? stats.data : null;
 
   if (!driver) return null;
 
-  const { name, team, nationality, age, pts, wins, podiums, color, bio, id, driverId } = driver;
-  const key     = id || driverId;
-  const imgSrc  = F1_DRIVER_IMAGES[key];
+  const { name, team, nationality, age, pts, wins, podiums, color, bio } = driver;
 
   return (
     <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -89,7 +92,7 @@ export function DriverModal({ driver, onClose }) {
         <div className={styles.accentBar} style={{ background: color || "#333" }} />
 
         <div className={styles.header}>
-          <Avatar src={imgSrc} name={name} color={color || "#888"} size={64} shape="circle" />
+          <Avatar name={name} color={color || "#888"} size={64} shape="circle" />
           <div style={{ flex: 1, minWidth: 0 }}>
             <h2 className={styles.name}>{name}</h2>
             <p className={styles.sub}>{nationality}</p>

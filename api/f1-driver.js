@@ -76,7 +76,8 @@ export default async function handler(req, res) {
       LIMIT 5
     `);
   } catch (err) {
-    return res.status(500).json({ error: 'Database temporarily unreachable, please retry', detail: err.message });
+    console.error("f1-driver failed:", err);
+    return res.status(500).json({ error: 'Database temporarily unreachable, please retry' });
   }
 
   const d = stats[0];

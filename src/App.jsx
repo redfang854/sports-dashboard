@@ -1,16 +1,21 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, lazy, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-import MmaView      from "./views/MmaView";
-import F1View       from "./views/F1View";
-import FootballView from "./views/FootballView";
-import BoxingView   from "./views/BoxingView";
-import RugbyView    from "./views/RugbyView";
-import WrcView      from "./views/WrcView";
 import LoadingScreen from "./components/LoadingScreen";
 import AdminLogin   from "./components/AdminLogin";
+import { LoadingState } from "./components/StatusStates";
 import styles from "./App.module.css";
-import AdminView from "./views/AdminView";
+
+// Each tab is its own JS chunk, loaded the first time it's opened, so the
+// initial download is the shell plus one sport instead of all six + admin.
+const FootballView = lazy(() => import("./views/FootballView"));
+const F1View       = lazy(() => import("./views/F1View"));
+const MmaView      = lazy(() => import("./views/MmaView"));
+const BoxingView   = lazy(() => import("./views/BoxingView"));
+const RugbyView    = lazy(() => import("./views/RugbyView"));
+const WrcView      = lazy(() => import("./views/WrcView"));
+const AdminView    = lazy(() => import("./views/AdminView"));
+const AboutView    = lazy(() => import("./views/AboutView"));
 
 const TABS = [
   { id: "football", label: "Football" },
@@ -28,7 +33,7 @@ const INTRO_KEY = "apex:intro-seen";
 // hash links still work, otherwise Football.
 function tabFromLocation({ pathname, hash }) {
   const segment = pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
-  if (segment === "admin") return "admin";
+  if (segment === "admin" || segment === "about") return segment;
   if (TABS.some((t) => t.id === segment)) return segment;
   const fromHash = hash.replace("#", "");
   return TABS.some((t) => t.id === fromHash) ? fromHash : "football";
@@ -72,7 +77,7 @@ export default function App() {
   const currentTab = tabFromLocation(location);
 
   useEffect(() => {
-    const label = currentTab === "admin" ? "Admin" : TABS.find((t) => t.id === currentTab)?.label;
+    const label = currentTab === "admin" ? "Admin" : currentTab === "about" ? "About" : TABS.find((t) => t.id === currentTab)?.label;
     document.title = label ? `${label} · Apex` : "Apex — Your Edge in Every Sport";
   }, [currentTab]);
 
@@ -87,7 +92,7 @@ export default function App() {
     <>
       {!loaded && <LoadingScreen onDone={handleDone} />}
 
-      <div className={styles.app} style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.4s ease" }}>
+      <div className={styles.app} style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.25s ease" }}>
         <header className={styles.header}>
           <div className={styles.headerInner}>
             <div className={styles.topRow}>
@@ -144,7 +149,7 @@ export default function App() {
         </header>
 
         <main className={styles.main}>
-          {showAdminLogin ? <AdminLogin adminEmail={ADMIN_EMAIL} /> : <>
+          {showAdminLogin ? <AdminLogin adminEmail={ADMIN_EMAIL} /> : <Suspense fallback={<LoadingState message="Loading…" />}>
           {currentTab === "football" && <FootballView />}
           {currentTab === "f1"       && <F1View />}
           {currentTab === "mma"      && <MmaView />}
@@ -152,11 +157,19 @@ export default function App() {
           {currentTab === "rugby"    && <RugbyView />}
           {currentTab === "wrc"      && <WrcView />}
           {currentTab === "admin"    && isAdmin && <AdminView />}
-          </>}
+          {currentTab === "about"    && <AboutView />}
+          </Suspense>}
         </main>
 
         <footer className={styles.footer}>
-          <p>APEX · Live data: Formula 1 via Jolpica · Football via football-data.org · API-Football · Built with React + Vite · Deployed on Vercel</p>
+          <p>
+            Built by <a href="https://sudo-hinga.hingabrayo.workers.dev" target="_blank" rel="noopener noreferrer">Brian Hinga</a>
+            {" · "}<a href="https://github.com/redfang854/sports-dashboard" target="_blank" rel="noopener noreferrer">Source on GitHub</a>
+            {" · "}<a href="/about" onClick={(e) => { e.preventDefault(); navigate("/about"); window.scrollTo(0, 0); }}>About &amp; data credits</a>
+          </p>
+          <p className={styles.footerSub}>
+            Data: Jolpica F1, football-data.org, API-Football, CitoAPI, TheSportsDB, BBC Sport &amp; Autosport RSS, Wikipedia (CC BY-SA 4.0). Not affiliated with any league or team.
+          </p>
         </footer>
       </div>
 

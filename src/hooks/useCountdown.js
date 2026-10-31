@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 
+const remaining = (targetISO) => Math.max(0, new Date(targetISO) - Date.now());
+
 export function useCountdown(targetISO) {
-  const calc = () => Math.max(0, new Date(targetISO) - Date.now());
-  const [diff, setDiff] = useState(calc);
+  const [diff, setDiff] = useState(() => remaining(targetISO));
 
   useEffect(() => {
-    const id = setInterval(() => setDiff(calc()), 1000);
+    const id = setInterval(() => setDiff(remaining(targetISO)), 1000);
     return () => clearInterval(id);
   }, [targetISO]);
 

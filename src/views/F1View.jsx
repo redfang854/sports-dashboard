@@ -5,7 +5,6 @@ import Countdown from "../components/Countdown";
 import { DriverModal } from "../components/Modal";
 import { LoadingState, ErrorState, LiveBadge } from "../components/StatusStates";
 import Avatar from "../components/Avatar";
-import { F1_DRIVER_IMAGES } from "../data/images";
 import { F1_DRIVERS } from "../data";
 import styles from "./F1View.module.css";
 import SportsRecents from "../components/SportsRecents";
@@ -150,11 +149,10 @@ export default function F1View() {
 
           {drivers.data?.map((raw) => {
             const driver = enrichDriver(raw);
-            const imgSrc = F1_DRIVER_IMAGES[driver.id];
             return (
               <button key={driver.driverId} className={styles.driverRow} onClick={() => setSelectedDriver(driver)}>
                 <span className={styles.pos} style={{ color: posColor(driver.pos) }}>{driver.pos}</span>
-                <Avatar src={imgSrc} name={driver.name} color={driver.color} size={36} shape="circle" />
+                <Avatar name={driver.name} color={driver.color} size={36} shape="circle" />
                 <div className={styles.driverInfo}>
                   <p className={styles.driverName}>{driver.name}</p>
                   <p className={styles.driverTeam}>{driver.team}</p>

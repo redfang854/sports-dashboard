@@ -107,7 +107,11 @@
   padding: 16px 20px; text-align: center;
 }
 
-.footer p { font-size: var(--fs-2xs); color: var(--text-faint); }
+.footer p { font-size: var(--fs-xs); color: var(--text-muted); margin: 0; }
+.footer p + p { margin-top: 6px; }
+.footer a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+.footer a:hover { color: var(--accent); border-color: var(--accent); }
+.footerSub { font-size: var(--fs-2xs) !important; color: var(--text-faint) !important; }
 
 .topRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 8px; border-bottom: 1px solid var(--border); }
 .authArea { flex-shrink: 0; }

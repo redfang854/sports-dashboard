@@ -1,39 +1,38 @@
 // @vitest-environment jsdom
 /**
- * UNIT — src/context/AuthContext.jsx (admin-only session state)
+ * UNIT — src/context/AuthContext.jsx (admin-only session state, lazy Supabase)
  *
- * The Supabase client is replaced with a fake, so no real auth calls are made.
+ * The Supabase client is replaced with a fake; getSupabase() is spied on to
+ * prove when the library is (and is not) loaded.
  *
- * Goes right: an existing session is restored on load, auth events update the
- * user, sign-in/out go through Supabase.
- * Goes wrong (each asserted): Supabase not configured (must not crash, user stays
- * null), sign-in errors propagate to the caller, signOut() hanging on the
- * supabase-js lock bug (must force-clear after 3s), and the auth listener must be
- * unsubscribed on unmount (no leaks).
- * Regression guard: the removed public features (sign-up, Google, password reset,
- * profiles) must not come back into the context's public API.
+ * Goes right: visitors never load Supabase; a saved admin session is
+ * restored; sign-in loads it on demand; auth events update the user.
+ * Goes wrong (asserted): Supabase not configured (no crash, nobody), sign-in
+ * errors propagate, signOut() hanging on the supabase-js lock bug (force
+ * clear after 3s), listener unsubscribed on unmount.
+ * Regression guard: removed public features (sign-up, Google, reset,
+ * profiles) stay out of the context API.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 
 const fake = vi.hoisted(() => {
-  const state = { ready: true, session: null, listener: null };
+  const state = { ready: true, stored: false, session: null, listener: null };
   const auth = {
     getSession: vi.fn(async () => ({ data: { session: state.session } })),
-    onAuthStateChange: vi.fn((cb) => {
-      state.listener = cb;
-      return { data: { subscription: { unsubscribe: auth.unsubscribe } } };
-    }),
+    onAuthStateChange: vi.fn((cb) => { state.listener = cb; return { data: { subscription: { unsubscribe: auth.unsubscribe } } }; }),
     unsubscribe: vi.fn(),
     signInWithPassword: vi.fn(),
     signOut: vi.fn(async () => ({ error: null })),
   };
-  return { state, auth };
+  const getSupabase = vi.fn(async () => (state.ready ? { auth } : null));
+  return { state, auth, getSupabase };
 });
 
 vi.mock("../../../src/lib/supabase", () => ({
   get supabaseReady() { return fake.state.ready; },
-  get supabase() { return fake.state.ready ? { auth: fake.auth } : null; },
+  getSupabase: fake.getSupabase,
+  hasStoredSession: () => fake.state.stored,
 }));
 
 import { AuthProvider, useAuth } from "../../../src/context/AuthContext.jsx";
@@ -48,34 +47,42 @@ function Probe() {
 const mount = () => render(<AuthProvider><Probe /></AuthProvider>);
 
 beforeEach(() => {
-  fake.state.ready = true;
-  fake.state.session = null;
-  fake.state.listener = null;
+  Object.assign(fake.state, { ready: true, stored: false, session: null, listener: null });
   Object.values(fake.auth).forEach((f) => f.mockClear?.());
+  fake.getSupabase.mockClear();
 });
 afterEach(() => vi.useRealTimers());
 
 describe("AuthContext", () => {
-  it("exposes only the admin-auth API (removed features stay removed)", async () => {
+  it("exposes only the admin-auth API (removed features stay removed)", () => {
     mount();
-    await waitFor(() => expect(ctx.loading).toBe(false));
     expect(Object.keys(ctx).sort()).toEqual(["loading", "signInWithEmail", "signOut", "supabaseReady", "user"]);
   });
 
-  it("does not crash and reports nobody when Supabase is not configured", async () => {
-    fake.state.ready = false;
+  it("never loads Supabase for a visitor with no saved session", async () => {
     mount();
-    expect(await screen.findByText("nobody")).toBeInTheDocument();
-    expect(fake.auth.getSession).not.toHaveBeenCalled();
+    expect(screen.getByText("nobody")).toBeInTheDocument();
+    await new Promise((r) => setTimeout(r, 10));
+    expect(fake.getSupabase).not.toHaveBeenCalled();
   });
 
-  it("restores an existing session on load", async () => {
-    fake.state.session = { user: { email: "admin@apex.test" } };
+  it("does not crash and reports nobody when Supabase is not configured", () => {
+    fake.state.ready = false;
+    fake.state.stored = true;
     mount();
+    expect(screen.getByText("nobody")).toBeInTheDocument();
+    expect(fake.getSupabase).not.toHaveBeenCalled();
+  });
+
+  it("restores a saved session on load", async () => {
+    Object.assign(fake.state, { stored: true, session: { user: { email: "admin@apex.test" } } });
+    mount();
+    expect(screen.getByText("loading")).toBeInTheDocument();
     expect(await screen.findByText("admin@apex.test")).toBeInTheDocument();
   });
 
-  it("updates the user on auth state changes", async () => {
+  it("follows auth state events once connected", async () => {
+    Object.assign(fake.state, { stored: true, session: null });
     mount();
     await screen.findByText("nobody");
     act(() => fake.state.listener("SIGNED_IN", { user: { email: "admin@apex.test" } }));
@@ -85,33 +92,30 @@ describe("AuthContext", () => {
   });
 
   it("unsubscribes the auth listener on unmount", async () => {
+    fake.state.stored = true;
     const { unmount } = mount();
     await screen.findByText("nobody");
     unmount();
     expect(fake.auth.unsubscribe).toHaveBeenCalledOnce();
   });
 
-  it("signInWithEmail passes credentials through and returns data", async () => {
+  it("signInWithEmail loads Supabase on demand, passes credentials and sets the user", async () => {
     fake.auth.signInWithPassword.mockResolvedValue({ data: { user: { email: "a@b.c" } }, error: null });
     mount();
-    await screen.findByText("nobody");
-    await expect(ctx.signInWithEmail("a@b.c", "pw")).resolves.toEqual({ user: { email: "a@b.c" } });
+    await act(async () => { await ctx.signInWithEmail("a@b.c", "pw"); });
+    expect(fake.getSupabase).toHaveBeenCalled();
     expect(fake.auth.signInWithPassword).toHaveBeenCalledWith({ email: "a@b.c", password: "pw" });
+    expect(screen.getByText("a@b.c")).toBeInTheDocument();
   });
 
   it("signInWithEmail throws Supabase errors to the caller", async () => {
     fake.auth.signInWithPassword.mockResolvedValue({ data: null, error: new Error("Invalid login credentials") });
     mount();
-    await screen.findByText("nobody");
     await expect(ctx.signInWithEmail("a@b.c", "bad")).rejects.toThrow("Invalid login credentials");
   });
 
-  it("signOut clears the user when Supabase completes normally", async () => {
-    fake.state.session = { user: { email: "admin@apex.test" } };
-    fake.auth.signOut.mockImplementation(async () => {
-      fake.state.listener("SIGNED_OUT", null);
-      return { error: null };
-    });
+  it("signOut clears the user", async () => {
+    Object.assign(fake.state, { stored: true, session: { user: { email: "admin@apex.test" } } });
     mount();
     await screen.findByText("admin@apex.test");
     await act(() => ctx.signOut());
@@ -120,12 +124,12 @@ describe("AuthContext", () => {
 
   it("signOut force-clears the user after 3s if Supabase hangs (lock bug)", async () => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
-    fake.state.session = { user: { email: "admin@apex.test" } };
+    Object.assign(fake.state, { stored: true, session: { user: { email: "admin@apex.test" } } });
     mount();
     await screen.findByText("admin@apex.test");
 
     vi.useFakeTimers();
-    fake.auth.signOut.mockImplementation(() => new Promise(() => {})); // never settles
+    fake.auth.signOut.mockImplementation(() => new Promise(() => {}));
     let done = false;
     act(() => { ctx.signOut().then(() => { done = true; }); });
     await act(() => vi.advanceTimersByTimeAsync(2999));

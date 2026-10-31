@@ -5,10 +5,17 @@ export default function LoadingScreen({ onDone }) {
   const [phase, setPhase] = useState("enter"); // enter → bar → tagline → exit
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("bar"),     600);
-    const t2 = setTimeout(() => setPhase("tagline"), 1200);
-    const t3 = setTimeout(() => setPhase("exit"),    2000);
-    const t4 = setTimeout(() => onDone(),            2600);
+    // Shown once per session (see App.jsx). Kept short: ~1.1s total, and
+    // skipped entirely for visitors who ask for reduced motion.
+    const reduce = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      const t = setTimeout(() => onDone(), 0);
+      return () => clearTimeout(t);
+    }
+    const t1 = setTimeout(() => setPhase("bar"),     250);
+    const t2 = setTimeout(() => setPhase("tagline"), 500);
+    const t3 = setTimeout(() => setPhase("exit"),    850);
+    const t4 = setTimeout(() => onDone(),            1100);
     return () => [t1, t2, t3, t4].forEach(clearTimeout);
   }, [onDone]);
 

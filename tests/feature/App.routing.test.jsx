@@ -16,7 +16,7 @@
  * tests/unit/api/verifyAdmin.test.js.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -63,7 +63,7 @@ describe("public visitor", () => {
     await renderAt("/");
     const tabs = screen.getAllByRole("tab").map((t) => t.textContent);
     expect(tabs).toEqual(["Football", "Formula 1", "MMA", "Boxing", "Rugby", "WRC"]);
-    expect(screen.getByTestId("view")).toHaveTextContent("football-view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("football-view"));
     expect(screen.queryByRole("button", { name: /sign in|sign out/i })).not.toBeInTheDocument();
     expect(screen.queryByText(/chat|online/i)).not.toBeInTheDocument();
   });
@@ -71,7 +71,7 @@ describe("public visitor", () => {
   it("switches views when a sport tab is clicked, and puts the tab in the URL", async () => {
     await renderAt("/");
     fireEvent.click(screen.getByRole("tab", { name: "WRC" }));
-    expect(screen.getByTestId("view")).toHaveTextContent("wrc-view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("wrc-view"));
     expect(screen.getByRole("tab", { name: "WRC" })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByTestId("path")).toHaveTextContent("/wrc");
     expect(document.title).toBe("WRC · Apex");
@@ -79,12 +79,12 @@ describe("public visitor", () => {
 
   it("still honours old #sport links (e.g. /#boxing)", async () => {
     await renderAt("/#boxing");
-    expect(screen.getByTestId("view")).toHaveTextContent("boxing-view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("boxing-view"));
   });
 
   it("gets the admin sign-in form at /admin and never AdminView", async () => {
     await renderAt("/admin");
-    expect(screen.getByRole("heading", { name: "Admin" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Admin" })).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     expect(screen.queryByText("admin-view")).not.toBeInTheDocument();
   });
@@ -98,7 +98,7 @@ describe("public visitor", () => {
     await renderAt("/admin");
     fireEvent.click(screen.getByRole("tab", { name: "Rugby" }));
     expect(screen.getByTestId("path")).toHaveTextContent("/rugby");
-    expect(screen.getByTestId("view")).toHaveTextContent("rugby-view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("rugby-view"));
   });
 });
 
@@ -123,7 +123,8 @@ describe("admin", () => {
 
   it("lands on AdminView at /admin with a Sign out button", async () => {
     await renderAt("/admin");
-    expect(screen.getByTestId("view")).toHaveTextContent("admin-view");
+    await screen.findByTestId("view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("admin-view"));
     expect(screen.getByRole("tab", { name: "Admin" })).toHaveAttribute("aria-selected", "true");
     fireEvent.click(screen.getByRole("button", { name: /sign out/i }));
     expect(auth.value.signOut).toHaveBeenCalledOnce();
@@ -133,7 +134,7 @@ describe("admin", () => {
     await renderAt("/");
     fireEvent.click(screen.getByRole("tab", { name: "Admin" }));
     expect(screen.getByTestId("path")).toHaveTextContent("/admin");
-    expect(screen.getByTestId("view")).toHaveTextContent("admin-view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("admin-view"));
   });
 });
 
@@ -157,14 +158,14 @@ describe("reloading keeps the visitor where they were", () => {
   it.each([["/f1", "f1-view", "Formula 1"], ["/boxing", "boxing-view", "Boxing"], ["/rugby/", "rugby-view", "Rugby"], ["/MMA", "mma-view", "MMA"]])(
     "%s opens %s directly", async (path, view, tab) => {
       await renderAt(path);
-      expect(screen.getByTestId("view")).toHaveTextContent(view);
+      await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent(view));
       expect(screen.getByRole("tab", { name: tab })).toHaveAttribute("aria-selected", "true");
     }
   );
 
   it("unknown paths fall back to Football instead of a blank page", async () => {
     await renderAt("/nonsense");
-    expect(screen.getByTestId("view")).toHaveTextContent("football-view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("football-view"));
   });
 
   it("plays the intro on the first visit and records it for the session", async () => {
@@ -176,7 +177,7 @@ describe("reloading keeps the visitor where they were", () => {
     sessionStorage.setItem("apex:intro-seen", "1");
     await renderAt("/boxing");
     expect(screen.queryByTestId("intro")).not.toBeInTheDocument();
-    expect(screen.getByTestId("view")).toHaveTextContent("boxing-view");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("boxing-view"));
   });
 
   it("does not repeat a navigation when the current tab is clicked", async () => {
@@ -185,3 +186,32 @@ describe("reloading keeps the visitor where they were", () => {
     expect(screen.getByTestId("path")).toHaveTextContent("/f1");
   });
 });
+
+describe("credits and About page", () => {
+  it("footer credits the author and links to the source code and About page", async () => {
+    await renderAt("/");
+    const footer = screen.getByRole("contentinfo");
+    expect(footer).toHaveTextContent(/Built by Brian Hinga/);
+    expect(screen.getByRole("link", { name: "Source on GitHub" })).toHaveAttribute("href", "https://github.com/redfang854/sports-dashboard");
+    expect(footer).toHaveTextContent(/Wikipedia \(CC BY-SA 4\.0\)/);
+  });
+
+  it("the footer About link opens /about without a full page load", async () => {
+    await renderAt("/f1");
+    fireEvent.click(screen.getByRole("link", { name: /About & data credits/ }));
+    expect(screen.getByTestId("path")).toHaveTextContent("/about");
+    expect(await screen.findByRole("heading", { level: 1, name: /built by Brian Hinga/ })).toBeInTheDocument();
+    expect(document.title).toBe("About · Apex");
+  });
+
+  it("/about lists every data source and the CC BY-SA licence, with no sport tab selected", async () => {
+    await renderAt("/about");
+    await screen.findByRole("heading", { name: "Data sources and credits" });
+    for (const src of ["football-data.org", "Jolpica", "API-Football", "Wikipedia", "Wikimedia Commons", "BBC Sport"]) {
+      expect(screen.getAllByText(new RegExp(src)).length).toBeGreaterThan(0);
+    }
+    expect(screen.getByRole("link", { name: /Creative Commons Attribution-ShareAlike 4\.0/ })).toHaveAttribute("href", "https://creativecommons.org/licenses/by-sa/4.0/");
+    expect(screen.getAllByRole("tab").every((t) => t.getAttribute("aria-selected") === "false")).toBe(true);
+  });
+});
+

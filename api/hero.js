@@ -35,7 +35,8 @@ export default async function handler(req, res) {
       res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=60");
       return res.status(200).json(rows[0]);
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      console.error("hero failed:", err);
+      return res.status(500).json({ error: "Internal error" });
     }
   }
 
@@ -62,7 +63,8 @@ export default async function handler(req, res) {
       `);
       return res.status(200).json({ success: true });
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      console.error("hero failed:", err);
+      return res.status(500).json({ error: "Internal error" });
     }
   }
 
