@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./SportsRecents.module.css";
-
-function timeAgo(iso) {
-  if (!iso) return "";
-  const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
-  if (mins < 1)  return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.round(mins / 60);
-  if (hrs < 24)  return `${hrs}h ago`;
-  const days = Math.round(hrs / 24);
-  if (days < 7)  return `${days}d ago`;
-  return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short" });
-}
+import { timeAgo } from "../lib/timeAgo";
 
 // Latest headlines for one sport, served by /api/news (RSS, CDN-cached).
 // The lead story gets an image and summary; the rest are compact links.
@@ -45,7 +34,10 @@ export default function SportsRecents({ sport }) {
 
       {lead && (
         <a className={styles.lead} href={lead.url} target="_blank" rel="noopener noreferrer">
-          {lead.image && <img className={styles.leadImg} src={lead.image} alt="" loading="lazy" />}
+          {lead.image && (
+            <img className={styles.leadImg} src={lead.image} alt="" loading="lazy"
+              onError={(e) => { e.currentTarget.style.display = "none"; }} />
+          )}
           <div className={styles.leadBody}>
             <h3 className={styles.leadTitle}>{lead.title}</h3>
             {lead.summary && <p className={styles.leadSummary}>{lead.summary}</p>}

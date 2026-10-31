@@ -80,13 +80,13 @@ export default function AdminLogin({ adminEmail }) {
             <p className={styles.sub}>Sign in to manage site content</p>
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.field}>
-                <label className={styles.label}>Email</label>
-                <input className={styles.input} type="email" autoComplete="username"
+                <label className={styles.label} htmlFor="admin-email">Email</label>
+                <input id="admin-email" className={styles.input} type="email" autoComplete="username"
                   value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div className={styles.field}>
-                <label className={styles.label}>Password</label>
-                <input className={styles.input} type="password" autoComplete="current-password"
+                <label className={styles.label} htmlFor="admin-password">Password</label>
+                <input id="admin-password" className={styles.input} type="password" autoComplete="current-password"
                   value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
               {error && <p className={styles.error}>{error}</p>}

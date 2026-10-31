@@ -26,4 +26,15 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
+  {
+    // Serverless functions, scripts and tooling run in Node, not the browser.
+    files: ['api/**/*.js', 'scripts/**/*.{js,mjs}', 'vitest.config.js', 'vite.config.js'],
+    languageOptions: { globals: { ...globals.node } },
+  },
+  {
+    // Test files: Node + browser globals (component tests run in jsdom).
+    files: ['tests/**/*.{js,jsx}'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 ])

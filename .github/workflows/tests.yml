@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read   # least privilege: the job only needs to read the code
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Unit + feature suites. Every external service (Supabase, Upstash,
+      # RSS feeds) is mocked, so no secrets are needed here.
+      - run: npm test
+
+      # Builds WITHOUT any env vars, so a missing variable can't hide a
+      # build-breaking import.
+      - run: npm run build
+
+      # Vite inlines every VITE_ variable into the public bundle. Fail if
+      # anything secret-shaped or a server-only variable name ended up there.
+      - name: Scan built bundle for secrets
+        run: |
+          if grep -rEl 'SERVICE_ROLE|POSTGRES_(URL|PASSWORD|USER|HOST|DATABASE|PRISMA)|PGPASSWORD|UPSTASH_REDIS_REST_TOKEN|GROQ_API_KEY|FOOTBALL_API_KEY|APISPORTS_KEY|CITO_API_KEY|gsk_[A-Za-z0-9]{20}|npg_[A-Za-z0-9]{8}|postgres(ql)?://[^ ]*:[^ ]*@' dist; then
+            echo "::error::Secret-looking content found in the client bundle (files listed above)."
+            exit 1
+          fi
+          echo "Bundle clean."
