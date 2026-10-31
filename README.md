@@ -1,57 +1,62 @@
-# Scoreboard — MMA + F1 Sports Dashboard
+# APEX: multi-sport dashboard
 
-A live sports dashboard built with React + Vite, tracking UFC fight results and Formula 1 championship standings.
+Live standings, results and news for **football, Formula 1, MMA, boxing, rugby and WRC** in one fast interface.
 
-**Live demo:** [your-url.vercel.app](https://your-url.vercel.app)
+**Live demo:** [sports-dashboard-peach-chi.vercel.app](https://sports-dashboard-peach-chi.vercel.app) · **Built by** [Brian Hinga](https://sudo-hinga.hingabrayo.workers.dev) · [Detailed docs](docs/README.md)
 
-## Features
+![Tests](https://github.com/redfang854/sports-dashboard/actions/workflows/tests.yml/badge.svg)
 
-- **Live countdown timers** to next UFC event and next Grand Prix
-- **UFC results** — recent fight cards with method, round, and time
-- **Fighter profile cards** — tap any fighter for record, stats, and bio
-- **F1 championship standings** — drivers and constructors with visual bar charts
-- **Driver profile cards** — tap any driver for season stats and context
-- **Responsive** — works on mobile and desktop
+## What it does
 
-## Tech Stack
+- **Every sport on its own page** (`/football`, `/f1`, `/mma`, `/boxing`, `/rugby`, `/wrc`), so reloads, bookmarks and shared links land on the right tab.
+- **Sports Recents**: the latest headlines per sport from BBC Sport and Autosport.
+- **Live data** where a free source exists: football tables, fixtures and squads; F1 standings, results and the race countdown; UFC events.
+- **Snapshots** where none does: WRC season, world boxing champions, rugby tables. They are refreshed from Wikipedia by a script, dated on the page, and flagged when older than 60 days.
+- **Responsive and readable**: WCAG AA text contrast, a consistent type scale, a compact mobile layout, and wider content on large screens.
 
-- React 18
-- Vite
-- CSS Modules
-- Deployed on Vercel
+## How it's built
 
-## Local Development
+```
+Browser (React 19 + Vite SPA)
+   │  /api/*                        │ direct (no key)
+   ▼                                ▼
+Vercel CDN → serverless functions   Jolpica F1, TheSportsDB
+   │  key added server-side, allow-listed endpoints, per-IP rate limits
+   ▼
+football-data.org · API-Football · CitoAPI · RSS      Neon Postgres · Upstash Redis · Supabase (admin)
+```
+
+Full diagram and request flows: [docs/architecture.md](docs/architecture.md).
+
+| Area | Choices |
+|---|---|
+| Frontend | React 19, React Router, CSS Modules with design tokens, one lazily loaded chunk per sport (main bundle 79 KB gzipped) |
+| Backend | Vercel serverless functions as locked-down proxies: keys never reach the browser, only an allow-list of endpoints is forwarded, responses are CDN-cached |
+| Data | Neon Postgres (~79k F1 result rows), Upstash Redis (rate limiting), Wikipedia snapshots via `npm run update:snapshots` |
+| Auth | Single admin via Supabase, loaded only when needed. Every write is verified server-side and fails closed. |
+| Quality | Vitest unit and feature tests, ESLint, and GitHub Actions running lint, tests, a secret-free build and a bundle secret scan on every push |
+
+## Engineering highlights
+
+- **Security:** found and closed open-relay proxies that let anyone spend the API quotas; removed wildcard CORS; made admin verification fail closed; added CI guards against committed keys, secrets in the browser bundle, unguarded proxies and leaked error messages. See [docs/security.md](docs/security.md).
+- **Free-tier engineering:** stays within a 10 requests/minute football API and a 100 requests/day squad API through edge caching, request sharing, one retry on 429, and a permanent club-id cache.
+- **Honest data:** live views say "unavailable" rather than silently showing stale numbers. Snapshots show their date and source, and are validated before they are written.
+- **Performance:** code-splitting and loading Supabase on demand took the main bundle from 431 KB to 245 KB.
+
+The reasoning behind each choice is in [docs/decisions.md](docs/decisions.md).
+
+## Run it
 
 ```bash
-npm install
-npm run dev
+npm ci
+npm run dev          # frontend only, http://localhost:5173
+vercel dev           # frontend + API functions (needs `vercel link` and env vars)
+npm test             # offline test suite
+npm run lint
 ```
 
-Open http://localhost:5173
+Environment variables, deployment and data services: [docs/setup-and-deployment.md](docs/setup-and-deployment.md). Routine jobs (refreshing snapshots, rotating keys): [docs/maintenance.md](docs/maintenance.md).
 
-## Deploy
+## Data and credits
 
-```bash
-npx vercel
-```
-
-## Project Structure
-
-```
-src/
-├── data/index.js          # All sports data
-├── hooks/useCountdown.js  # Countdown timer hook
-├── components/
-│   ├── Countdown.jsx      # Countdown card component
-│   └── Modal.jsx          # Fighter + driver profile modals
-├── views/
-│   ├── MmaView.jsx        # UFC tab
-│   └── F1View.jsx         # Formula 1 tab
-└── App.jsx                # Root with sticky header and tab nav
-```
-
-## Data Sources
-
-- UFC event results: TheSportsDB API
-- F1 standings: Official Formula 1 sources
-- Fight stats: UFC.com
+Formula 1 data from [Jolpica F1](https://github.com/jolpica/jolpica-f1); football from [football-data.org](https://www.football-data.org) and [API-Football](https://www.api-football.com); UFC from CitoAPI and TheSportsDB; headlines from BBC Sport and Autosport RSS, linking to the original articles. WRC, boxing and rugby tables are adapted from Wikipedia under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). World Cup photos are from Wikimedia Commons. Team, league and competition names are trademarks of their owners. APEX is an independent project and not affiliated with any of them. Full list on the site's [About page](https://sports-dashboard-peach-chi.vercel.app/about).
