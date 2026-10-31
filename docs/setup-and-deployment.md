@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js 22 (CI uses 22) and npm
+- **Node.js 22.22 or newer** and npm. The repo's `.nvmrc` pins 22, so with nvm just run `nvm use` (CI reads the same file). Node 20 won't work: jsdom and Vitest require 22.
 - A Vercel account (the project deploys there and `vercel dev` runs the API locally)
 - Accounts and keys for the services you want live (all have free plans): football-data.org, API-Football, CitoAPI, Neon, Upstash Redis
 

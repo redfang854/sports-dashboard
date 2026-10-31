@@ -12,9 +12,18 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { JSDOM } from "jsdom";
 import { parseWrc, parseBoxing, parseLeagueTable, parseRecentResults, sixNationsYear, clubSeason } from "./snapshots/parsers.mjs";
 import { buildWrc, buildBoxing, buildRugby, validateWrc, validateBoxing, validateRugby } from "./snapshots/build.mjs";
+
+// jsdom (and the test tooling) need Node 22.22+; fail with a clear message
+// instead of a stack trace from deep inside a dependency.
+const [major, minor] = process.versions.node.split(".").map(Number);
+if (major < 22 || (major === 22 && minor < 22)) {
+  console.error(`✗ Node ${process.versions.node} is too old: this project needs Node 22.22 or newer.`);
+  console.error("  With nvm:  nvm install 22 && nvm use 22   (the repo's .nvmrc pins 22)");
+  process.exit(1);
+}
+const { JSDOM } = await import("jsdom");
 
 const OUT = (name) => fileURLToPath(new URL(`../src/data/snapshots/${name}.json`, import.meta.url));
 // Wikimedia asks API clients to identify themselves.
