@@ -21,7 +21,7 @@ git add src/data/snapshots && git commit -m "Update snapshots" && git push
 
 ## Rotate an API key
 
-1. Generate a new key at the provider: football-data.org → Account; API-Football → dashboard.api-football.com → Account → My Access → **Reset my API-KEY**; Neon, Upstash and Supabase in their dashboards.
+1. Generate a new key at the provider: football-data.org → Account; API-Football → dashboard.api-football.com → Account → My Access → **Reset my API-KEY**; Neon and Upstash in their dashboards.
 2. Vercel → Settings → Environment Variables → edit the variable (type Secret) → Save.
 3. Redeploy (Deployments → ⋯ → Redeploy). Variables only apply to new deployments.
 4. Check the related panel works, and that the old key is rejected.
@@ -34,14 +34,17 @@ git add src/data/snapshots && git commit -m "Update snapshots" && git push
 | `Missing application key` from `/api/apisports` | `API_SPORTS_KEY` wrong or from RapidAPI | Use the key from dashboard.api-football.com and redeploy |
 | `Free plans do not have access to this season` | API-Football free plan covers 2022–2024 | Expected. Squads still work; only season-filtered calls fail. |
 | Squad shows without photos | club not confidently matched, or API-Football daily quota (100) used | Add an alias in `src/api/teamMatch.js` if a club never matches; otherwise wait for the quota reset |
-| Admin sign-in hangs or fails | Supabase project paused after ~7 days idle | Supabase dashboard → Restore project. Public pages are unaffected. |
 | Sports Recents "unavailable" | the RSS feed is down or changed | Check the feed URL in `api/news.js` (`FEEDS`) |
 | "May be out of date" on WRC / boxing / rugby | snapshot older than 60 days | [Refresh the snapshot data](#refresh-the-snapshot-data-wrc-boxing-rugby) |
 | CI fails on `secrets.test.js` | a key, `VITE_` secret, unguarded proxy, wildcard CORS or leaked error message was added | Read the failing assertion; it names the file |
 
 ## Known issues
 
-- **The admin CMS has no public effect.** It edits hero, season-recap and story content (`hero_sections`, `page_content`), but the components that displayed it (`Hero`, `SeasonRecap`, `StoryView`) are no longer rendered. Either repurpose the CMS (e.g. editorial notes per sport) or remove it along with the admin login, Supabase and those routes.
 - **Tabs lack full keyboard semantics.** They have `role="tab"` and `aria-selected`, but no arrow-key navigation or `tabpanel`.
 - **API-Football free plan** limits the team-list season to 2024–25 and 100 requests/day.
-- Legacy files `src/components/Hero.jsx`, `SeasonRecap.jsx`, `src/views/StoryView.jsx` and `AppRouter.jsx`'s story comment remain for the CMS decision above.
+
+## Leftovers from the removed admin area (optional clean-up)
+
+- Delete the Supabase project (it only held the admin account and CMS images).
+- Drop the unused Neon tables: `DROP TABLE hero_sections, page_content;`
+- Remove the old Supabase/admin variables from Vercel (listed in [Setup](setup-and-deployment.md#public-prefixed-vite_)).

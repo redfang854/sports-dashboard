@@ -1,20 +1,17 @@
 import { useState, useCallback, useEffect, useRef, lazy, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
 import LoadingScreen from "./components/LoadingScreen";
-import AdminLogin   from "./components/AdminLogin";
 import { LoadingState } from "./components/StatusStates";
 import styles from "./App.module.css";
 
 // Each tab is its own JS chunk, loaded the first time it's opened, so the
-// initial download is the shell plus one sport instead of all six + admin.
+// initial download is the shell plus one sport instead of all six.
 const FootballView = lazy(() => import("./views/FootballView"));
 const F1View       = lazy(() => import("./views/F1View"));
 const MmaView      = lazy(() => import("./views/MmaView"));
 const BoxingView   = lazy(() => import("./views/BoxingView"));
 const RugbyView    = lazy(() => import("./views/RugbyView"));
 const WrcView      = lazy(() => import("./views/WrcView"));
-const AdminView    = lazy(() => import("./views/AdminView"));
 const AboutView    = lazy(() => import("./views/AboutView"));
 
 const TABS = [
@@ -26,24 +23,21 @@ const TABS = [
   { id: "wrc",      label: "WRC" },
 ];
 
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 const INTRO_KEY = "apex:intro-seen";
 
-// "/f1" -> "f1"; "/admin" -> "admin"; "/" or unknown -> legacy "#boxing"
+// "/f1" -> "f1"; "/about" -> "about"; "/" or unknown -> legacy "#boxing"
 // hash links still work, otherwise Football.
 function tabFromLocation({ pathname, hash }) {
   const segment = pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
-  if (segment === "admin" || segment === "about") return segment;
+  if (segment === "about") return segment;
   if (TABS.some((t) => t.id === segment)) return segment;
   const fromHash = hash.replace("#", "");
   return TABS.some((t) => t.id === fromHash) ? fromHash : "football";
 }
 
 export default function App() {
-  const { user, loading: authLoading, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const isAdmin = !!user && !!ADMIN_EMAIL && user.email === ADMIN_EMAIL;
   // Intro animation plays once per browser session, so a reload drops the
   // visitor straight back onto the page they were on.
   const [loaded, setLoaded] = useState(() => {
@@ -71,13 +65,13 @@ export default function App() {
     return () => { observer?.disconnect(); el.removeEventListener("scroll", update); };
   }, []);
 
-  // Every tab has its own URL (/football, /f1, ..., /admin), so reloading,
+  // Every tab has its own URL (/football, /f1, ..., /about), so reloading,
   // bookmarking, sharing and Back/Forward all keep the current tab. The URL
   // is the single source of truth: no tab state to keep in sync.
   const currentTab = tabFromLocation(location);
 
   useEffect(() => {
-    const label = currentTab === "admin" ? "Admin" : currentTab === "about" ? "About" : TABS.find((t) => t.id === currentTab)?.label;
+    const label = currentTab === "about" ? "About" : TABS.find((t) => t.id === currentTab)?.label;
     document.title = label ? `${label} · Apex` : "Apex — Your Edge in Every Sport";
   }, [currentTab]);
 
@@ -86,7 +80,6 @@ export default function App() {
     if (id !== currentTab) navigate(`/${id}`);
   }
 
-  const showAdminLogin = currentTab === "admin" && !isAdmin && !authLoading;
 
   return (
     <>
@@ -106,15 +99,6 @@ export default function App() {
                 <span className={styles.tagline}>Your edge in every sport</span>
               </div>
 
-              {/* Admin session controls — only visible to the signed-in admin */}
-              {isAdmin && (
-                <div className={styles.authArea}>
-                  <div className={styles.userRow}>
-                    <span className={styles.userName}>Admin</span>
-                    <button className={styles.signOutBtn} onClick={signOut}>Sign out</button>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Sport tabs */}
@@ -134,31 +118,20 @@ export default function App() {
                   {tab.label}
                 </button>
               ))}
-              {isAdmin && (
-                <button
-                  role="tab"
-                  aria-selected={currentTab === "admin"}
-                  className={`${styles.tab} ${currentTab === "admin" ? styles.tabActive : ""}`}
-                  onClick={() => selectTab("admin")}
-                >
-                  Admin
-                </button>
-              )}
             </nav>
           </div>
         </header>
 
         <main className={styles.main}>
-          {showAdminLogin ? <AdminLogin adminEmail={ADMIN_EMAIL} /> : <Suspense fallback={<LoadingState message="Loading…" />}>
+          <Suspense fallback={<LoadingState message="Loading…" />}>
           {currentTab === "football" && <FootballView />}
           {currentTab === "f1"       && <F1View />}
           {currentTab === "mma"      && <MmaView />}
           {currentTab === "boxing"   && <BoxingView />}
           {currentTab === "rugby"    && <RugbyView />}
           {currentTab === "wrc"      && <WrcView />}
-          {currentTab === "admin"    && isAdmin && <AdminView />}
           {currentTab === "about"    && <AboutView />}
-          </Suspense>}
+          </Suspense>
         </main>
 
         <footer className={styles.footer}>

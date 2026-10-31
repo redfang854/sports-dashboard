@@ -4,7 +4,7 @@
 
 - Node.js 22 (CI uses 22) and npm
 - A Vercel account (the project deploys there and `vercel dev` runs the API locally)
-- Accounts and keys for the services you want live (all have free plans): football-data.org, API-Football, CitoAPI, Neon, Upstash Redis, Supabase
+- Accounts and keys for the services you want live (all have free plans): football-data.org, API-Football, CitoAPI, Neon, Upstash Redis
 
 ## Environment variables
 
@@ -17,19 +17,14 @@ Secrets are set in **Vercel → Project → Settings → Environment Variables**
 | `FOOTBALL_API_KEY` | `/api/standings`, `/api/teams` | live football tables fail; table falls back to last season |
 | `API_SPORTS_KEY` | `/api/apisports`, `/api/player-photo` (`APISPORTS_KEY` accepted as a fallback name) | squads show without photos |
 | `CITO_API_KEY` | `/api/citoapi` | UFC panels fall back / show errors |
-| `POSTGRES_URL_NON_POOLING` | `/api/f1-driver`, `/api/hero`, `/api/page-content` (Neon) | F1 driver career stats and CMS fail |
+| `POSTGRES_URL_NON_POOLING` | `/api/f1-driver` (Neon) | F1 driver career stats fail |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | `_rateLimit.js` | rate limiting is skipped (fails open) |
-| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | `_supabaseAdmin.js` (verify admin tokens, storage uploads) | every admin write is refused |
-| `ADMIN_EMAIL` | `_supabaseAdmin.js` | every admin write is refused (fails closed) |
 
-### Public (prefixed `VITE_`, compiled into the JavaScript bundle)
+### Public (prefixed `VITE_`)
 
-| Variable | Purpose |
-|---|---|
-| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | browser Supabase client for admin sign-in. The anon key is designed to be public. |
-| `VITE_ADMIN_EMAIL` | which signed-in user sees the Admin tab (cosmetic; the server enforces `ADMIN_EMAIL`) |
+None. The site needs no public keys. Anything prefixed `VITE_` is compiled into the JavaScript bundle and visible to every visitor, so never put a secret in one. `tests/feature/security/secrets.test.js` fails if browser code reads a custom `VITE_` variable, and CI scans the built bundle for secret-shaped strings.
 
-> Anything prefixed `VITE_` is visible to every visitor. Never put a secret in one. `tests/feature/security/secrets.test.js` only allows these three in browser code, and CI scans the built bundle for secret-shaped strings.
+**Remove these from Vercel** if they are still set (they belonged to the removed admin login): `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_EMAIL`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_ADMIN_EMAIL`.
 
 ## Run locally
 
@@ -77,6 +72,5 @@ Environment variable changes only apply to **new** deployments. After editing on
 
 | Service | Holds | Setup notes |
 |---|---|---|
-| Neon Postgres | `f1_races`, `f1_results` (history), `hero_sections`, `page_content` (CMS) | F1 history loaded with `scripts/import-f1*.py` |
+| Neon Postgres | `f1_races`, `f1_results` (history) | F1 history loaded with `scripts/import-f1*.py`. The old CMS tables `hero_sections` and `page_content` are unused and can be dropped. |
 | Upstash Redis | rate-limit counters (`ratelimit:<route>:<ip>`) | REST URL + token only |
-| Supabase | the admin user; storage for CMS images | Sign-ups **disabled**; only the admin account exists. Free projects pause after ~7 days idle: restore from the dashboard. Only admin sign-in depends on it. |

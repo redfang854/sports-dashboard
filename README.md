@@ -23,25 +23,25 @@ Browser (React 19 + Vite SPA)
 Vercel CDN → serverless functions   Jolpica F1, TheSportsDB
    │  key added server-side, allow-listed endpoints, per-IP rate limits
    ▼
-football-data.org · API-Football · CitoAPI · RSS      Neon Postgres · Upstash Redis · Supabase (admin)
+football-data.org · API-Football · CitoAPI · RSS      Neon Postgres · Upstash Redis
 ```
 
 Full diagram and request flows: [docs/architecture.md](docs/architecture.md).
 
 | Area | Choices |
 |---|---|
-| Frontend | React 19, React Router, CSS Modules with design tokens, one lazily loaded chunk per sport (main bundle 79 KB gzipped) |
+| Frontend | React 19, React Router, CSS Modules with design tokens, one lazily loaded chunk per sport (main bundle 77 KB gzipped) |
 | Backend | Vercel serverless functions as locked-down proxies: keys never reach the browser, only an allow-list of endpoints is forwarded, responses are CDN-cached |
 | Data | Neon Postgres (~79k F1 result rows), Upstash Redis (rate limiting), Wikipedia snapshots via `npm run update:snapshots` |
-| Auth | Single admin via Supabase, loaded only when needed. Every write is verified server-side and fails closed. |
+| Accounts | None by design: no sign-up, login or personal data, so there is nothing to breach |
 | Quality | Vitest unit and feature tests, ESLint, and GitHub Actions running lint, tests, a secret-free build and a bundle secret scan on every push |
 
 ## Engineering highlights
 
-- **Security:** found and closed open-relay proxies that let anyone spend the API quotas; removed wildcard CORS; made admin verification fail closed; added CI guards against committed keys, secrets in the browser bundle, unguarded proxies and leaked error messages. See [docs/security.md](docs/security.md).
+- **Security:** found and closed open-relay proxies that let anyone spend the API quotas; removed wildcard CORS; removed an unused admin login and its auth library entirely; added CI guards against committed keys, secrets in the browser bundle, unguarded proxies and leaked error messages. See [docs/security.md](docs/security.md).
 - **Free-tier engineering:** stays within a 10 requests/minute football API and a 100 requests/day squad API through edge caching, request sharing, one retry on 429, and a permanent club-id cache.
 - **Honest data:** live views say "unavailable" rather than silently showing stale numbers. Snapshots show their date and source, and are validated before they are written.
-- **Performance:** code-splitting and loading Supabase on demand took the main bundle from 431 KB to 245 KB.
+- **Performance:** code-splitting and dropping the unused auth library took the main bundle from 431 KB to 240 KB (126 → 77 KB gzipped).
 
 The reasoning behind each choice is in [docs/decisions.md](docs/decisions.md).
 

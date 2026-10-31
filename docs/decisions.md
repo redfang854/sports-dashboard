@@ -8,11 +8,11 @@ Short records of choices that shape the code: the context, what was decided, and
 ### 2. Allow-listed proxy endpoints, no wildcard CORS
 **Context:** the original proxies forwarded any `?endpoint=` with our key and allowed any origin, so anyone could spend our quotas. **Decision:** accept only the endpoint shapes the site uses, plain query params only, same-origin only, and a CI test that fails if a proxy skips the guard. **Trade-off:** using a new upstream endpoint means updating `api/_endpointGuard.js` first.
 
-### 3. Admin-only authentication; public sign-up and chat removed
-**Context:** accounts existed only for a live chat on a low-traffic site, which brought spam risk, password-reset upkeep and Realtime load. **Decision:** remove chat, sign-up, Google sign-in and password reset; keep one admin account behind an unlisted `/admin`. **Trade-off:** no community features.
+### 3. No accounts at all
+**Context:** accounts existed for a live chat (spam risk, password-reset upkeep, Realtime load) and for an admin CMS whose content was no longer shown on the site. **Decision:** remove chat, sign-up and sign-in first, then the admin area, its four API routes, the CMS components and the Supabase dependency. **Result:** no personal data, no credentials to protect, ~185 KB less JavaScript, four fewer routes. **Trade-off:** no community features and no in-browser content editing. Content that needs a human now comes from the snapshot script (decision 6).
 
-### 4. Supabase loaded only when needed
-**Context:** supabase-js was ~185 KB of the main bundle, but only the admin uses it. **Decision:** import it on demand (admin sign-in or a saved session). **Result:** main bundle 431 KB → 245 KB (126 → 79 KB gzipped). **Trade-off:** sign-in takes one extra request the first time.
+### 4. Code-split the sport views
+**Context:** the whole app shipped as one 557 KB file. **Decision:** load each sport's view with `React.lazy` the first time its tab opens. Together with decision 3, the main bundle went from 431 KB to 240 KB (126 → 77 KB gzipped). **Trade-off:** a brief loading state the first time a tab is opened.
 
 ### 5. URL per tab
 **Context:** the tab lived in React state, so reloads always reset to Football. **Decision:** `/football`, `/f1`, … with the URL as the single source of truth. **Trade-off:** none significant. Old `#sport` links still work.

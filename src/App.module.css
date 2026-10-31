@@ -114,11 +114,6 @@
 .footerSub { font-size: var(--fs-2xs) !important; color: var(--text-faint) !important; }
 
 .topRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 8px; border-bottom: 1px solid var(--border); }
-.authArea { flex-shrink: 0; }
-.userRow { display: flex; align-items: center; gap: 10px; }
-.userName { font-size: var(--fs-sm); color: var(--text-muted); }
-.signOutBtn { padding: 6px 14px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); font-size: var(--fs-xs); cursor: pointer; transition: all var(--transition-fast); }
-.signOutBtn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); transform: translateY(-1px); }
 
 /* ── Mobile header fix ──
    Header row (logo + Chats + Sign in) was overlapping/cramping on

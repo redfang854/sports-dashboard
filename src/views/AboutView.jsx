@@ -19,7 +19,7 @@ const BUILT = [
   ["Frontend", "React 19 + Vite, React Router; one lazily loaded code chunk per sport"],
   ["Backend", "Vercel serverless functions that keep API keys server-side and only forward an allow-list of endpoints"],
   ["Data", "Neon Postgres for F1 history (~79k records); Upstash Redis for per-IP rate limiting; CDN caching of upstream feeds"],
-  ["Auth", "Admin-only Supabase sign-in, loaded on demand; every admin write is verified server-side"],
+  ["Accounts", "None by design: no sign-up, login or user data to protect"],
   ["Quality", "Vitest unit and feature tests, ESLint, and a secret scan of the built bundle, run by GitHub Actions on every push"],
 ];
 

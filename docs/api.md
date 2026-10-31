@@ -58,19 +58,6 @@ Streams a player photo. `url` must start with `https://media.api-sports.io/` (ot
 Career statistics from the Neon F1 history tables (matched on surname).
 200 → `{ found: false }` or `{ found: true, … career totals, championships, notable races }`. 500 → database unreachable (retry). Limit 10/min · CDN 60 min.
 
-## Admin (require `Authorization: Bearer <Supabase access token>`)
-
-Writes are accepted only if `verifyAdmin` (`api/_supabaseAdmin.js`) confirms the token with Supabase **and** the user's email equals `ADMIN_EMAIL`. It fails closed: no header, a bad or expired token, a different user, a user without an email, `ADMIN_EMAIL` unset, or Supabase unreachable all give `403 {"error":"Forbidden"}`.
-
-| Route | Methods | Body (POST) | Notes |
-|---|---|---|---|
-| `/api/hero?page=<key>` | GET public, POST admin | `{ page_key, title, subtitle?, image_url?, cta_label?, cta_link? }` | table `hero_sections` |
-| `/api/page-content?page=<key>&section=<key>` | GET public, POST admin | `{ page_key, section_key, content }` | table `page_content` |
-| `/api/upload-hero-image` | POST admin | `{ page_key, filename, content_type, data_base64 }` | image/*, ≤5 MB, Supabase Storage → `{ url, path }` |
-| `/api/upload-story-image` | POST admin | same | same |
-
-Limits: hero and page-content 60/min, uploads 20/min. These routes back the admin CMS, whose content isn't currently shown publicly ([Known issues](maintenance.md#known-issues)).
-
 ## Calling from the browser
 
 Use the clients rather than raw `fetch`: `src/api/teams.js` (football-data + API-Football, club matching, squad fallback) and `src/api/index.js` (F1, UFC). `useFetch` (`src/hooks/useFetch.js`) gives `{ data, loading, error, refetch }`, ignores responses for stale arguments, and keeps the previous data visible while refetching.

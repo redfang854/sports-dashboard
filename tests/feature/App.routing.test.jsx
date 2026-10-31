@@ -1,27 +1,21 @@
 // @vitest-environment jsdom
 /**
- * FEATURE — src/App.jsx routing, header and admin gating (whole shell rendered)
+ * FEATURE — src/App.jsx routing, header and footer (whole shell rendered)
  *
- * Renders the real App inside a router. Sport views, AdminView and the loading
- * animation are stubbed (they make their own API calls and are not what is
- * under test); useAuth() is mocked to simulate visitor / non-admin / admin.
+ * Renders the real App inside a router. Sport views and the loading animation
+ * are stubbed (they make their own API calls and are not what is under test).
  *
- * Goes right: visitors see the six sport tabs and no auth UI; /admin shows the
- * sign-in form; the admin sees the Admin tab, AdminView and a Sign out button.
- * Goes wrong (each asserted): chat or Sign in creeping back into the header, a
- * non-admin session seeing the Admin tab or AdminView, AdminView flashing while
- * auth is still loading, VITE_ADMIN_EMAIL missing (must lock everyone out, not
- * let everyone in), and sport tabs failing to leave /admin.
- * Note: hiding UI is cosmetic. The server-side check is covered in
- * tests/unit/api/verifyAdmin.test.js.
+ * Goes right: the six sport tabs, one URL per tab, reloads keep the tab, the
+ * intro plays once per session, /about and the footer credits work.
+ * Goes wrong (asserted): any login, sign-in, admin or chat UI reappearing
+ * (the site deliberately has no accounts), /admin exposing anything, unknown
+ * paths showing a blank page, tab clicks not updating the URL.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-const auth = vi.hoisted(() => ({ value: null }));
-vi.mock("../../src/context/AuthContext", () => ({ useAuth: () => auth.value }));
 
 vi.mock("../../src/components/LoadingScreen", () => ({
   default: function LoadingScreen({ onDone }) { useEffect(() => { onDone(); }, [onDone]); return <div data-testid="intro" />; },
@@ -33,18 +27,15 @@ vi.mock("../../src/views/MmaView", () => stub("mma-view"));
 vi.mock("../../src/views/BoxingView", () => stub("boxing-view"));
 vi.mock("../../src/views/RugbyView", () => stub("rugby-view"));
 vi.mock("../../src/views/WrcView", () => stub("wrc-view"));
-vi.mock("../../src/views/AdminView", () => stub("admin-view"));
 
-const ADMIN = "admin@apex.test";
 let App;
 
 function Location() {
   return <div data-testid="path">{useLocation().pathname}</div>;
 }
 
-async function renderAt(path, { adminEmail = ADMIN } = {}) {
-  vi.stubEnv("VITE_ADMIN_EMAIL", adminEmail);
-  vi.resetModules(); // App reads VITE_ADMIN_EMAIL at import time
+async function renderAt(path) {
+  vi.resetModules();
   App = (await import("../../src/App.jsx")).default;
   return render(
     <MemoryRouter initialEntries={[path]}>
@@ -53,10 +44,7 @@ async function renderAt(path, { adminEmail = ADMIN } = {}) {
   );
 }
 
-const signedIn = (email) => ({ user: { email }, loading: false, supabaseReady: true, signInWithEmail: vi.fn(), signOut: vi.fn() });
-const visitor = () => ({ user: null, loading: false, supabaseReady: true, signInWithEmail: vi.fn(), signOut: vi.fn() });
-
-beforeEach(() => { auth.value = visitor(); sessionStorage.clear(); });
+beforeEach(() => { sessionStorage.clear(); });
 
 describe("public visitor", () => {
   it("sees the six sport tabs, football by default, and no auth or chat UI", async () => {
@@ -81,76 +69,23 @@ describe("public visitor", () => {
     await renderAt("/#boxing");
     await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("boxing-view"));
   });
-
-  it("gets the admin sign-in form at /admin and never AdminView", async () => {
-    await renderAt("/admin");
-    expect(await screen.findByRole("heading", { name: "Admin" })).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.queryByText("admin-view")).not.toBeInTheDocument();
-  });
-
-  it("also gets the form at /admin/ (trailing slash)", async () => {
-    await renderAt("/admin/");
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-  });
-
-  it("leaves /admin when a sport tab is clicked", async () => {
-    await renderAt("/admin");
-    fireEvent.click(screen.getByRole("tab", { name: "Rugby" }));
-    expect(screen.getByTestId("path")).toHaveTextContent("/rugby");
-    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("rugby-view"));
-  });
 });
 
-describe("signed-in non-admin (e.g. a leftover chat-era account)", () => {
-  beforeEach(() => { auth.value = signedIn("fan@example.com"); });
-
-  it("sees no Admin tab and no Sign out on the public site", async () => {
-    await renderAt("/");
-    expect(screen.queryByRole("tab", { name: "Admin" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /sign out/i })).not.toBeInTheDocument();
-  });
-
-  it("is told they are not the admin at /admin, and AdminView is not rendered", async () => {
-    await renderAt("/admin");
-    expect(screen.getByText(/not the admin account/i)).toBeInTheDocument();
-    expect(screen.queryByText("admin-view")).not.toBeInTheDocument();
-  });
-});
-
-describe("admin", () => {
-  beforeEach(() => { auth.value = signedIn(ADMIN); });
-
-  it("lands on AdminView at /admin with a Sign out button", async () => {
-    await renderAt("/admin");
-    await screen.findByTestId("view");
-    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("admin-view"));
-    expect(screen.getByRole("tab", { name: "Admin" })).toHaveAttribute("aria-selected", "true");
-    fireEvent.click(screen.getByRole("button", { name: /sign out/i }));
-    expect(auth.value.signOut).toHaveBeenCalledOnce();
-  });
-
-  it("sees the Admin tab on the public site and it navigates to /admin", async () => {
-    await renderAt("/");
-    fireEvent.click(screen.getByRole("tab", { name: "Admin" }));
-    expect(screen.getByTestId("path")).toHaveTextContent("/admin");
-    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("admin-view"));
-  });
-});
-
-describe("misconfiguration and loading", () => {
-  it("locks everyone out if VITE_ADMIN_EMAIL is missing", async () => {
-    auth.value = signedIn(ADMIN);
-    await renderAt("/admin", { adminEmail: "" });
-    expect(screen.queryByText("admin-view")).not.toBeInTheDocument();
-    expect(screen.queryByRole("tab", { name: "Admin" })).not.toBeInTheDocument();
-  });
-
-  it("shows neither the form nor AdminView while auth is still loading", async () => {
-    auth.value = { ...visitor(), loading: true };
-    await renderAt("/admin");
+describe("no accounts anywhere", () => {
+  it.each(["/", "/football", "/about"])("%s has no sign-in, sign-out, admin or chat controls", async (path) => {
+    await renderAt(path);
+    await screen.findAllByRole("tab");
+    expect(screen.queryByRole("button", { name: /sign in|sign out|log in|log out|register/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("tab", { name: /admin/i })).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
-    expect(screen.queryByText("admin-view")).not.toBeInTheDocument();
+    expect(screen.queryByText(/chat|online/i)).not.toBeInTheDocument();
+  });
+
+  it("/admin no longer exists: it falls back to Football with no form", async () => {
+    await renderAt("/admin");
+    await waitFor(() => expect(screen.getByTestId("view")).toHaveTextContent("football-view"));
+    expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /admin/i })).not.toBeInTheDocument();
   });
 });
 

@@ -5,9 +5,9 @@
  *   1. any .env file is tracked by git, or .gitignore stops ignoring env files
  *   2. a key/token/connection string is hard-coded in src/, api/ or scripts/
  *      (this repo's history already had two football-data.org keys committed)
- *   3. browser code (src/) reads anything except the allow-listed public VITE_
- *      variables. Vite copies every VITE_ variable into the public JS bundle,
- *      so a secret given a VITE_ prefix would be published to every visitor.
+ *   3. browser code (src/) reads any custom VITE_ variable. Vite copies every
+ *      VITE_ variable into the public JS bundle, so a secret given a VITE_
+ *      prefix would be published to every visitor. (The site needs none.)
  *   4. browser code references process.env or a server-only variable name
  *   5. the Supabase service-role key is used outside api/ (it bypasses RLS)
  *   6. an API route echoes an environment variable back in a response
@@ -23,9 +23,9 @@ import { join } from "node:path";
 
 const ROOT = join(import.meta.dirname, "../../..");
 
-// Public by design: the Supabase anon key is meant for browsers (RLS protects
-// data) and the admin email is not a credential.
-const ALLOWED_CLIENT_ENV = ["VITE_SUPABASE_URL", "VITE_SUPABASE_ANON_KEY", "VITE_ADMIN_EMAIL", "MODE", "DEV", "PROD", "BASE_URL", "SSR"];
+// Only Vite's built-in flags. The site has no login, so it needs no public
+// keys; add a VITE_ variable here only if it is safe for every visitor to see.
+const ALLOWED_CLIENT_ENV = ["MODE", "DEV", "PROD", "BASE_URL", "SSR"];
 
 const SERVER_ONLY_NAMES = [
   "SUPABASE_SERVICE_ROLE_KEY", "POSTGRES_URL", "POSTGRES_PASSWORD", "PGPASSWORD", "DATABASE_URL",
@@ -137,6 +137,21 @@ describe.skipIf(!isGitRepo)("errors: API routes don't leak internals", () => {
       /res\.(?:status\([^)]*\)\.)?json\(\{[^}]*(?:err|error|e)\.message/.test(read(f).replace(/\s+/g, " "))
     );
     expect(leaky, "Log the error server-side and return a generic message instead").toEqual([]);
+  });
+});
+
+describe.skipIf(!isGitRepo)("no accounts: login code stays removed", () => {
+  it("ships no auth/login library", () => {
+    const pkg = JSON.parse(read("package.json"));
+    const deps = Object.keys({ ...pkg.dependencies, ...pkg.devDependencies });
+    expect(deps.filter((d) => /supabase|firebase|auth0|clerk|next-auth|@auth\//i.test(d))).toEqual([]);
+  });
+
+  it("has no sign-in, sign-up or session code in the app", () => {
+    const hits = tracked("src", "api").filter((f) =>
+      /signInWith|signUp\(|getSession\(|onAuthStateChange|Authorization["']?\s*:|Bearer /.test(read(f))
+    );
+    expect(hits, "The site deliberately has no accounts (docs/decisions.md)").toEqual([]);
   });
 });
 

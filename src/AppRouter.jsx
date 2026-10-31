@@ -1,9 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import App from "./App.jsx";
 
-// Per-sport story pages (/:sport/story) have been removed — App.jsx now
-// handles every route. StoryView.jsx is left in views/ unreferenced in
-// case story pages come back later.
+// App.jsx maps the URL to a tab itself (/football, /f1, ..., /about).
 export default function AppRouter() {
   return (
     <Routes>
