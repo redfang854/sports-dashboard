@@ -136,7 +136,7 @@ export default function App() {
 
         <footer className={styles.footer}>
           <p>
-            Built by <a href="https://sudo-hinga.hingabrayo.workers.dev" target="_blank" rel="noopener noreferrer">Brian Hinga</a>
+            Built by <a href="https://sudo-hinga.hingabayo.workers.dev" target="_blank" rel="noopener noreferrer">Brian Hinga</a>
             {" · "}<a href="https://github.com/redfang854/sports-dashboard" target="_blank" rel="noopener noreferrer">Source on GitHub</a>
             {" · "}<a href="/about" onClick={(e) => { e.preventDefault(); navigate("/about"); window.scrollTo(0, 0); }}>About &amp; data credits</a>
           </p>

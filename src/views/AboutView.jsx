@@ -2,7 +2,7 @@ import styles from "./AboutView.module.css";
 
 const GITHUB    = "https://github.com/redfang854/sports-dashboard";
 const PROFILE   = "https://github.com/redfang854";
-const PORTFOLIO = "https://sudo-hinga.hingabrayo.workers.dev";
+const PORTFOLIO = "https://sudo-hinga.hingabayo.workers.dev";
 const CC_BY_SA  = "https://creativecommons.org/licenses/by-sa/4.0/";
 
 const SOURCES = [

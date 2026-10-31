@@ -2,7 +2,7 @@
 
 Live standings, results and news for **football, Formula 1, MMA, boxing, rugby and WRC** in one fast interface.
 
-**Live demo:** [sports-dashboard-peach-chi.vercel.app](https://sports-dashboard-peach-chi.vercel.app) · **Built by** [Brian Hinga](https://sudo-hinga.hingabrayo.workers.dev) · [Detailed docs](docs/README.md)
+**Live demo:** [sports-dashboard-peach-chi.vercel.app](https://sports-dashboard-peach-chi.vercel.app) · **Built by** [Brian Hinga](https://sudo-hinga.hingabayo.workers.dev) · [Detailed docs](docs/README.md)
 
 ![Tests](https://github.com/redfang854/sports-dashboard/actions/workflows/tests.yml/badge.svg)
 
