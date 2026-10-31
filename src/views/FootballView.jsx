@@ -187,7 +187,7 @@ function FixturesPanel({ compId }) {
 
 function SquadModal({ team, onClose }) {
   const { data, loading, error } = useFetch(
-    () => fetchSquad(team.id, team.name, team.leagueCode),
+    () => fetchSquad(team.id, team.name, team.leagueCode, team.short),
     [team.id]
   );
   const [pos, setPos] = useState("All");
